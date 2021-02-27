@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import tn.dari.spring.enumeration.Typead;
+
 @Entity
 @Table
 @Getter
@@ -26,25 +24,13 @@ import tn.dari.spring.enumeration.Typead;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Ad implements Serializable {
+public class Review implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long adId;
-	private String titleAd;
-	private String Description;
+	private Long idReview;
+	private int rating;
+	private String comment;
 	@Temporal (TemporalType.DATE)
-	private Date creationDate;
-	private boolean sell;
-	private boolean visibility;
-	private int numbreOfRooms;
-	private double price;
-	private String city;
-	@Enumerated(EnumType.ORDINAL)
-	private Typead typead;
-	private int numberOfBathrooms;
-	private double area;
-	private Date periodeOfVisibility = null;
-	private Date checkInDate = null;
-	private Date checkOutDate = null;
-
+	private Date dateComment;
+	
 }

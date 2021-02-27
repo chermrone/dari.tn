@@ -10,15 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import tn.dari.spring.enumeration.Typead;
+
 @Entity
 @Table
 @Getter
@@ -26,25 +24,14 @@ import tn.dari.spring.enumeration.Typead;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Ad implements Serializable {
+public class Subscription implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long adId;
-	private String titleAd;
-	private String Description;
-	@Temporal (TemporalType.DATE)
-	private Date creationDate;
-	private boolean sell;
-	private boolean visibility;
-	private int numbreOfRooms;
+	private Long subscriptionId;
+	private String descriptionOffer;
 	private double price;
-	private String city;
+	private boolean payed=false;
 	@Enumerated(EnumType.ORDINAL)
-	private Typead typead;
-	private int numberOfBathrooms;
-	private double area;
-	private Date periodeOfVisibility = null;
-	private Date checkInDate = null;
-	private Date checkOutDate = null;
-
+	private Date payingDate=null; 
+	
 }

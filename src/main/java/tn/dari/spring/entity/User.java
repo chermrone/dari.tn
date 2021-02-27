@@ -1,6 +1,7 @@
 package tn.dari.spring.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -42,5 +43,6 @@ public class User implements Serializable {
 	@Enumerated(EnumType.ORDINAL)
 	private Usertype usertype;
 	private boolean userState;
-
+	@Enumerated(EnumType.ORDINAL)
+	private Date creationDate;
 }
