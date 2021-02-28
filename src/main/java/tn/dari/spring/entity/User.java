@@ -2,13 +2,17 @@ package tn.dari.spring.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,6 +24,7 @@ import lombok.Setter;
 import lombok.ToString;
 import tn.dari.spring.enumeration.Gender;
 import tn.dari.spring.enumeration.Usertype;
+import tn.dari.spring.entity.Ad;
 
 @Entity
 @Table
@@ -47,4 +52,20 @@ public class User implements Serializable {
 	private boolean userState;
 	@Temporal (TemporalType.DATE)
 	private Date creationDate;
+	@OneToMany(cascade = CascadeType.ALL)
+	private Set<Ad> ads;
+	@OneToMany(cascade = CascadeType.ALL)
+	private Set<Ad> Favorite;
+	@OneToMany(cascade = CascadeType.ALL)
+	private Set<Subscription> subscriptions;
+	@OneToMany(cascade = CascadeType.ALL)
+	private Set<OrderUser> orders;
+	@OneToOne(cascade = CascadeType.ALL)
+	private ShoppingCart shoppingCart;
+	@OneToMany(cascade = CascadeType.ALL)
+	private Set<Appointment> appointments;
+	@OneToMany(cascade = CascadeType.ALL)
+	private Set<CreditSimulator> creditSimulators;
+	
+	
 }

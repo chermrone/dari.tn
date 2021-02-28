@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -16,21 +17,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-@Entity
-@Table
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Order implements Serializable {
+@Entity
+@Table
+public class OrderUser implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long Orderid;
+	private Long orderId;
 	@Temporal (TemporalType.DATE)
 	private Date dateCreated;
 	@Temporal (TemporalType.DATE)
 	private Date dateShiped;
-	private boolean statusOrd;
+	private boolean statusOrd = false;
 	private int quantity;
+	@OneToOne
+	private Delivery deliv;
+	
 }

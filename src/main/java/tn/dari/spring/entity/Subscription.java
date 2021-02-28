@@ -35,5 +35,4 @@ public class Subscription implements Serializable {
 	private boolean payed=false;
 	@Temporal (TemporalType.DATE)
 	private Date payingDate=null; 
-	
 }
