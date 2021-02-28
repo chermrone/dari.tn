@@ -43,8 +43,11 @@ public class Ad implements Serializable {
 	private Typead typead;
 	private int numberOfBathrooms;
 	private double area;
+	@Temporal (TemporalType.DATE)
 	private Date periodeOfVisibility = null;
+	@Temporal (TemporalType.DATE)
 	private Date checkInDate = null;
+	@Temporal (TemporalType.DATE)
 	private Date checkOutDate = null;
 
 }

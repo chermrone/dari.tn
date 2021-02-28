@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,14 +24,12 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Subscription implements Serializable {
+public class Appointment implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long subscriptionId;
-	private String descriptionOffer;
-	private double price;
-	private boolean payed=false;
+	private Long AppointmentId;
 	@Temporal (TemporalType.DATE)
-	private Date payingDate=null; 
-	
+	private Date dateApp;
+	private String placeApp;
+	private String nameApp;
 }

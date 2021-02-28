@@ -18,7 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
+import tn.dari.spring.enumeration.ClaimType;
 @Entity
 @Table
 @Getter
@@ -26,14 +26,14 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Subscription implements Serializable {
+public class Claim implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long subscriptionId;
-	private String descriptionOffer;
-	private double price;
-	private boolean payed=false;
+	private Long ClmId;
+	private String Content;
 	@Temporal (TemporalType.DATE)
-	private Date payingDate=null; 
-	
+	private Date dateOfClm;
+	private String ObjectOfClm;
+	@Enumerated(EnumType.ORDINAL)
+	private ClaimType typeClm;
 }

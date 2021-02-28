@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,6 +45,6 @@ public class User implements Serializable {
 	@Enumerated(EnumType.ORDINAL)
 	private Usertype usertype;
 	private boolean userState;
-	@Enumerated(EnumType.ORDINAL)
+	@Temporal (TemporalType.DATE)
 	private Date creationDate;
 }

@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +16,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
 @Entity
 @Table
 @Getter
@@ -26,14 +23,14 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Subscription implements Serializable {
+public class Order implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long subscriptionId;
-	private String descriptionOffer;
-	private double price;
-	private boolean payed=false;
+	private Long Orderid;
 	@Temporal (TemporalType.DATE)
-	private Date payingDate=null; 
-	
+	private Date dateCreated;
+	@Temporal (TemporalType.DATE)
+	private Date dateShiped;
+	private boolean statusOrd;
+	private int quantity;
 }
