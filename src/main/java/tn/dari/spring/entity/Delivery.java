@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -29,4 +30,6 @@ public class Delivery implements Serializable {
 	private String place;
 	private boolean status;
 	private double cost;
+	@ManyToOne
+	private OrderUser orderUser;
 }

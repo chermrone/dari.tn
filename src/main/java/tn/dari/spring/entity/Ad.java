@@ -11,6 +11,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -58,4 +59,8 @@ public class Ad implements Serializable {
 	private Set<Claim> claims;
 	@OneToMany(cascade = CascadeType.ALL)
 	private Set<Wishlist> wishlists;
+	@ManyToOne
+	private User us;
+	@OneToMany(cascade= CascadeType.ALL, mappedBy= "Review")
+	private Review review;
 }

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -27,5 +28,6 @@ public class BankCredit implements Serializable {
 	private Long bankId;
 	private String nameBank;
 	private double interestRate;
-	
+	@ManyToOne
+	private CreditSimulator cs;
 }

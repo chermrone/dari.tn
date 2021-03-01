@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -36,4 +37,6 @@ public class Claim implements Serializable {
 	private String ObjectOfClm;
 	@Enumerated(EnumType.ORDINAL)
 	private ClaimType typeClm;
+	@ManyToOne
+	private Ad ad;
 }

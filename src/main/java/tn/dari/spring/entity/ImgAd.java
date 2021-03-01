@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -26,4 +27,6 @@ public class ImgAd implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long imgAdId;
 	private String nameImgAd;
+	@ManyToOne
+	private Ad ad;
 }

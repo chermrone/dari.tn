@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -31,6 +32,8 @@ public class CreditSimulator implements Serializable {
 	private String nameCS;
 	private double interestRateCS;
 	private double mounthlyInCame;
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="BankCredit")
 	private Set<BankCredit> bankCredits;
+	@ManyToOne
+	private User us;
 }
