@@ -37,7 +37,7 @@ public class OrderUser implements Serializable {
 	private Date dateShiped;
 	private boolean statusOrd = false;
 	private int quantity;
-	@OneToOne(cascade= CascadeType.ALL, mappedBy="Delivery")
+	@OneToOne(cascade= CascadeType.ALL, mappedBy="orderUser")
 	private Delivery deliv;
 	@ManyToOne
 	private User us;

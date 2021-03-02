@@ -35,7 +35,7 @@ public class ShoppingCart {
 	private int Quantity;
 	@Temporal (TemporalType.DATE)
 	private Date dateadded;
-	@ManyToMany(cascade=CascadeType.ALL, mappedBy="FournitureAd")
+	@ManyToMany(cascade=CascadeType.ALL, mappedBy="shoppingCart")
 	private Set<FournitureAd> fournituresAd;
 	@ManyToOne
 	private User us;

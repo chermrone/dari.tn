@@ -2,6 +2,7 @@ package tn.dari.spring.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,5 +37,5 @@ public class FournitureAd implements Serializable {
 	@Temporal (TemporalType.DATE)
 	private Date created;
 	@ManyToMany
-	private ShoppingCart shoppingCart;
+	private Set<ShoppingCart> shoppingCart;
 }

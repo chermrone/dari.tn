@@ -32,7 +32,7 @@ public class CreditSimulator implements Serializable {
 	private String nameCS;
 	private double interestRateCS;
 	private double mounthlyInCame;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="BankCredit")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="cs")
 	private Set<BankCredit> bankCredits;
 	@ManyToOne
 	private User us;

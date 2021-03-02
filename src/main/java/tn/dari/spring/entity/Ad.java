@@ -53,14 +53,14 @@ public class Ad implements Serializable {
 	private Date checkInDate = null;
 	@Temporal (TemporalType.DATE)
 	private Date checkOutDate = null;
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy= "ad")
 	private Set<ImgAd> imgads;
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy= "ad")
 	private Set<Claim> claims;
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy= "ad")
 	private Set<Wishlist> wishlists;
 	@ManyToOne
 	private User us;
-	@OneToMany(cascade= CascadeType.ALL, mappedBy= "Review")
-	private Review review;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy= "ad")
+	private Set<Review> rev;
 }

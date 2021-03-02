@@ -7,4 +7,5 @@ import tn.dari.spring.entity.OrderUser;
 @Repository
 public interface OrderUserRepository extends JpaRepository<OrderUser, Long> {
 
+	
 }

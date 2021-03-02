@@ -52,19 +52,19 @@ public class User implements Serializable {
 	private boolean userState;
 	@Temporal (TemporalType.DATE)
 	private Date creationDate;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="Ad")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="us")
 	private Set<Ad> ads;
 	@OneToMany(cascade = CascadeType.ALL)
 	private Set<Ad> Favorite;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="Subscription")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="us")
 	private Set<Subscription> subscriptions;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="OrderUser")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="us")
 	private Set<OrderUser> orders;
-	@OneToOne(cascade = CascadeType.ALL, mappedBy="ShoppingCart")
+	@OneToOne(cascade = CascadeType.ALL, mappedBy="us")
 	private ShoppingCart shoppingCart;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="Appointment")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="us")
 	private Set<Appointment> appointments;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="CreditSimulator")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="us")
 	private Set<CreditSimulator> creditSimulators;
 	
 	
