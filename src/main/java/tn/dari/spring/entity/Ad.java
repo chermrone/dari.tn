@@ -48,5 +48,5 @@ public class Ad implements Serializable {
 	private Date periodeOfVisibility = null;
 	private Date checkInDate = null;
 	private Date checkOutDate = null;
-
+//jjjdkkdkfkffkfkfk
 }
