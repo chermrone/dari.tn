@@ -49,4 +49,5 @@ public class Ad implements Serializable {
 	private Date checkInDate = null;
 	private Date checkOutDate = null;
 //jjjdkkdkfkffkfkfk
+	//jjjjj
 }
