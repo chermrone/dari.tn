@@ -29,19 +29,19 @@ UserRepository ur;
 	@Override
 	public User GetUserByFirstName(String firstname) {
 		
-		return ur.FindByFirstName(firstname);
+		return ur.findByFirstName(firstname);
 	}
 
 	@Override
 	public User GetUserByLastName(String lastname) {
 		
-		return ur.FindByLastName(lastname);
+		return ur.findByLastName(lastname);
 	}
 
 	@Override
 	public User GetUserByUserName(String username) {
 		
-		return ur.FindByUserName(username);
+		return ur.findByUserName(username);
 	}
 
 	@Override

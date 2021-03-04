@@ -54,7 +54,7 @@ public class UserController {
 	}
 	@GetMapping("/findbyusername/{username}")
 	public ResponseEntity<User>Getbyusername(@PathVariable String username){
-		User use = user.GetUserByLastName(username);
+		User use = user.GetUserByUserName(username);
 		return new ResponseEntity<User>(use, HttpStatus.OK);
 	}
 	
