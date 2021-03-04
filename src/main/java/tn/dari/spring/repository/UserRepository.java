@@ -7,5 +7,8 @@ import tn.dari.spring.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+public User findByFirstName(String firstname);
+public User findByLastName(String lastname);
+public  User findByUserName(String username);
 
 }
