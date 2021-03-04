@@ -27,7 +27,6 @@ public class AdController {
 @Autowired UIadService Adserv;
 	@GetMapping("/all")
 	public ResponseEntity<List<Ad>>getAllSubscriptions(){
-		System.out.println("reception de la requete");
 		List<Ad> ads = Adserv.getAll();
 		return new ResponseEntity<List<Ad>>(ads, HttpStatus.OK);
 	}
@@ -52,10 +51,14 @@ public class AdController {
 	}
 	
 	
-	@PutMapping("/update/ad/{id}")
-	public ResponseEntity<Ad>update(@PathVariable("id") Long id){
-		Ad ad=Adserv.getById(id);
-		return new ResponseEntity<Ad>(ad, HttpStatus.OK);
+//	@PutMapping("/update/ad/{id}")
+	@PutMapping("/update/ad")
+
+	public ResponseEntity<Ad>update(@RequestBody Ad ad){
+		if(Adserv.getById(ad.getAdId())!=null)
+		{Ad addd=Adserv.save(ad);
+		return new ResponseEntity<Ad>(addd, HttpStatus.OK);}
+		else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
 	@DeleteMapping("/delete/ad/{id}")
@@ -63,6 +66,6 @@ public class AdController {
 		Adserv.Delete(id);
 		if(Adserv.getById(id).getAdId()== id)
 		return new ResponseEntity<String>("Ad deleted", HttpStatus.OK);
-		else return new ResponseEntity<String>("Ad not fpund", HttpStatus.CONFLICT);
+		else return new ResponseEntity<String>("Ad not found", HttpStatus.NOT_FOUND);
 	}
 }

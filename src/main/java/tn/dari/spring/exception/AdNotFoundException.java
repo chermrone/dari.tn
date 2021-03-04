@@ -1,4 +1,4 @@
-package tn.dari.spring.service;
+package tn.dari.spring.exception;
 
 public class AdNotFoundException extends RuntimeException {
 
