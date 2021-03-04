@@ -7,4 +7,6 @@ import tn.dari.spring.entity.Subscription;
 @Repository
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
 
+	Subscription save(Long id);
+
 }

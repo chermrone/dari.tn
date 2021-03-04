@@ -6,7 +6,13 @@ import tn.dari.spring.entity.Subscription;
 
 public interface UISubscriptionService {
 	public Subscription AddSubscription(Subscription s);
-	public String DeleteSubscription(Long id) throws Exception;
+
+	public void DeleteSubscription(Long id) throws Exception;
+
 	public List<Subscription> GetAllSubscriptions();
+
+	public Subscription GetSubscriptionById(Long id);
 	
+	public Subscription UpdateSubscription(Long id);
+
 }

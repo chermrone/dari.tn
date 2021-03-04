@@ -6,28 +6,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tn.dari.spring.entity.Subscription;
+import tn.dari.spring.exception.SubscriptionNotFoundException;
 import tn.dari.spring.repository.SubscriptionRepository;
+
 @Service
 public class SubscriptionService implements UISubscriptionService {
 
 	@Autowired
 	SubscriptionRepository sr;
-	
+
 	@Override
 	public Subscription AddSubscription(Subscription s) {
 		return sr.save(s);
 	}
 
 	@Override
-	public String DeleteSubscription(Long id) throws Exception {
+	public void DeleteSubscription(Long id) {
 		sr.deleteById(id);
-		if (sr.findById(id).get().getSubscriptionId() == id) throw new Exception("subscription not deleted");
-		else return "subscription deleted successfully";
 	}
 
 	@Override
 	public List<Subscription> GetAllSubscriptions() {
 		return sr.findAll();
+	}
+
+	@Override
+	public Subscription GetSubscriptionById(Long id) {
+		return sr.findById(id)
+				.orElseThrow(() -> new SubscriptionNotFoundException("subscription by id= " + id + " was not found"));
+	}
+
+	@Override
+	public Subscription UpdateSubscription(Long id) {
+		return sr.save(id);
 	}
 
 }
