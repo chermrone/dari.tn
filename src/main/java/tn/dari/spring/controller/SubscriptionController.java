@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tn.dari.spring.entity.Subscription;
-import tn.dari.spring.service.SubscriptionService;
+import tn.dari.spring.service.UISubscriptionService;
 
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/dari/subscriptions")
 public class SubscriptionController {
 	@Autowired
-	SubscriptionService ss;
+	UISubscriptionService ss;
 	
 	@GetMapping("/all")
 	public ResponseEntity<List<Subscription>>getAllSubscriptions(){
@@ -61,7 +61,7 @@ public class SubscriptionController {
 	
 	//l'accée à cette methode doit etre exclusive au admin
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<String>delete(@PathVariable("id") Long id){
+	public ResponseEntity<String>delete(@PathVariable("id") Long id) throws Exception{
 		ss.DeleteSubscription(id);
 		if(ss.GetSubscriptionById(id).getSubscriptionId() == id)
 		return new ResponseEntity<String>("Subscription deleted", HttpStatus.OK);
