@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tn.dari.spring.entity.Ad;
+import tn.dari.spring.exception.SubscriptionNotFoundException;
 import tn.dari.spring.repository.AdRepository;
 
 @Service
@@ -14,16 +15,16 @@ public class AdService implements UIadService {
 	@Autowired
 	AdRepository adrepository;
 	@Override
-	public String save(Ad ad) {
-		adrepository.save(ad);
-		return "added successfully";
+	public Ad save(Ad ad) {
+		
+		return adrepository.save(ad);
 	}
 
 	@Override
-	public String modify(long id) {
+	public Ad modify(long id) {
 		Ad add=adrepository.findById(id).get();
-adrepository.save(add);
-		return "success modify";
+
+		return adrepository.save(add);
 	}
 
 	@Override
@@ -39,7 +40,8 @@ adrepository.save(add);
 
 	@Override
 	public Ad getById(long id) {
-		return adrepository.findById(id).get();
+		return adrepository.findById(id)
+				.orElseThrow(() -> new AdNotFoundException("Ad by id= " + id + " was not found"));
 	}
 
 

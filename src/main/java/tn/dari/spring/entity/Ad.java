@@ -64,4 +64,5 @@ public class Ad implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy= "ad")
 	private Set<Review> rev;
 	//jjjjj
+	
 }
