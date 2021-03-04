@@ -34,7 +34,6 @@ public class SubscriptionController {
 	
 	@GetMapping("/find/{id}")
 	public ResponseEntity<Subscription>get(@PathVariable("id") Long id){
-		System.out.println("reception de la requete find by id");
 		Subscription sub = ss.GetSubscriptionById(id);
 		return new ResponseEntity<Subscription>(sub, HttpStatus.OK);
 	}
@@ -42,7 +41,6 @@ public class SubscriptionController {
 	//accé à cette methode qu'aprés payement
 	@PostMapping("/add")
 	public ResponseEntity<Subscription>save(@RequestBody Subscription subs){
-		System.out.println("reception de la requete post");
 		List<Subscription> allsub = ss.GetAllSubscriptions();
 		for (Subscription sub : allsub) {
 			if (sub.getSubscriptionId().equals(subs.getSubscriptionId())) {
@@ -57,7 +55,6 @@ public class SubscriptionController {
 	//l'accée à cette methode doit etre exclusive au admin
 	@PutMapping("/update/{id}")
 	public ResponseEntity<Subscription>update(@PathVariable("id") Long id){
-		System.out.println("reception de la requete put");
 		Subscription sub=ss.UpdateSubscription(id);
 		return new ResponseEntity<Subscription>(sub, HttpStatus.OK);
 	}

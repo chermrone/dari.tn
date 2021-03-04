@@ -25,6 +25,8 @@ import lombok.ToString;
 @Table
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @ToString
 public class Subscription implements Serializable {
 	@Id
@@ -37,26 +39,4 @@ public class Subscription implements Serializable {
 	private Date payingDate=null; 
 	@ManyToOne
 	private User us;
-	public Subscription(Long subscriptionId, String descriptionOffer, double price, boolean payed, Date payingDate) {
-		super();
-		this.subscriptionId = subscriptionId;
-		this.descriptionOffer = descriptionOffer;
-		this.price = price;
-		this.payed = payed;
-		this.payingDate = payingDate;
-	}
-	public Subscription(Long subscriptionId, String descriptionOffer, double price, boolean payed, Date payingDate,
-			User us) {
-		super();
-		this.subscriptionId = subscriptionId;
-		this.descriptionOffer = descriptionOffer;
-		this.price = price;
-		this.payed = payed;
-		this.payingDate = payingDate;
-		this.us = us;
-	}
-	public Subscription() {
-		super();
-	}
-	
 }
