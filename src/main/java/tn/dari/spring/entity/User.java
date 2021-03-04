@@ -39,7 +39,7 @@ public class User implements Serializable {
 	private Long idUser;
 	private String firstName;
 	private String lastName;
-	private String nickName;
+	private String userName;
 	private String password;
 	private int age;
 	@Enumerated(EnumType.ORDINAL)
