@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.var;
 import tn.dari.spring.entity.Claim;
 
 import tn.dari.spring.service.UIclaim;
@@ -58,11 +59,17 @@ public ResponseEntity<Claim>update(@RequestBody Claim c){
 }
 
 
-@DeleteMapping("/delete/{id}")
-public ResponseEntity<String>delete(@PathVariable("id") Long clmid){
-	claim.DeleteClaim(clmid);
-	if(claim.GetClaimById(clmid).getClmId() ==clmid)
-	return new ResponseEntity<String>("claim deleted", HttpStatus.OK);
-	else return new ResponseEntity<String>("claim not deleted", HttpStatus.NOT_FOUND);
-}
+	@DeleteMapping("/delete/{id}")
+	  void deleteEmployee(@PathVariable("id") Long clmid) {
+	    claim.DeleteClaim(clmid);
+	  }
+
+/*
+ * @DeleteMapping("/delete/{id}") public
+ * ResponseEntity<String>delete(@PathVariable("id") Long clmid){
+ * claim.DeleteClaim(clmid); if(claim.GetClaimById(clmid).getClmId() ==clmid)
+ * return new ResponseEntity<String>("claim deleted", HttpStatus.OK); else
+ * return new ResponseEntity<String>("claim not deleted", HttpStatus.NOT_FOUND);
+ * }
+ */
 }
