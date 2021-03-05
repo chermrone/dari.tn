@@ -84,6 +84,7 @@ public class UserController {
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<String>delete(@PathVariable("id") Long id){
+		System.out.println("delete");
 		user.DeleteUser(id);
 		if(user.GetUserById(id).getIdUser() ==id)
 		return new ResponseEntity<String>("User deleted", HttpStatus.OK);
