@@ -79,7 +79,7 @@ public class SubscriptionController {
 		if (ss.GetSubscriptionById(id).getSubscriptionId() == id)
 			return new ResponseEntity<String>("Subscription deleted", HttpStatus.OK);
 		else
-			return new ResponseEntity<String>("Subscription deleted", HttpStatus.CONFLICT);
+			return new ResponseEntity<String>("Error ", HttpStatus.CONFLICT);
 	}
 
 }
