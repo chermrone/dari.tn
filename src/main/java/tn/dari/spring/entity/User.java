@@ -54,6 +54,7 @@ public class User implements Serializable {
 	private boolean userState;
 	@Temporal(TemporalType.DATE)
 	private Date creationDate;
+	@JsonManagedReference
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<Ad> ads;
 	@OneToMany(cascade = CascadeType.ALL)

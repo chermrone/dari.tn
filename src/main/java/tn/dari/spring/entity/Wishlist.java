@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +35,7 @@ public class Wishlist implements Serializable {
 	private Long latitude;
 	@Temporal(TemporalType.DATE)
 	private Date dateOfRent = null;
+	@JsonBackReference
 	@ManyToOne
 	private Ad ad;
 

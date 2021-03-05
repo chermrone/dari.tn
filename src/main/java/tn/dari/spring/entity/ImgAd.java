@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +30,7 @@ public class ImgAd implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long imgAdId;
 	private String nameImgAd;
+	@JsonBackReference
 	@ManyToOne
 	private Ad ad;
 }

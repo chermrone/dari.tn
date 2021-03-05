@@ -28,34 +28,36 @@ public class AdController {
 	UIadService Adserv;
 
 	@GetMapping("/all")
-	public ResponseEntity<List<Ad>> getAllSubscriptions() {
+	public ResponseEntity<List<Ad>> getAllAds() {
+		
 		List<Ad> ads = Adserv.getAll();
 		return new ResponseEntity<List<Ad>>(ads, HttpStatus.OK);
 	}
 
 	@GetMapping("/ad/{id}")
-	public ResponseEntity<Ad> get(@PathVariable("id") Long id) {
+	public ResponseEntity<Ad> getById(@PathVariable("id") Long id) {
 		Ad ad = Adserv.getById(id);
 		return new ResponseEntity<Ad>(ad, HttpStatus.OK);
 	}
 
 	@PostMapping("/add/ad")
-	public ResponseEntity<Ad> save(@RequestBody Ad ad) {
+	public ResponseEntity<Ad> saveAd(@RequestBody Ad ad) {
 		List<Ad> ads = Adserv.getAll();
+		System.out.println(ads);
 		for (Ad announce : ads) {
 			if (ad.getAdId().equals(announce.getAdId())) {
 				return new ResponseEntity<Ad>(HttpStatus.NOT_ACCEPTABLE);
 			}
 
 		}
-		Ad AdOne = Adserv.modify(ad.getAdId());
+		Ad AdOne = Adserv.save(ad);
 		return new ResponseEntity<Ad>(AdOne, HttpStatus.CREATED);
 	}
 
 	// @PutMapping("/update/ad/{id}")
 	@PutMapping("/update/ad")
 
-	public ResponseEntity<Ad> update(@RequestBody Ad ad) {
+	public ResponseEntity<Ad> updateAd(@RequestBody Ad ad) {
 		if (Adserv.getById(ad.getAdId()) != null) {
 			Ad addd = Adserv.save(ad);
 			return new ResponseEntity<Ad>(addd, HttpStatus.OK);

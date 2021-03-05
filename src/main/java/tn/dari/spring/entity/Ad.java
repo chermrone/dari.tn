@@ -17,6 +17,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -54,16 +57,22 @@ public class Ad implements Serializable {
 	private Date checkInDate = null;
 	@Temporal(TemporalType.DATE)
 	private Date checkOutDate = null;
+	@JsonManagedReference
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<ImgAd> imgads;
+	@JsonManagedReference
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<Claim> claims;
+	@JsonManagedReference
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<Wishlist> wishlists;
+	@JsonBackReference
 	@ManyToOne
 	private User us;
+	@JsonManagedReference
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<Review> rev;
 	// jjjjj
+	
 
 }
