@@ -17,6 +17,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,22 +52,22 @@ public class User implements Serializable {
 	@Enumerated(EnumType.ORDINAL)
 	private Usertype usertype;
 	private boolean userState;
-	@Temporal (TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
 	private Date creationDate;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="us")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<Ad> ads;
 	@OneToMany(cascade = CascadeType.ALL)
 	private Set<Ad> Favorite;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="us")
+	@JsonManagedReference
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<Subscription> subscriptions;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="us")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<OrderUser> orders;
-	@OneToOne(cascade = CascadeType.ALL, mappedBy="us")
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "us")
 	private ShoppingCart shoppingCart;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="us")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<Appointment> appointments;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="us")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<CreditSimulator> creditSimulators;
-	
-	
+
 }

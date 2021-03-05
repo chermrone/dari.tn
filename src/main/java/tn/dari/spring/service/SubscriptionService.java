@@ -36,9 +36,11 @@ public class SubscriptionService implements UISubscriptionService {
 				.orElseThrow(() -> new SubscriptionNotFoundException("subscription by id= " + id + " was not found"));
 	}
 
+
+
 	@Override
-	public Subscription UpdateSubscription(Long id) {
-		return sr.save(id);
+	public Subscription UpdateSubscription(Subscription sub) {
+		return sr.save(sub);
 	}
 
 }

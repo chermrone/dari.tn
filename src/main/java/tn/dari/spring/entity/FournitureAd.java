@@ -34,7 +34,7 @@ public class FournitureAd implements Serializable {
 	private double price;
 	private String description;
 	private String address;
-	@Temporal (TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
 	private Date created;
 	@ManyToMany
 	private Set<ShoppingCart> shoppingCart;

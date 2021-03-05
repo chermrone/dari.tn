@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import tn.dari.spring.enumeration.Typead;
+
 @Entity
 @Table
 @Getter
@@ -36,7 +37,7 @@ public class Ad implements Serializable {
 	private Long adId;
 	private String titleAd;
 	private String Description;
-	@Temporal (TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
 	private Date creationDate;
 	private boolean sell;
 	private boolean visibility;
@@ -47,22 +48,22 @@ public class Ad implements Serializable {
 	private Typead typead;
 	private int numberOfBathrooms;
 	private double area;
-	@Temporal (TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
 	private Date periodeOfVisibility = null;
-	@Temporal (TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
 	private Date checkInDate = null;
-	@Temporal (TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
 	private Date checkOutDate = null;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy= "ad")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<ImgAd> imgads;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy= "ad")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<Claim> claims;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy= "ad")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<Wishlist> wishlists;
 	@ManyToOne
 	private User us;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy= "ad")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<Review> rev;
-	//jjjjj
-	
+	// jjjjj
+
 }

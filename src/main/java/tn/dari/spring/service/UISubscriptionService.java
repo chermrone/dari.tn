@@ -12,7 +12,7 @@ public interface UISubscriptionService {
 	public List<Subscription> GetAllSubscriptions();
 
 	public Subscription GetSubscriptionById(Long id);
-	
-	public Subscription UpdateSubscription(Long id);
+
+	public Subscription UpdateSubscription(Subscription sub);
 
 }

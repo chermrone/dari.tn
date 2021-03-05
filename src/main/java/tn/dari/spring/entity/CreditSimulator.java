@@ -18,6 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
 @Entity
 @Table
 @Getter
@@ -32,7 +33,7 @@ public class CreditSimulator implements Serializable {
 	private String nameCS;
 	private double interestRateCS;
 	private double mounthlyInCame;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="cs")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cs")
 	private Set<BankCredit> bankCredits;
 	@ManyToOne
 	private User us;

@@ -29,7 +29,7 @@ public class Appointment implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long AppointmentId;
-	@Temporal (TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
 	private Date dateApp;
 	private String placeApp;
 	private String nameApp;

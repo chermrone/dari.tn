@@ -31,15 +31,15 @@ public class OrderUser implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long orderId;
-	@Temporal (TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
 	private Date dateCreated;
-	@Temporal (TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
 	private Date dateShiped;
 	private boolean statusOrd = false;
 	private int quantity;
-	@OneToOne(cascade= CascadeType.ALL, mappedBy="orderUser")
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "orderUser")
 	private Delivery deliv;
 	@ManyToOne
 	private User us;
-	
+
 }

@@ -14,7 +14,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,11 +32,11 @@ public class ShoppingCart {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ShoppingCartId;
 	private int Quantity;
-	@Temporal (TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
 	private Date dateadded;
-	@ManyToMany(cascade=CascadeType.ALL, mappedBy="shoppingCart")
+	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "shoppingCart")
 	private Set<FournitureAd> fournituresAd;
 	@ManyToOne
 	private User us;
-	
+
 }

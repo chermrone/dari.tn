@@ -15,15 +15,16 @@ public class AdService implements UIadService {
 
 	@Autowired
 	AdRepository adrepository;
+
 	@Override
 	public Ad save(Ad ad) {
-		
+
 		return adrepository.save(ad);
 	}
 
 	@Override
 	public Ad modify(long id) {
-		Ad add=adrepository.findById(id).get();
+		Ad add = adrepository.findById(id).get();
 
 		return adrepository.save(add);
 	}
@@ -45,7 +46,4 @@ public class AdService implements UIadService {
 				.orElseThrow(() -> new AdNotFoundException("Ad by id= " + id + " was not found"));
 	}
 
-
-	
-	
 }

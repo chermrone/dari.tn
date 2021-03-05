@@ -31,8 +31,8 @@ public class Wishlist implements Serializable {
 	private Long wishlistId;
 	private Long langitude;
 	private Long latitude;
-	@Temporal (TemporalType.DATE)
-	private Date dateOfRent=null;
+	@Temporal(TemporalType.DATE)
+	private Date dateOfRent = null;
 	@ManyToOne
 	private Ad ad;
 

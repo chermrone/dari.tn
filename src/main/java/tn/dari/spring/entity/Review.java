@@ -32,9 +32,9 @@ public class Review implements Serializable {
 	private Long idReview;
 	private int rating;
 	private String comment;
-	@Temporal (TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
 	private Date dateComment;
 	@ManyToOne
 	private Ad ad;
-	
+
 }

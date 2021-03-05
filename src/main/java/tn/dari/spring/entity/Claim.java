@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import tn.dari.spring.enumeration.ClaimType;
+
 @Entity
 @Table
 @Getter
@@ -32,7 +33,7 @@ public class Claim implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ClmId;
 	private String Content;
-	@Temporal (TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
 	private Date dateOfClm;
 	private String ObjectOfClm;
 	@Enumerated(EnumType.ORDINAL)
