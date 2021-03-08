@@ -26,6 +26,7 @@ import tn.dari.spring.service.UIadService;
 public class AdController {
 	@Autowired
 	UIadService Adserv;
+	//jihene
 
 	@GetMapping("/all")
 	public ResponseEntity<List<Ad>> getAllAds() {
