@@ -23,6 +23,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import tn.dari.spring.enumeration.SubscriptionType;
 
 @Entity
 @Table
@@ -38,8 +39,13 @@ public class Subscription implements Serializable {
 	private String descriptionOffer;
 	private double price;
 	private boolean payed = false;
+	@Enumerated(EnumType.ORDINAL)
+	private SubscriptionType subscriptiontype;
 	@Temporal(TemporalType.DATE)
 	private Date payingDate = null;
+	@Temporal(TemporalType.DATE)
+	private Date duration= null;
+	private boolean validity;
 	@JsonBackReference
 	@ManyToOne
 	private User us;

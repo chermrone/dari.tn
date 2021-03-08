@@ -44,6 +44,7 @@ public class User implements Serializable {
 	private String userName;
 	private String password;
 	private int age;
+	private String urlimguser;
 	@Enumerated(EnumType.ORDINAL)
 	private Gender gender;
 	private int phoneNumber;
