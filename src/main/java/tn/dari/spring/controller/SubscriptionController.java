@@ -28,8 +28,7 @@ import tn.dari.spring.service.UIuser;
 public class SubscriptionController {
 	@Autowired
 	UISubscriptionService ss;
-	@Autowired
-	UIuser us;
+
 	@GetMapping("/all")
 	public ResponseEntity<List<Subscription>> getAllSubscriptions() {
 		System.out.println("reception de la requete");
@@ -71,15 +70,20 @@ public class SubscriptionController {
 		}
 		return new ResponseEntity<Subscription>(HttpStatus.NOT_FOUND);
 	}
-
-	// l'accée à cette methode doit etre exclusive au admin
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<String> delete(@PathVariable("id") Long id) throws Exception {
-		ss.DeleteSubscription(id);
-		if (ss.GetSubscriptionById(id).getSubscriptionId() == id)
-			return new ResponseEntity<String>("Subscription deleted", HttpStatus.OK);
-		else
-			return new ResponseEntity<String>("Error ", HttpStatus.CONFLICT);
-	}
+	  void deleteEmployee(@PathVariable("id") Long id) throws Exception {
+	    ss.DeleteSubscription(id);
+	  }
+
+	/*
+	 * // l'accée à cette methode doit etre exclusive au admin
+	 * 
+	 * @DeleteMapping("/delete/{id}") public ResponseEntity<String>
+	 * delete(@PathVariable("id") Long id) throws Exception {
+	 * ss.DeleteSubscription(id); if (ss.GetSubscriptionById(id).getSubscriptionId()
+	 * == id) return new ResponseEntity<String>("Subscription deleted",
+	 * HttpStatus.OK); else return new ResponseEntity<String>("Error ",
+	 * HttpStatus.CONFLICT); }
+	 */
 
 }

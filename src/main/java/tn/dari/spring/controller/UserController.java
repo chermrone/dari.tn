@@ -81,13 +81,16 @@ public class UserController {
 		return new ResponseEntity<User>(us, HttpStatus.OK);
 	}
 	
-	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<String>delete(@PathVariable("id") Long id){
-		System.out.println("delete");
-		user.DeleteUser(id);
-		if(user.GetUserById(id).getIdUser() ==id)
-		return new ResponseEntity<String>("User deleted", HttpStatus.OK);
-		else return new ResponseEntity<String>("not deleted", HttpStatus.NOT_FOUND);
-	}
+	  void deleteEmployee(@PathVariable("id") Long id) {
+	 user.DeleteUser(id);
+	  }
+	/*
+	 * @DeleteMapping("/delete/{id}") public
+	 * ResponseEntity<String>delete(@PathVariable("id") Long id){
+	 * System.out.println("delete"); user.DeleteUser(id);
+	 * if(user.GetUserById(id).getIdUser() ==id) return new
+	 * ResponseEntity<String>("User deleted", HttpStatus.OK); else return new
+	 * ResponseEntity<String>("not deleted", HttpStatus.NOT_FOUND); }
+	 */
 }
