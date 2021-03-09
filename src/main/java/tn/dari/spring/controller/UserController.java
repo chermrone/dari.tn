@@ -63,14 +63,16 @@ public class UserController {
 	
 	@PostMapping("/add")
 	public ResponseEntity<User>save(@RequestBody User uses){
+		System.out.println("reception de la requete post");
 		List<User> alluser = user.GetAllUsers();
 		for (User use : alluser) {
 			if (use.getIdUser().equals(uses.getIdUser())) {
 				return new ResponseEntity<User>(HttpStatus.NOT_ACCEPTABLE);
 			}
-			
 		}
+		System.out.println("all users retrieved");
 		User useOne = user.AddUser(uses);
+		System.out.println("user added");
 		return new ResponseEntity<User>(useOne, HttpStatus.CREATED);
 	}
 	
