@@ -28,7 +28,6 @@ import lombok.ToString;
 import tn.dari.spring.enumeration.Typead;
 
 @Entity
-@Table
 @Getter
 @Setter
 @AllArgsConstructor
@@ -47,7 +46,7 @@ public class Ad implements Serializable {
 	private int numbreOfRooms;
 	private double price;
 	private String city;
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	private Typead typead;
 	private int numberOfBathrooms;
 	private double area;

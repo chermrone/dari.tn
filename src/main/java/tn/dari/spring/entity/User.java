@@ -29,7 +29,6 @@ import tn.dari.spring.enumeration.Usertype;
 import tn.dari.spring.entity.Ad;
 
 @Entity
-@Table
 @Getter
 @Setter
 @AllArgsConstructor
@@ -45,12 +44,12 @@ public class User implements Serializable {
 	private String password;
 	private int age;
 	private String urlimguser;
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	private int phoneNumber;
 	private String email;
 	private int cin;
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	private Usertype usertype;
 	private boolean userState;
 	@Temporal(TemporalType.DATE)
