@@ -42,14 +42,14 @@ public class AdController {
 
 	@PostMapping("/add/ad")
 	public ResponseEntity<Ad> saveAd(@RequestBody Ad ad) {
-		List<Ad> ads = Adserv.getAll();
+		/*List<Ad> ads = Adserv.getAll();
 		System.out.println(ads);
 		for (Ad announce : ads) {
 			if (ad.getAdId().equals(announce.getAdId())) {
 				return new ResponseEntity<Ad>(HttpStatus.NOT_ACCEPTABLE);
 			}
 
-		}
+		}*/
 		Ad AdOne = Adserv.save(ad);
 		return new ResponseEntity<Ad>(AdOne, HttpStatus.CREATED);
 	}
