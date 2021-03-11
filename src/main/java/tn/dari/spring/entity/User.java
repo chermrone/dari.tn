@@ -2,7 +2,6 @@ package tn.dari.spring.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,7 +18,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
