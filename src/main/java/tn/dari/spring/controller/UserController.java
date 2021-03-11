@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import tn.dari.spring.entity.User;
-import tn.dari.spring.jwt.AuthenticationRequest;
+/*import tn.dari.spring.jwt.AuthenticationRequest;
 import tn.dari.spring.jwt.AuthenticationResponse;
 import tn.dari.spring.jwt.JwtUtil;
-import tn.dari.spring.service.MyUserService;
+import tn.dari.spring.service.MyUserService;*/
 import tn.dari.spring.service.UIuser;
 
 @CrossOrigin("*")
@@ -37,11 +37,11 @@ public class UserController {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
-	@Autowired
+	/*@Autowired
 	private MyUserService myUserService;
 	
 	@Autowired
-	private JwtUtil jwtTokenUtil;
+	private JwtUtil jwtTokenUtil;*/
 	
 	
 	@GetMapping("/all")
@@ -111,7 +111,7 @@ public class UserController {
 	 * ResponseEntity<String>("not deleted", HttpStatus.NOT_FOUND); }
 	 */
 	
-	@PostMapping("/Authenticate")
+	/*@PostMapping("/Authenticate")
 	public ResponseEntity<?>createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -124,5 +124,5 @@ public class UserController {
 		final String jwt= jwtTokenUtil.generateToken(userDetails);
 		return ResponseEntity.ok(new AuthenticationResponse(jwt));
 		
-	}
+	}*/
 }
