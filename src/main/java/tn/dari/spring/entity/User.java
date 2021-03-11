@@ -29,7 +29,6 @@ import tn.dari.spring.enumeration.Usertype;
 import tn.dari.spring.entity.Ad;
 
 @Entity
-@Table
 @Getter
 @Setter
 @AllArgsConstructor

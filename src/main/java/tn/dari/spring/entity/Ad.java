@@ -28,7 +28,6 @@ import lombok.ToString;
 import tn.dari.spring.enumeration.Typead;
 
 @Entity
-@Table
 @Getter
 @Setter
 @AllArgsConstructor
@@ -72,7 +71,6 @@ public class Ad implements Serializable {
 	@JsonManagedReference
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<Review> rev;
-	// jjjjj
 	
 
 }

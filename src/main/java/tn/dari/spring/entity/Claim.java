@@ -24,7 +24,6 @@ import lombok.ToString;
 import tn.dari.spring.enumeration.ClaimType;
 
 @Entity
-@Table
 @Getter
 @Setter
 @AllArgsConstructor
