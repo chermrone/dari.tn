@@ -2,23 +2,26 @@ package tn.dari.spring.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +32,6 @@ import tn.dari.spring.enumeration.Usertype;
 import tn.dari.spring.entity.Ad;
 
 @Entity
-@Table
 @Getter
 @Setter
 @AllArgsConstructor
@@ -44,13 +46,17 @@ public class User implements Serializable {
 	private String userName;
 	private String password;
 	private int age;
-	@Enumerated(EnumType.ORDINAL)
+	private String urlimguser;
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	private int phoneNumber;
 	private String email;
 	private int cin;
-	@Enumerated(EnumType.ORDINAL)
-	private Usertype usertype;
+	@ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles", 
+    	joinColumns = @JoinColumn(name = "user_id"), 
+    	inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<>();
 	private boolean userState;
 	@Temporal(TemporalType.DATE)
 	private Date creationDate;

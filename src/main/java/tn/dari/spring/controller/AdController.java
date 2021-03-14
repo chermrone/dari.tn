@@ -26,6 +26,7 @@ import tn.dari.spring.service.UIadService;
 public class AdController {
 	@Autowired
 	UIadService Adserv;
+	//jihene
 
 	@GetMapping("/all")
 	public ResponseEntity<List<Ad>> getAllAds() {
@@ -63,13 +64,16 @@ public class AdController {
 		} else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
+	@DeleteMapping("/delete/{id}")
+	  void deleteEmployee(@PathVariable("id") Long id) {
+	    Adserv.Delete(id);
+	  }
 
-	@DeleteMapping("/delete/ad/{id}")
-	public ResponseEntity<String> delete(@PathVariable("id") Long id) {
-		Adserv.Delete(id);
-		if (Adserv.getById(id).getAdId() == id)
-			return new ResponseEntity<String>("Ad deleted", HttpStatus.OK);
-		else
-			return new ResponseEntity<String>("Ad not found", HttpStatus.NOT_FOUND);
-	}
+	/*
+	 * @DeleteMapping("/delete/ad/{id}") public ResponseEntity<String>
+	 * delete(@PathVariable("id") Long id) { Adserv.Delete(id); if
+	 * (Adserv.getById(id).getAdId() == id) return new
+	 * ResponseEntity<String>("Ad deleted", HttpStatus.OK); else return new
+	 * ResponseEntity<String>("Ad not found", HttpStatus.NOT_FOUND); }
+	 */
 }

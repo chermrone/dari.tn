@@ -24,7 +24,6 @@ import lombok.ToString;
 import tn.dari.spring.enumeration.ClaimType;
 
 @Entity
-@Table
 @Getter
 @Setter
 @AllArgsConstructor
@@ -38,7 +37,7 @@ public class Claim implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date dateOfClm;
 	private String ObjectOfClm;
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	private ClaimType typeClm;
 	@JsonBackReference
 	@ManyToOne
