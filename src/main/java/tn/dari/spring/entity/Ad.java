@@ -46,7 +46,7 @@ public class Ad implements Serializable {
 	private int numbreOfRooms;
 	private double price;
 	private String city;
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	private Typead typead;
 	private int numberOfBathrooms;
 	private double area;
@@ -57,18 +57,22 @@ public class Ad implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date checkOutDate = null;
 	@JsonManagedReference
+	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<ImgAd> imgads;
 	@JsonManagedReference
+	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<Claim> claims;
 	@JsonManagedReference
+	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<Wishlist> wishlists;
 	@JsonBackReference
 	@ManyToOne
 	private User us;
 	@JsonManagedReference
+	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<Review> rev;
 	

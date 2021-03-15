@@ -42,7 +42,7 @@ public class UserService implements UIuser {
 	@Override
 	public User GetUserByUserName(String username) {
 
-		return ur.findByUserName(username);
+		return ur.findByUserName(username);//.get();
 	}
 
 	@Override

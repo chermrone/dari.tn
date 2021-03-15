@@ -5,6 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import tn.dari.spring.entity.User;
+/*import tn.dari.spring.jwt.AuthenticationRequest;
+import tn.dari.spring.jwt.AuthenticationResponse;
+import tn.dari.spring.jwt.JwtUtil;
+import tn.dari.spring.service.MyUserService;*/
 import tn.dari.spring.service.UIuser;
 
 @CrossOrigin("*")
@@ -24,7 +32,16 @@ import tn.dari.spring.service.UIuser;
 @RequestMapping("/dari/Users")
 public class UserController {
 	@Autowired
-	UIuser user;
+	private UIuser user;
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
+	/*@Autowired
+	private MyUserService myUserService;
+	
+	@Autowired
+	private JwtUtil jwtTokenUtil;*/
 	
 	
 	@GetMapping("/all")
@@ -95,4 +112,19 @@ public class UserController {
 	 * ResponseEntity<String>("User deleted", HttpStatus.OK); else return new
 	 * ResponseEntity<String>("not deleted", HttpStatus.NOT_FOUND); }
 	 */
+	
+	/*@PostMapping("/Authenticate")
+	public ResponseEntity<?>createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
+		try {
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+					authenticationRequest.getUserName(), authenticationRequest.getPassWord()));
+		} 
+		catch (BadCredentialsException e) {
+			throw new Exception("incorrect username or password",e);
+		}
+		final UserDetails userDetails =myUserService.loadUserByUsername(authenticationRequest.getUserName()); 
+		final String jwt= jwtTokenUtil.generateToken(userDetails);
+		return ResponseEntity.ok(new AuthenticationResponse(jwt));
+		
+	}*/
 }
