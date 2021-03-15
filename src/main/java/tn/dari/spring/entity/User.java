@@ -52,6 +52,7 @@ public class User implements Serializable {
 	private int phoneNumber;
 	private String email;
 	private int cin;
+	 @ToString.Exclude
 	@ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles", 
     	joinColumns = @JoinColumn(name = "user_id"), 
@@ -61,19 +62,26 @@ public class User implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date creationDate;
 	@JsonManagedReference
+	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<Ad> ads;
+	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL)
 	private Set<Ad> Favorite;
 	@JsonManagedReference
+	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<Subscription> subscriptions;
+	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<OrderUser> orders;
+	 @ToString.Exclude
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "us")
 	private ShoppingCart shoppingCart;
+	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<Appointment> appointments;
+	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<CreditSimulator> creditSimulators;
 
