@@ -44,7 +44,7 @@ public class ImgAdController {
 
 		      Arrays.asList(files).stream().forEach(file -> {
 		    	  try {
-					imgService.saveImg(file,ad);
+					imgService.saveImg(file,ad,type);fileNames.add(file.getOriginalFilename());
 				} catch (Exception e) {
 			//return new ResponseEntity<String>("error",HttpStatus.OK);
 
