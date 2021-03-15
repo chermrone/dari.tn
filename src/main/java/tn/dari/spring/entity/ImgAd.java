@@ -45,7 +45,7 @@ public class ImgAd implements Serializable {
 		this.ad = ad;
 	}
 
-
+//jjjjj
 
 	@Id
 	@Column(name = "id")
