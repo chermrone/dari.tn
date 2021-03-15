@@ -28,7 +28,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import tn.dari.spring.enumeration.Gender;
-import tn.dari.spring.enumeration.Usertype;
 import tn.dari.spring.entity.Ad;
 
 @Entity
@@ -84,5 +83,32 @@ public class User implements Serializable {
 	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<CreditSimulator> creditSimulators;
+	public User(Long idUser, String firstName, String lastName, String userName, String password, int age,
+			String urlimguser, Gender gender, int phoneNumber, String email, int cin, boolean userState,
+			Date creationDate, Set<Ad> ads, Set<Ad> favorite, Set<Subscription> subscriptions, Set<OrderUser> orders,
+			ShoppingCart shoppingCart, Set<Appointment> appointments, Set<CreditSimulator> creditSimulators) {
+		super();
+		this.idUser = idUser;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.userName = userName;
+		this.password = password;
+		this.age = age;
+		this.urlimguser = urlimguser;
+		this.gender = gender;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.cin = cin;
+		this.userState = userState;
+		this.creationDate = creationDate;
+		this.ads = ads;
+		Favorite = favorite;
+		this.subscriptions = subscriptions;
+		this.orders = orders;
+		this.shoppingCart = shoppingCart;
+		this.appointments = appointments;
+		this.creditSimulators = creditSimulators;
+	}
+	 
 
 }

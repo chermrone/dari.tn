@@ -71,7 +71,7 @@ public class AdController {
 	
 	@GetMapping("/buyedAdByRegion/{city}")
 	public float GetbBuyedHousesByCity(@PathVariable("city") String city){
-		System.out.println(Adserv.getBuyedHousesByCity(city));
+		//System.out.println(Adserv.getBuyedHousesByCity(city));
 		return Adserv.getBuyedHousesByCity(city);
 	}
 
