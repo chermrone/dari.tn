@@ -18,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import tn.dari.spring.entity.Ad;
 import tn.dari.spring.entity.ImgAd;
+import tn.dari.spring.exception.AdNotFoundException;
+
 import tn.dari.spring.repository.ImgAdRepository;
 
 
@@ -28,7 +30,7 @@ public class imgAdServ implements UIimgAdService{
 
 	private ImgAdRepository  imageRepository;
 	@Override
-	public ImgAd saveImg(MultipartFile file,String ad) throws Exception {
+	public ImgAd saveImg(MultipartFile file,String ad,String type) throws Exception {
 Ad adJson = new Ad();
 		
 		try {
@@ -38,20 +40,57 @@ Ad adJson = new Ad();
 		} catch (IOException err) {
 			System.out.printf("Error", err.toString());
 		}
-		System.out.println("Original Image Byte Size - " + file.getBytes().length);
+		
+		
+		
+		System.out.println("Original"+ type+" Byte Size - " + file.getBytes().length);
 		ImgAd img = new ImgAd(file.getOriginalFilename(), file.getContentType(),
-				compressBytes(file.getBytes()),adJson);
+				compressBytes(file.getBytes(),type),adJson);
+		
+		
+		
+		
 		System.out.println(file.getOriginalFilename());
-		if(file.getOriginalFilename().toLowerCase().indexOf(".jpeg")!=-1||
-				file.getOriginalFilename().toLowerCase().indexOf(".jpg")!=-1||
-				file.getOriginalFilename().toLowerCase().indexOf(".png")!=-1||
-				file.getOriginalFilename().toLowerCase().indexOf(".gif")!=-1
-				||file.getOriginalFilename().toLowerCase().indexOf(".tif")!=-1||
-				file.getOriginalFilename().toLowerCase().indexOf(".svg")!=-1)
-		 return imageRepository.save(img);
-		else 
-		{  throw (new Exception("Vous devez entrer une image")) ;
-	}
+		  if(type.equals("image"))
+		  {
+			  if(file.getOriginalFilename().toLowerCase().indexOf(".jpeg")!=-1||
+			file.getOriginalFilename().toLowerCase().indexOf(".jpg")!=-1||
+			file.getOriginalFilename().toLowerCase().indexOf(".png")!=-1||
+			file.getOriginalFilename().toLowerCase().indexOf(".gif")!=-1
+			||file.getOriginalFilename().toLowerCase().indexOf(".tif")!=-1||
+			file.getOriginalFilename().toLowerCase().indexOf(".svg")!=-1)
+			  {
+				  System.out.println("image");	
+				  return imageRepository.save(img);
+
+			  }
+			  else 
+				   throw (new Exception("you need to enter a photo ")) ;
+		  }
+	    		  else if(type.equals("video"))
+	    		  {
+
+	    			  {if(file.getOriginalFilename().toLowerCase().indexOf(".mov")!=-1||
+	    				file.getOriginalFilename().toLowerCase().indexOf(".avi")!=-1||
+	    				file.getOriginalFilename().toLowerCase().indexOf(".mp4")!=-1||
+	    				file.getOriginalFilename().toLowerCase().indexOf(".flv")!=-1
+	    				||file.getOriginalFilename().toLowerCase().indexOf(".wmv")!=-1)
+	    				  {
+	    				  System.out.println("video");
+
+	    				  return imageRepository.save(img);
+	    				  }
+	    			  else 
+	    				   throw (new Exception("you need to enter a video ")) ;
+	    				 
+	    			  }
+	    				
+	    			  
+	    		  }		
+		
+		   throw (new Exception("Vous devez entrer une image ou un video ")) ;
+		
+	
 	}
 	@Override
 	  public ImgAd retrievImage(String imageName){
@@ -61,7 +100,7 @@ Ad adJson = new Ad();
 			return img;
 	}
 		// compress the image bytes before storing it in the database
-		public static byte[] compressBytes(byte[] data) {
+		public static byte[] compressBytes(byte[] data,String type) {
 			Deflater deflater = new Deflater();
 			deflater.setInput(data);
 			deflater.finish();
@@ -76,7 +115,7 @@ Ad adJson = new Ad();
 				outputStream.close();
 			} catch (IOException e) {
 			}
-			System.out.println("Compressed Image Byte Size - " + outputStream.toByteArray().length);
+			System.out.println("Compressed "+ type+ " Byte Size - " + outputStream.toByteArray().length);
 
 			return outputStream.toByteArray();
 		}
@@ -96,7 +135,7 @@ Ad adJson = new Ad();
 				outputStream.close();
 			} catch (IOException ioe) {
 			} catch (DataFormatException e) {
-			}System.out.println("deCompressed Image Byte Size - " + outputStream.toByteArray().length);
+			}System.out.println("deCompressed Byte Size - " + outputStream.toByteArray().length);
 			return outputStream.toByteArray();
 		}
 @Override
@@ -106,7 +145,7 @@ Ad adJson = new Ad();
 		}
 @Override
 public ImgAd GetById(long id) {
-ImgAd img=	imageRepository.findById(id).get();
+ImgAd img=	imageRepository.findById(id).orElseThrow(() -> new AdNotFoundException(" id= " + id + " is not found"));
 	return img ;
 }
 @Override

@@ -10,7 +10,7 @@ import tn.dari.spring.entity.ImgAd;
 
 public interface UIimgAdService {
 	
-	public ImgAd saveImg(MultipartFile file,String ad) throws Exception;
+	public ImgAd saveImg(MultipartFile file,String ad,String type) throws Exception;
 	public ImgAd retrievImage(String imageName);
 	public List<ImgAd> retrievall();
 	public ImgAd GetById(long id);
