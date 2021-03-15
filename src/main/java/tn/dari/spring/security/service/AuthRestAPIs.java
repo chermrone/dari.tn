@@ -28,6 +28,7 @@ import tn.dari.spring.service.UIuser;
 import tn.dari.spring.repository.RoleRepository;
 
 
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
@@ -43,6 +44,7 @@ public class AuthRestAPIs {
 	UIuser userservice;
 @Autowired
 RoleRepository rolerepository;
+
 
 	@Autowired
 	PasswordEncoder encoder;

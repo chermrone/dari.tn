@@ -16,6 +16,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import tn.dari.spring.entity.Ad;
 import tn.dari.spring.entity.ImgAd;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import tn.dari.spring.entity.User;
 
 import tn.dari.spring.exception.UserNotFoundException;

@@ -1,31 +1,39 @@
 package tn.dari.spring.entity;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-<<<<<<< Updated upstream
-=======
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
->>>>>>> Stashed changes
+
+import javax.persistence.CascadeType;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-<<<<<<< Updated upstream
+
 import javax.persistence.Table;
-=======
+
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
->>>>>>> Stashed changes
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,9 +41,9 @@ import lombok.Setter;
 import lombok.ToString;
 import tn.dari.spring.enumeration.Gender;
 import tn.dari.spring.enumeration.Usertype;
+import tn.dari.spring.entity.Ad;
 
 @Entity
-@Table
 @Getter
 @Setter
 @AllArgsConstructor
@@ -48,12 +56,11 @@ public class User implements Serializable {
 	private Long idUser;
 	private String firstName;
 	private String lastName;
-	private String nickName;
+	private String userName;
 	private String password;
 	private int age;
-<<<<<<< Updated upstream
+
 	@Enumerated(EnumType.ORDINAL)
-=======
 
 	@Column(name = "name")
 	private String Imgname;
@@ -67,16 +74,22 @@ public class User implements Serializable {
 	private byte[] imgByte;
 
 	@Enumerated(EnumType.STRING)
->>>>>>> Stashed changes
+
+	private String urlimguser;
+	@Enumerated(EnumType.STRING)
+
 	private Gender gender;
 	private int phoneNumber;
 	private String email;
 	private int cin;
-	@Enumerated(EnumType.ORDINAL)
-	private Usertype usertype;
+	 @ToString.Exclude
+	@ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles", 
+    	joinColumns = @JoinColumn(name = "user_id"), 
+    	inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<>();
 	private boolean userState;
-<<<<<<< Updated upstream
-=======
+
 	@Temporal(TemporalType.DATE)
 	private Date creationDate;
 	@JsonManagedReference
@@ -102,6 +115,7 @@ public class User implements Serializable {
 	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<CreditSimulator> creditSimulators;
+
 	public User(Long idUser, String firstName, String lastName, String userName, String password, int age,
 			String urlimguser, Gender gender, int phoneNumber, String email, int cin, boolean userState,
 			Date creationDate, Set<Ad> ads, Set<Ad> favorite, Set<Subscription> subscriptions, Set<OrderUser> orders,
@@ -132,6 +146,6 @@ public class User implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 	
->>>>>>> Stashed changes
+
 
 }
