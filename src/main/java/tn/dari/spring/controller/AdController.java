@@ -65,9 +65,15 @@ public class AdController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	@DeleteMapping("/delete/{id}")
-	  void deleteEmployee(@PathVariable("id") Long id) {
+	  public void deleteEmployee(@PathVariable("id") Long id) {
 	    Adserv.Delete(id);
 	  }
+	
+	@GetMapping("/buyedAdByRegion/{city}")
+	public float GetbBuyedHousesByCity(@PathVariable("city") String city){
+		System.out.println(Adserv.getBuyedHousesByCity(city));
+		return Adserv.getBuyedHousesByCity(city);
+	}
 
 	/*
 	 * @DeleteMapping("/delete/ad/{id}") public ResponseEntity<String>
