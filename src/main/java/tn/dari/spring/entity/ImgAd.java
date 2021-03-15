@@ -29,22 +29,6 @@ public class ImgAd implements Serializable {
 
 
 
-	public ImgAd(String name, String type, byte[] picByte) {
-		this.name = name;
-		this.type = type;
-		this.picByte = picByte;
-	}
-
-
-
-	public ImgAd(String name, String type, byte[] picByte, Ad ad) {
-		super();
-		this.name = name;
-		this.type = type;
-		this.picByte = picByte;
-		this.ad = ad;
-	}
-
 //jjjjj
 
 	@Id
@@ -67,6 +51,22 @@ public class ImgAd implements Serializable {
  @JsonBackReference
 @ManyToOne private Ad ad;
 	
-	
+
+
+	public ImgAd(String name, String type, byte[] picByte) {
+		this.name = name;
+		this.type = type;
+		this.picByte = picByte;
+	}
+
+
+
+	public ImgAd(String name, String type, byte[] picByte, Ad ad) {
+		super();
+		this.name = name;
+		this.type = type;
+		this.picByte = picByte;
+		this.ad = ad;
+	}	
 	
 }

@@ -34,7 +34,7 @@ Ad adJson = new Ad();
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
 			adJson = objectMapper.readValue(ad, Ad.class);
-		//	System.out.println("Ad json=> objet"+adJson);
+			System.out.println("Ad json=> objet"+adJson);
 		} catch (IOException err) {
 			System.out.printf("Error", err.toString());
 		}
