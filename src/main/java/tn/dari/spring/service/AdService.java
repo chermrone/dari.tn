@@ -48,7 +48,18 @@ public class AdService implements UIadService {
 
 	@Override
 	public float getBuyedHousesByCity(String city) {
-		return adrepository.retrieSellsveAdsBycity(city);
+		return adrepository.retrieveSellsAdsBycity(city);
+	}
+
+	@Override
+	public float getBuyedHousesByCityAndMinprice(String city, double price) {
+		return adrepository.retrieveSellsAdsByCityMinPrice(city, price);
+	}
+
+	@Override
+	public float getBuyedHousesByCityAndMaxprice(String city, double price) {
+		// TODO Auto-generated method stub
+		return adrepository.retrieveSellsAdsByCityMaxPrice(city, price);
 	}
 
 }

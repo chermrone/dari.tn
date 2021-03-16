@@ -26,7 +26,6 @@ import tn.dari.spring.service.UIadService;
 public class AdController {
 	@Autowired
 	UIadService Adserv;
-	//jihene
 
 	@GetMapping("/all")
 	public ResponseEntity<List<Ad>> getAllAds() {
@@ -70,11 +69,31 @@ public class AdController {
 	  }
 	
 	@GetMapping("/buyedAdByRegion/{city}")
-	public float GetbBuyedHousesByCity(@PathVariable("city") String city){
-		//System.out.println(Adserv.getBuyedHousesByCity(city));
-		return Adserv.getBuyedHousesByCity(city);
+	public ResponseEntity<String> GetbBuyedHousesByCity(@PathVariable("city") String city){
+		if(Adserv.getBuyedHousesByCity(city)>0){
+			return new ResponseEntity<>("number of houses: " + Adserv.getBuyedHousesByCity(city), HttpStatus.FOUND);
+		}
+		return new ResponseEntity<>("No houses found",HttpStatus.NOT_FOUND);
+	}
+	
+	@GetMapping("/buyedAdByRegionandMaxPrice/{city}/{price}")
+	public ResponseEntity<String> GetBuyedHousesByCityAndMaxPrice(@PathVariable("city") String city,@PathVariable("price") double price){
+		if(Adserv.getBuyedHousesByCityAndMaxprice(city, price)>0){
+			return new ResponseEntity<>("number of houses: " + Adserv.getBuyedHousesByCityAndMaxprice(city, price), HttpStatus.FOUND);
+		}
+		else 
+			return new ResponseEntity<>("No houses found",HttpStatus.NOT_FOUND);
 	}
 
+	@GetMapping("/buyedAdByRegionandMinPrice/{city}/{price}")
+	public ResponseEntity<String> GetBuyedHousesByCityAndMinPrice(@PathVariable("city") String city,@PathVariable("price") double price){
+		if(Adserv.getBuyedHousesByCityAndMinprice(city, price)>0){
+			return new ResponseEntity<>("number of houses: " + Adserv.getBuyedHousesByCityAndMinprice(city, price), HttpStatus.FOUND);
+		}
+		else 
+			return new ResponseEntity<>("No houses found",HttpStatus.NOT_FOUND);
+	}
+	
 	/*
 	 * @DeleteMapping("/delete/ad/{id}") public ResponseEntity<String>
 	 * delete(@PathVariable("id") Long id) { Adserv.Delete(id); if

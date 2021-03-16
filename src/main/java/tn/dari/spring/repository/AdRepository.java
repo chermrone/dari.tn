@@ -10,5 +10,12 @@ import tn.dari.spring.entity.Ad;
 @Repository
 public interface AdRepository extends JpaRepository<Ad, Long> {
 	@Query("SELECT count(a) FROM Ad a WHERE a.sell=true and  a.city= :city")
-	float retrieSellsveAdsBycity(@Param("city") String role);
+	float retrieveSellsAdsBycity(@Param("city") String role);
+	
+	@Query("SELECT count(a) FROM Ad a WHERE a.sell=true and a.city= :city and a.price< :price")
+	float retrieveSellsAdsByCityMaxPrice(@Param("city") String role, @Param("price") double price);
+	
+	@Query("SELECT count(a) FROM Ad a WHERE a.sell=true and a.city= :city and a.price> :price")
+	float retrieveSellsAdsByCityMinPrice(@Param("city") String role, @Param("price") double price);
+
 }
