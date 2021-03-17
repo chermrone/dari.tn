@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -40,49 +41,68 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idUser;
+	
 	private String firstName;
+	
 	private String lastName;
+	
 	private String userName;
+	
 	private String password;
+	
 	private int age;
+	
 	private String urlimguser;
+	
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
+	
 	private int phoneNumber;
+	
 	private String email;
+	
 	private int cin;
-	 @ToString.Exclude
+	
+	@ToString.Exclude
 	@ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles", 
-    	joinColumns = @JoinColumn(name = "user_id"), 
-    	inverseJoinColumns = @JoinColumn(name = "role_id"))
+	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
+	
 	private boolean userState;
+	
 	@Temporal(TemporalType.DATE)
 	private Date creationDate;
+	
 	@JsonManagedReference
-	 @ToString.Exclude
+	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<Ad> ads;
-	 @ToString.Exclude
+	
+	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL)
 	private Set<Ad> Favorite;
+	
 	@JsonManagedReference
-	 @ToString.Exclude
+	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<Subscription> subscriptions;
-	 @ToString.Exclude
+	
+	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<OrderUser> orders;
-	 @ToString.Exclude
+	
+	@ToString.Exclude
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "us")
 	private ShoppingCart shoppingCart;
-	 @ToString.Exclude
+	
+	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<Appointment> appointments;
-	 @ToString.Exclude
+	
+	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<CreditSimulator> creditSimulators;
+<<<<<<< Updated upstream
 	public User(Long idUser, String firstName, String lastName, String userName, String password, int age,
 			String urlimguser, Gender gender, int phoneNumber, String email, int cin, boolean userState,
 			Date creationDate, Set<Ad> ads, Set<Ad> favorite, Set<Subscription> subscriptions, Set<OrderUser> orders,
@@ -110,5 +130,12 @@ public class User implements Serializable {
 		this.creditSimulators = creditSimulators;
 	}
 	 
+=======
+	
+	@JsonManagedReference
+	@ToString.Exclude
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
+	private Set<ImgUser> imguser;
+>>>>>>> Stashed changes
 
 }
