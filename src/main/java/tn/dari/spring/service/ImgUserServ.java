@@ -27,20 +27,41 @@ public class ImgUserServ implements UIImgUser {
 		userRep.deleteById(id);
 		return "success";
 	}
-	
+/*
+import tn.dari.spring.repository.UserImgRepository;
+
+@Service
+public class ImgUserServ implements UIImgUser {
+	@Autowired UserImgRepository userImgRep;
+	@Autowired FileServ fileserv;
+	@Override
+	public List<ImgUser> retrievalluser() {
+		
+		return userImgRep.findAll();
+	}
+	@Override		
+	public String DeleteUser(Long id)  {
+		System.out.println("hello");
+		userImgRep.deleteById(id);
+		return "success";
+		
+	}
+
 	@Override
 	public ImgUser saveImg(MultipartFile file, String user, String type) throws Exception {
 		return (ImgUser) fileserv.saveImg(file, user, type);
 	}
-	
+
+
 	@Override
 	public ImgUser retrievImage(String imageName) throws Exception {
 		return (ImgUser) fileserv.retrievImage(imageName);
 	}
-	
+
 	@Override
 	public ImgUser GetById(long id) {
 		return (ImgUser) fileserv.GetById(id);
 	}
 
 }
+*/

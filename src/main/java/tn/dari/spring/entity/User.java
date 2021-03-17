@@ -38,6 +38,7 @@ import tn.dari.spring.entity.Ad;
 @NoArgsConstructor
 @ToString
 public class User implements Serializable {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idUser;
@@ -102,7 +103,7 @@ public class User implements Serializable {
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<CreditSimulator> creditSimulators;
-<<<<<<< Updated upstream
+
 	public User(Long idUser, String firstName, String lastName, String userName, String password, int age,
 			String urlimguser, Gender gender, int phoneNumber, String email, int cin, boolean userState,
 			Date creationDate, Set<Ad> ads, Set<Ad> favorite, Set<Subscription> subscriptions, Set<OrderUser> orders,
@@ -129,13 +130,9 @@ public class User implements Serializable {
 		this.appointments = appointments;
 		this.creditSimulators = creditSimulators;
 	}
-	 
-=======
 	
 	@JsonManagedReference
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<ImgUser> imguser;
->>>>>>> Stashed changes
-
 }

@@ -17,6 +17,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -40,6 +42,7 @@ public class Ad implements Serializable {
 	private String titleAd;
 	private String Description;
 	@Temporal(TemporalType.DATE)
+	@CreationTimestamp
 	private Date creationDate;
 	private boolean sell;
 	private boolean visibility;
@@ -59,7 +62,7 @@ public class Ad implements Serializable {
 	@JsonManagedReference
 	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
-	private Set<ImgAd> imgads;
+	private Set<FilesAd> imgads;
 	@JsonManagedReference
 	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")

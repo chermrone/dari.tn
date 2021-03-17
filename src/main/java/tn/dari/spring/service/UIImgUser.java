@@ -8,6 +8,7 @@ import tn.dari.spring.entity.ImgUser;
 
 public interface UIImgUser {
 	public List<ImgUser> retrievalluser();
+
 	public String DeleteImgUser(Long id);
 
 	public ImgUser saveImg(MultipartFile file,String user,String type) throws Exception;
