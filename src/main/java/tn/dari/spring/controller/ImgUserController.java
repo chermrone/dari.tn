@@ -1,17 +1,14 @@
 package tn.dari.spring.controller;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,28 +20,28 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import tn.dari.spring.entity.FilesAd;
+import tn.dari.spring.entity.ImgUser;
 import tn.dari.spring.service.UIFileService;
-
-import org.springframework.http.MediaType;
+import tn.dari.spring.service.UIImgUser;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/dari/imgads")
-public class ImgAdController {
+@RequestMapping("/dari/imgusers")
+public class ImgUserController {
 
-	  @Autowired
-	  private UIFileService imgService;
+	
+	 @Autowired
+	  private UIImgUser imgService;
 
-		@PostMapping(value="/upload/{type}", consumes = { MediaType.APPLICATION_JSON_VALUE,
+		@PostMapping(value="/upload", consumes = { MediaType.APPLICATION_JSON_VALUE,
 				 MediaType.MULTIPART_FORM_DATA_VALUE })
-		public ResponseEntity<List<String>>uplaodImage(@RequestParam("imageFile") MultipartFile[] files,@RequestPart() String ad,@PathVariable String type) throws Exception {
+		public ResponseEntity<List<String>>uplaodImage(@RequestParam("imageFile") MultipartFile[] files,@RequestPart() String user) throws Exception {
 		
 			List<String> fileNames = new ArrayList<>();
 
 		      Arrays.asList(files).stream().forEach(file -> {
 		    	  try {
-					imgService.saveImg(file,ad,type);fileNames.add(file.getOriginalFilename());
+					imgService.saveImg(file,user,null);fileNames.add(file.getOriginalFilename());
 				} catch (Exception e) {
 			//return new ResponseEntity<String>("error",HttpStatus.OK);
 
@@ -53,6 +50,7 @@ public class ImgAdController {
 				}
 		        
 		      });
+		      System.out.println(fileNames);
 	if(!fileNames.isEmpty())
 			return new ResponseEntity<List<String>>(fileNames,HttpStatus.OK);
 	else  		return new ResponseEntity<List<String>>(HttpStatus.NOT_ACCEPTABLE);
@@ -61,8 +59,8 @@ public class ImgAdController {
 		
 
 		@GetMapping(path = { "/getname/{imageName}" })
-		public FilesAd getImageByName(@PathVariable("imageName") String imageName) throws Exception {
-			FilesAd img=(FilesAd) imgService.retrievImage(imageName);
+		public ImgUser getImageByName(@PathVariable("imageName") String imageName) throws Exception {
+			ImgUser img=(ImgUser) imgService.retrievImage(imageName);
 
 			return img;
 		}
@@ -71,20 +69,23 @@ public class ImgAdController {
 		
 
 		@GetMapping(path = { "/getid/{id}" })
-		public FilesAd getImageById(@PathVariable("id") long id) throws IOException {
-			FilesAd img=(FilesAd)imgService.GetById(id);
+		public ImgUser getImageById(@PathVariable("id") long id) throws IOException {
+			ImgUser img=(ImgUser)imgService.GetById(id);
 
 			return img;
 		}
 		@GetMapping(path = { "/all" })
-		public List<FilesAd> getAll() throws IOException {
-			return imgService.retrievallad();
+		public List<ImgUser> getAll() throws IOException {
+			List<ImgUser> img=imgService.retrievalluser();
+
+			return img;
 		}
 		@DeleteMapping("/delete/img/{id}")
-		public ResponseEntity<String> delete(@PathVariable("id") Long id) throws Exception  {
-			imgService.DeleteAd(id);
-			return new ResponseEntity<String>("success",HttpStatus.OK);
+		public String delete(@PathVariable("id") Long id)  throws Exception  {
+			System.out.println("delete");
+		return 	imgService.DeleteUser(id);
 		}
 
 
+	
 }

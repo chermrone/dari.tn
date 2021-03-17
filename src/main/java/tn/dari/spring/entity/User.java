@@ -38,6 +38,7 @@ import tn.dari.spring.entity.Ad;
 @NoArgsConstructor
 @ToString
 public class User implements Serializable {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idUser;
@@ -84,5 +85,10 @@ public class User implements Serializable {
 	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<CreditSimulator> creditSimulators;
+	 @JsonManagedReference
+	 @ToString.Exclude
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "us")
+	private ImgUser imguser;
+
 
 }

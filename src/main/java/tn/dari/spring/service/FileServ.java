@@ -17,39 +17,59 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import tn.dari.spring.entity.Ad;
-import tn.dari.spring.entity.ImgAd;
+import tn.dari.spring.entity.FilesAd;
+import tn.dari.spring.entity.ImgUser;
+import tn.dari.spring.entity.User;
 import tn.dari.spring.exception.AdNotFoundException;
 
-import tn.dari.spring.repository.ImgAdRepository;
+import tn.dari.spring.repository.FilesAdRepository;
+import tn.dari.spring.repository.UserImg;
 
 
 @Service
-public class imgAdServ implements UIimgAdService{
+public class FileServ implements UIFileService{
 
 	@Autowired
-
-	private ImgAdRepository  imageRepository;
+	private FilesAdRepository  imageRepository;
+	@Autowired UserImg userRep;
 	@Override
-	public ImgAd saveImg(MultipartFile file,String ad,String type) throws Exception {
+	public Object saveImg(MultipartFile file,String object,String type) throws Exception {
 Ad adJson = new Ad();
-		
+User UserJson=new User();		
+//		try {
+//			ObjectMapper objectMapper = new ObjectMapper();
+//			adJson = objectMapper.readValue(ad, Ad.class);
+//			System.out.println("Ad json=> objet"+adJson);
+//		} catch (IOException err) {
+//			System.out.printf("Error", err.toString());
+//		}
+try {
+	ObjectMapper objectMapper = new ObjectMapper();
+	UserJson = objectMapper.readValue(object, User.class);
+	System.out.println("user json=> objet"+UserJson);
+} catch (IOException err) {
+	System.out.printf("Error it isnt a user", err.toString());
+}
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
-			adJson = objectMapper.readValue(ad, Ad.class);
+			adJson = objectMapper.readValue(object, Ad.class);
 			System.out.println("Ad json=> objet"+adJson);
 		} catch (IOException err) {
-			System.out.printf("Error", err.toString());
+			System.out.printf("Error it isnt an ad ", err.toString());
 		}
 		
 		
+		//when it is an ad
+		if(adJson.getAdId()!=null)		
+		{
 		
 		System.out.println("Original"+ type+" Byte Size - " + file.getBytes().length);
-		ImgAd img = new ImgAd(file.getOriginalFilename(), file.getContentType(),
-				compressBytes(file.getBytes(),type),adJson);
+	FilesAd imgad= new FilesAd(file.getOriginalFilename(), file.getContentType(),compressBytes(file.getBytes(),type),adJson);
+		System.out.println("instanciation ad +img");
 		
 		
 		
-		
+		//check if it is an image or no
 		System.out.println(file.getOriginalFilename());
 		  if(type.equals("image"))
 		  {
@@ -61,13 +81,15 @@ Ad adJson = new Ad();
 			file.getOriginalFilename().toLowerCase().indexOf(".svg")!=-1)
 			  {
 				  System.out.println("image");	
-				  return imageRepository.save(img);
+				  return imageRepository.save(imgad);
 
 			  }
 			  else 
 				   throw (new Exception("you need to enter a photo ")) ;
 		  }
-	    		  else if(type.equals("video"))
+		  
+	//check if it a video or no	  
+	    	 else if(type.equals("video"))
 	    		  {
 
 	    			  {if(file.getOriginalFilename().toLowerCase().indexOf(".mov")!=-1||
@@ -78,7 +100,7 @@ Ad adJson = new Ad();
 	    				  {
 	    				  System.out.println("video");
 
-	    				  return imageRepository.save(img);
+	    				  return imageRepository.save(imgad);
 	    				  }
 	    			  else 
 	    				   throw (new Exception("you need to enter a video ")) ;
@@ -87,17 +109,63 @@ Ad adJson = new Ad();
 	    				
 	    			  
 	    		  }		
+		}
+		//when it is a user
+		else if (UserJson.getIdUser()!=null)
+		{
+			ImgUser imguser = new ImgUser(file.getOriginalFilename(), file.getContentType(),compressBytes(file.getBytes(),type),UserJson);
+		System.out.println("instanciation user +img");
+		
+		
+		//check if it is an image or no
+		System.out.println(file.getOriginalFilename());
+		  if(type==null)
+		  {
+			  if(file.getOriginalFilename().toLowerCase().indexOf(".jpeg")!=-1||
+			file.getOriginalFilename().toLowerCase().indexOf(".jpg")!=-1||
+			file.getOriginalFilename().toLowerCase().indexOf(".png")!=-1||
+			file.getOriginalFilename().toLowerCase().indexOf(".gif")!=-1
+			||file.getOriginalFilename().toLowerCase().indexOf(".tif")!=-1||
+			file.getOriginalFilename().toLowerCase().indexOf(".svg")!=-1)
+			  {
+				  System.out.println("image");	
+				  return userRep.save(imguser);
+
+			  }
+			  else 
+				   throw (new Exception("you need to enter a photo ")) ;
+		  }
+		  
+		
+		}
+		
+	
 		
 		   throw (new Exception("Vous devez entrer une image ou un video ")) ;
 		
 	
 	}
 	@Override
-	  public ImgAd retrievImage(String imageName){
-	final Optional<ImgAd> retrievedImage = imageRepository.findByName(imageName);
-	ImgAd img = new ImgAd(retrievedImage.get().getName(), retrievedImage.get().getType(),
-			decompressBytes(retrievedImage.get().getPicByte()));
-			return img;
+	  public Object retrievImage(String imageName) throws Exception{
+		try {
+			final Optional<FilesAd> retrievedImage = imageRepository.findByName(imageName);
+			FilesAd img = new FilesAd(retrievedImage.get().getName(), retrievedImage.get().getType(),
+					decompressBytes(retrievedImage.get().getPicByte()));
+					return img;
+		} catch (Exception e) {
+			System.out.println("it isnt an img ad");
+		}
+		try {
+			final Optional<ImgUser> retrievedImage = userRep.findByName(imageName);
+			ImgUser img = new ImgUser(retrievedImage.get().getName(), retrievedImage.get().getType(),
+					decompressBytes(retrievedImage.get().getPicByte()));
+					return img;
+		} catch (Exception e) {
+			System.out.println("it isnt a user img");
+		}
+		   throw (new Exception("Erreur ")) ;
+
+	
 	}
 		// compress the image bytes before storing it in the database
 		public static byte[] compressBytes(byte[] data,String type) {
@@ -139,21 +207,35 @@ Ad adJson = new Ad();
 			return outputStream.toByteArray();
 		}
 @Override
-		public List<ImgAd> retrievall() {
+		public List<FilesAd> retrievallad() {
 			
 			return imageRepository.findAll();
 		}
+
 @Override
-public ImgAd GetById(long id) {
-ImgAd img=	imageRepository.findById(id).orElseThrow(() -> new AdNotFoundException(" id= " + id + " is not found"));
+public Object GetById(long id) {
+	Object img = null;
+try { img=(FilesAd) img;
+	 img=	imageRepository.findById(id).orElseThrow(() -> new AdNotFoundException(" id= " + id + " is not found"));
 	return img ;
+} catch (Exception e) {
+	// TODO: handle exception
+}
+
+
+try {img = (ImgUser)img;
+	 img=	userRep.findById(id).orElseThrow(() -> new AdNotFoundException(" id= " + id + " is not found"));
+	return img ;
+} catch (Exception e) {
+	// TODO: handle exception
+}
+return img;
 }
 @Override
-public void Delete(Long id) {
+public void DeleteAd(Long id) {
 	imageRepository.deleteById(id);
 	
 }
-		
 
 }
 		

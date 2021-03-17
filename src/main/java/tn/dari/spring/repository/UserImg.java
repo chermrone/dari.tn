@@ -5,10 +5,11 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-
-import tn.dari.spring.entity.ImgAd;
+import tn.dari.spring.entity.FilesAd;
+import tn.dari.spring.entity.ImgUser;
 
 @Repository
-public interface ImgAdRepository extends JpaRepository<ImgAd, Long> {
-	Optional<ImgAd> findByName(String name);
+public interface UserImg  extends JpaRepository<ImgUser, Long>  {
+	Optional<ImgUser> findByName(String name);
+
 }

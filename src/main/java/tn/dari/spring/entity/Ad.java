@@ -62,7 +62,7 @@ public class Ad implements Serializable {
 	@JsonManagedReference
 	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
-	private Set<ImgAd> imgads;
+	private Set<FilesAd> imgads;
 	@JsonManagedReference
 	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
