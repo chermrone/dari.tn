@@ -23,7 +23,7 @@ import tn.dari.spring.entity.User;
 import tn.dari.spring.exception.AdNotFoundException;
 
 import tn.dari.spring.repository.FilesAdRepository;
-import tn.dari.spring.repository.UserImg;
+import tn.dari.spring.repository.UserImgRepository;
 
 
 @Service
@@ -31,7 +31,7 @@ public class FileServ implements UIFileService{
 
 	@Autowired
 	private FilesAdRepository  imageRepository;
-	@Autowired UserImg userRep;
+	@Autowired UserImgRepository userRep;
 	@Override
 	public Object saveImg(MultipartFile file,String object,String type) throws Exception {
 Ad adJson = new Ad();

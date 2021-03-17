@@ -9,7 +9,7 @@ import tn.dari.spring.entity.FilesAd;
 import tn.dari.spring.entity.ImgUser;
 
 @Repository
-public interface UserImg  extends JpaRepository<ImgUser, Long>  {
+public interface UserImgRepository  extends JpaRepository<ImgUser, Long>  {
 	Optional<ImgUser> findByName(String name);
 
 }
