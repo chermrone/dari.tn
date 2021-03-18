@@ -9,7 +9,17 @@ import tn.dari.spring.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+<<<<<<< Updated upstream
 	public User findByFirstName(String firstname);
+=======
+	 User findByFirstName(String firstname);
+
+	 User findByLastName(String lastname);
+
+	Boolean existsByEmail(String email);
+	
+	Boolean existsByUserName(String username);
+>>>>>>> Stashed changes
 
 	public User findByLastName(String lastname);
 

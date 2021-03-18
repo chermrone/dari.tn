@@ -83,8 +83,15 @@ public class AuthRestAPIs {
 		User user = new User(null, signUpRequest.getFirstName(),signUpRequest.getLastName(), signUpRequest.getUserName(), encoder.encode(signUpRequest.getPassword()),
 				 signUpRequest.getAge(), signUpRequest.getUrlimguser(), signUpRequest.getGender(), signUpRequest.getPhoneNumber(),signUpRequest.getEmail(),signUpRequest.getCin(), signUpRequest.getRoles(),true,signUpRequest.getCreationDate() , null, null, null, null, null, null, null);
 
+<<<<<<< Updated upstream
 		/*String strRoles = signUpRequest.getRole();
 		Set<Usertype> roles = new HashSet<>();
+=======
+				 signUpRequest.getAge(), signUpRequest.getUrlimguser(), signUpRequest.getGender(), signUpRequest.getPhoneNumber(),signUpRequest.getEmail(),signUpRequest.getCin(), true,signUpRequest.getCreationDate() , null, null, null, null, null, null, null);
+
+		Set<String> strRoles = signUpRequest.getRoles();
+		Set<Role> roles = new HashSet<>();
+>>>>>>> Stashed changes
 
 		strRoles.forEach(role -> {
 			switch (role) {
