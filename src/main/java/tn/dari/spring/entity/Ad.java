@@ -78,7 +78,6 @@ public class Ad implements Serializable {
 	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<Review> rev;
-	// jjjjj
 	
 
 }
