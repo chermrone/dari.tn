@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import tn.dari.spring.entity.ImgUser;
-import tn.dari.spring.repository.UserImg;
+import tn.dari.spring.repository.UserImgRepository;
 
 @Service
 public class ImgUserServ implements UIImgUser {
-	@Autowired UserImg userRep;
+	@Autowired UserImgRepository userRep;
 	
 	@Autowired FileServ fileserv;
 	
@@ -26,25 +26,6 @@ public class ImgUserServ implements UIImgUser {
 		System.out.println("hello");
 		userRep.deleteById(id);
 		return "success";
-	}
-/*
-import tn.dari.spring.repository.UserImgRepository;
-
-@Service
-public class ImgUserServ implements UIImgUser {
-	@Autowired UserImgRepository userImgRep;
-	@Autowired FileServ fileserv;
-	@Override
-	public List<ImgUser> retrievalluser() {
-		
-		return userImgRep.findAll();
-	}
-	@Override		
-	public String DeleteUser(Long id)  {
-		System.out.println("hello");
-		userImgRep.deleteById(id);
-		return "success";
-		
 	}
 
 	@Override
@@ -62,6 +43,4 @@ public class ImgUserServ implements UIImgUser {
 	public ImgUser GetById(long id) {
 		return (ImgUser) fileserv.GetById(id);
 	}
-
 }
-*/
