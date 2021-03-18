@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -25,7 +26,7 @@ import lombok.ToString;
 
 @NoArgsConstructor
 @ToString
-public class ImgAd implements Serializable {
+public class FilesAd implements Serializable {
 
 
 
@@ -50,10 +51,9 @@ public class ImgAd implements Serializable {
 	private byte[] picByte;
  @JsonBackReference
 @ManyToOne private Ad ad;
-	
 
 
-	public ImgAd(String name, String type, byte[] picByte) {
+	public FilesAd(String name, String type, byte[] picByte) {
 		this.name = name;
 		this.type = type;
 		this.picByte = picByte;
@@ -61,12 +61,15 @@ public class ImgAd implements Serializable {
 
 
 
-	public ImgAd(String name, String type, byte[] picByte, Ad ad) {
+	public FilesAd(String name, String type, byte[] picByte, Ad ad) {
 		super();
 		this.name = name;
 		this.type = type;
 		this.picByte = picByte;
 		this.ad = ad;
-	}	
+	}
+
+
+	
 	
 }

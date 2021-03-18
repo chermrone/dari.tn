@@ -14,5 +14,11 @@ public interface UIadService {
 	List<Ad> getAll();
 
 	Ad getById(long id);
+	
+	float getBuyedHousesByCity(String city);
+	
+	float getBuyedHousesByCityAndMaxprice(String city, double price);
+	
+	float getBuyedHousesByCityAndMinprice(String city, double price);
 
 }

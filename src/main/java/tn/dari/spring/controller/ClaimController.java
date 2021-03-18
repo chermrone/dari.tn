@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.var;
 import tn.dari.spring.entity.Claim;
-
+import tn.dari.spring.entity.User;
 import tn.dari.spring.service.UIclaim;
 
 @CrossOrigin("*")
@@ -49,7 +49,13 @@ public ResponseEntity<Claim>save(@RequestBody Claim cl){
 		}
 		
 	}
+	int nb_of_claims= allclaim.size();
 	Claim claone = claim.addClaim(cl);
+	if (nb_of_claims==9){
+		User us= cl.getAd().getUs();
+		us.setUserState(false);
+	}
+	
 	return new ResponseEntity<Claim>(claone, HttpStatus.CREATED);
 }
 @PutMapping("/update")

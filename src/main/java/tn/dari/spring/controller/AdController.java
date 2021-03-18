@@ -42,14 +42,13 @@ public class AdController {
 
 	@PostMapping("/add/ad")
 	public ResponseEntity<Ad> saveAd(@RequestBody Ad ad) {
-		/*List<Ad> ads = Adserv.getAll();
-		System.out.println(ads);
-		for (Ad announce : ads) {
-			if (ad.getAdId().equals(announce.getAdId())) {
-				return new ResponseEntity<Ad>(HttpStatus.NOT_ACCEPTABLE);
-			}
-
-		}*/
+		/*
+		 * List<Ad> ads = Adserv.getAll(); System.out.println(ads); for (Ad announce :
+		 * ads) { if (ad.getAdId().equals(announce.getAdId())) { return new
+		 * ResponseEntity<Ad>(HttpStatus.NOT_ACCEPTABLE); }
+		 * 
+		 * }
+		 */
 		Ad AdOne = Adserv.save(ad);
 		return new ResponseEntity<Ad>(AdOne, HttpStatus.CREATED);
 	}
@@ -65,10 +64,36 @@ public class AdController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	@DeleteMapping("/delete/{id}")
-	  void deleteEmployee(@PathVariable("id") Long id) {
+	  public void deleteEmployee(@PathVariable("id") Long id) {
 	    Adserv.Delete(id);
 	  }
+	
+	@GetMapping("/buyedAdByRegion/{city}")
+	public ResponseEntity<String> GetbBuyedHousesByCity(@PathVariable("city") String city){
+		if(Adserv.getBuyedHousesByCity(city)>0){
+			return new ResponseEntity<>("number of houses: " + Adserv.getBuyedHousesByCity(city), HttpStatus.FOUND);
+		}
+		return new ResponseEntity<>("No houses found",HttpStatus.NOT_FOUND);
+	}
+	
+	@GetMapping("/buyedAdByRegionandMaxPrice/{city}/{price}")
+	public ResponseEntity<String> GetBuyedHousesByCityAndMaxPrice(@PathVariable("city") String city,@PathVariable("price") double price){
+		if(Adserv.getBuyedHousesByCityAndMaxprice(city, price)>0){
+			return new ResponseEntity<>("number of houses: " + Adserv.getBuyedHousesByCityAndMaxprice(city, price), HttpStatus.FOUND);
+		}
+		else 
+			return new ResponseEntity<>("No houses found",HttpStatus.NOT_FOUND);
+	}
 
+	@GetMapping("/buyedAdByRegionandMinPrice/{city}/{price}")
+	public ResponseEntity<String> GetBuyedHousesByCityAndMinPrice(@PathVariable("city") String city,@PathVariable("price") double price){
+		if(Adserv.getBuyedHousesByCityAndMinprice(city, price)>0){
+			return new ResponseEntity<>("number of houses: " + Adserv.getBuyedHousesByCityAndMinprice(city, price), HttpStatus.FOUND);
+		}
+		else 
+			return new ResponseEntity<>("No houses found",HttpStatus.NOT_FOUND);
+	}
+	
 	/*
 	 * @DeleteMapping("/delete/ad/{id}") public ResponseEntity<String>
 	 * delete(@PathVariable("id") Long id) { Adserv.Delete(id); if
