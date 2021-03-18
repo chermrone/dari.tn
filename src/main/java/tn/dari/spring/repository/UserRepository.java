@@ -9,9 +9,14 @@ import tn.dari.spring.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-	public User findByFirstName(String firstname);
+	 User findByFirstName(String firstname);
 
-	public User findByLastName(String lastname);
+	 User findByLastName(String lastname);
+
+	Boolean existsByEmail(String email);
+	
+	Boolean existsByUserName(String username);
+
 
 	public User findByUserName(String username);
 	

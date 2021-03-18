@@ -1,57 +1,69 @@
 package tn.dari.spring.security.service;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import tn.dari.spring.entity.Ad;
+import tn.dari.spring.entity.Appointment;
+import tn.dari.spring.entity.CreditSimulator;
+import tn.dari.spring.entity.OrderUser;
+import tn.dari.spring.entity.Role;
+import tn.dari.spring.entity.ShoppingCart;
+import tn.dari.spring.entity.Subscription;
+import tn.dari.spring.enumeration.Gender;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class SignUpForm {
  
-    private String name;
-
-
-    private String username;
-
-
-    private String email;
-    
-    private String role;
-    
-
-    private String password;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    
-    public String getRole() {
-    	return this.role;
-    }
-    
-    public void setRole(String role) {
-    	this.role = role;
-    }
+	private Long idUser;
+	
+	private String firstName;
+	
+	private String lastName;
+	
+	private String userName;
+	
+	private String password;
+	
+	private int age;
+	
+	private String urlimguser;
+	
+	private Gender gender;
+	
+	private int phoneNumber;
+	
+	private String email;
+	
+	private int cin;
+	 
+	private Set<String> roles = new HashSet<>();
+	 
+	private boolean userState;
+	
+	private Date creationDate;
+	
+	private Set<Ad> ads;
+	 
+	private Set<Ad> Favorite;
+	
+	private Set<Subscription> subscriptions;
+	 
+	private Set<OrderUser> orders;
+	 
+	private ShoppingCart shoppingCart;
+	 
+	private Set<Appointment> appointments;
+	 
+	private Set<CreditSimulator> creditSimulators;
 }

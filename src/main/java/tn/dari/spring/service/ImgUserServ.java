@@ -11,20 +11,23 @@ import tn.dari.spring.repository.UserImgRepository;
 
 @Service
 public class ImgUserServ implements UIImgUser {
-	@Autowired UserImgRepository userImgRep;
+	@Autowired UserImgRepository userRep;
+	
 	@Autowired FileServ fileserv;
+	
 	@Override
 	public List<ImgUser> retrievalluser() {
 		
-		return userImgRep.findAll();
+		return userRep.findAll();
 	}
+	
 	@Override		
-	public String DeleteUser(Long id)  {
+	public String DeleteImgUser(Long id)  {
 		System.out.println("hello");
-		userImgRep.deleteById(id);
+		userRep.deleteById(id);
 		return "success";
-		
 	}
+
 	@Override
 	public ImgUser saveImg(MultipartFile file, String user, String type) throws Exception {
 		return (ImgUser) fileserv.saveImg(file, user, type);

@@ -83,7 +83,8 @@ public class ImgUserController {
 		@DeleteMapping("/delete/img/{id}")
 		public String delete(@PathVariable("id") Long id)  throws Exception  {
 			System.out.println("delete");
-		return 	imgService.DeleteUser(id);
+		return 	imgService.DeleteImgUser(id);
+
 		}
 
 
