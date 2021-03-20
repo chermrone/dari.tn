@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tn.dari.spring.entity.FournitureAd;
 import tn.dari.spring.exception.ResourceNotFoundException;
 import tn.dari.spring.repository.FournitureAdRepository;
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/dari/FournitureAd")
 public class FournitureAdController {
