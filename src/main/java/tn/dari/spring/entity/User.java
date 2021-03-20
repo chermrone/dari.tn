@@ -103,10 +103,6 @@ public class User implements Serializable {
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<CreditSimulator> creditSimulators;
-	 @JsonManagedReference
-	 @ToString.Exclude
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "us")
-	private ImgUser imguser;
 
 
 	public User(Long idUser, String firstName, String lastName, String userName, String password, int age,
