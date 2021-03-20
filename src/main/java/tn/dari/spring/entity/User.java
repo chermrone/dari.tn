@@ -88,6 +88,7 @@ public class User implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<Subscription> subscriptions;
 	
+	@JsonManagedReference
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<OrderUser> orders;

@@ -23,7 +23,7 @@ import tn.dari.spring.entity.FournitureAd;
 import tn.dari.spring.exception.ResourceNotFoundException;
 import tn.dari.spring.service.FournitureAdService;
 
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/dari/FournitureAd")
 public class FournitureAdController {
