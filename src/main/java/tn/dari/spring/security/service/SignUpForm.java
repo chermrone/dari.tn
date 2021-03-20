@@ -12,6 +12,7 @@ import lombok.ToString;
 import tn.dari.spring.entity.Ad;
 import tn.dari.spring.entity.Appointment;
 import tn.dari.spring.entity.CreditSimulator;
+import tn.dari.spring.entity.FournitureAd;
 import tn.dari.spring.entity.OrderUser;
 import tn.dari.spring.entity.Role;
 import tn.dari.spring.entity.ShoppingCart;
@@ -62,6 +63,9 @@ public class SignUpForm {
 	private Set<OrderUser> orders;
 	 
 	private ShoppingCart shoppingCart;
+	
+	private Set<FournitureAd> fournitureAds;
+	
 	 
 	private Set<Appointment> appointments;
 	 
