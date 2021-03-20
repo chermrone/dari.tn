@@ -20,5 +20,8 @@ public interface UIadService {
 	float getBuyedHousesByCityAndMaxprice(String city, double price);
 	
 	float getBuyedHousesByCityAndMinprice(String city, double price);
+	
+	float getBuyedHousesByCityInPeriod(String city, int period);
+
 
 }

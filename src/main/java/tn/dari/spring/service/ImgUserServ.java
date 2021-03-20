@@ -33,7 +33,6 @@ public class ImgUserServ implements UIImgUser {
 		return (ImgUser) fileserv.saveImg(file, user, type);
 	}
 
-
 	@Override
 	public ImgUser retrievImage(String imageName) throws Exception {
 		return (ImgUser) fileserv.retrievImage(imageName);

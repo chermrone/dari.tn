@@ -1,6 +1,9 @@
 package tn.dari.spring.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,14 +45,13 @@ public class AdController {
 
 	@PostMapping("/add/ad")
 	public ResponseEntity<Ad> saveAd(@RequestBody Ad ad) {
-		/*List<Ad> ads = Adserv.getAll();
-		System.out.println(ads);
-		for (Ad announce : ads) {
-			if (ad.getAdId().equals(announce.getAdId())) {
-				return new ResponseEntity<Ad>(HttpStatus.NOT_ACCEPTABLE);
-			}
-
-		}*/
+		/*
+		 * List<Ad> ads = Adserv.getAll(); System.out.println(ads); for (Ad announce :
+		 * ads) { if (ad.getAdId().equals(announce.getAdId())) { return new
+		 * ResponseEntity<Ad>(HttpStatus.NOT_ACCEPTABLE); }
+		 * 
+		 * }
+		 */
 		Ad AdOne = Adserv.save(ad);
 		return new ResponseEntity<Ad>(AdOne, HttpStatus.CREATED);
 	}
@@ -95,11 +97,40 @@ public class AdController {
 			return new ResponseEntity<>("No houses found",HttpStatus.NOT_FOUND);
 	}
 	
-	/*
-	 * @DeleteMapping("/delete/ad/{id}") public ResponseEntity<String>
-	 * delete(@PathVariable("id") Long id) { Adserv.Delete(id); if
-	 * (Adserv.getById(id).getAdId() == id) return new
-	 * ResponseEntity<String>("Ad deleted", HttpStatus.OK); else return new
-	 * ResponseEntity<String>("Ad not found", HttpStatus.NOT_FOUND); }
-	 */
+	@GetMapping("buyedAdInPeriod/{city}/{period}")
+	public ResponseEntity<String> GetBuyedHousesByCityInPeriodOfTime(@PathVariable("city") String city, @PathVariable("period") int period){
+		if(Adserv.getBuyedHousesByCityInPeriod(city, period)>0){
+			return new ResponseEntity<>("number of buyed houses in less then " + period+" days is:" + Adserv.getBuyedHousesByCityInPeriod(city, period), HttpStatus.OK);
+		}
+		else 
+			return new ResponseEntity<>("No houses found",HttpStatus.NOT_FOUND);
+	}
+	@GetMapping("topfiveregionsbuy")
+	public ResponseEntity<String> GetTopFiveRegionBuy(){
+		List<Ad> ads = Adserv.getAll();
+		//tri by nbr buyed houses by region desc
+		for (int i = 1; i < ads.size(); i++) {
+			if (Adserv.getBuyedHousesByCity(ads.get(i-1).getCity())< Adserv.getBuyedHousesByCity(ads.get(i).getCity())){
+				Ad aux = ads.get(i);
+				ads.set(i, ads.get(i-1));
+				ads.set(i-1, aux);
+			}
+		}
+		List<String> topcities=new ArrayList<>();
+		topcities.add(ads.get(0).getCity());
+		int k=0;
+		for (int j=1;j<ads.size();j++){
+			if (!ads.get(j).getCity().equals(ads.get(j-1).getCity())) {
+				topcities.add(ads.get(j).getCity());
+				k++;
+				if(k==5){
+					return new ResponseEntity<String>(topcities.toString(),HttpStatus.OK);
+				}
+			}
+		}
+		System.out.println(topcities.toString());
+		
+		return new ResponseEntity<String>(topcities.toString(),HttpStatus.OK);
+		
+	}
 }
