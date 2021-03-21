@@ -36,12 +36,12 @@ public class Delivery implements Serializable {
 	private boolean status;
 	private double cost;
 	
-	@JsonBackReference
+	@JsonBackReference(value = "orderUser")
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "deliv")
 	private OrderUser orderUser;
 	
 	//@JsonManagedReference
-	@JsonBackReference
+	@JsonBackReference(value = "delivery")
 	@ManyToOne
 	DeliveryMan deliveryMan;
 }
