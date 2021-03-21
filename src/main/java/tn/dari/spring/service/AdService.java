@@ -62,10 +62,4 @@ public class AdService implements UIadService {
 		return adrepository.retrieveSellsAdsByCityMaxPrice(city, price);
 	}
 
-	@Override
-	public float getBuyedHousesByCityInPeriod(String city, int period) {
-		// TODO Auto-generated method stub
-		return adrepository.retrieveSellsAdsInPeriod(city, period);
-	}
-
 }
