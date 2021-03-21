@@ -78,7 +78,10 @@ public class Ad implements Serializable {
 	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<Review> rev;
+<<<<<<< HEAD
 	// jjjjj
+=======
+>>>>>>> parent of 2c3ed14 (Merge branch 'master' into marouen)
 	
 
 }

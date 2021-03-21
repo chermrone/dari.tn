@@ -20,6 +20,9 @@ public interface UIadService {
 	float getBuyedHousesByCityAndMaxprice(String city, double price);
 	
 	float getBuyedHousesByCityAndMinprice(String city, double price);
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 2c3ed14 (Merge branch 'master' into marouen)
 
 }
