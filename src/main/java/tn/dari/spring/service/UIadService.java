@@ -23,4 +23,5 @@ public interface UIadService {
 	
 	float getBuyedHousesByCityInPeriod(String city, int period);
 
+
 }
