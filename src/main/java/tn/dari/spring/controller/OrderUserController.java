@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import tn.dari.spring.entity.OrderUser;
 import tn.dari.spring.exception.ResourceNotFoundException;
+import tn.dari.spring.service.IOrderUserService;
 import tn.dari.spring.service.OrderUserService;
 
 @CrossOrigin("*")
