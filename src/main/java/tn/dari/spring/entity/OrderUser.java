@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,6 +41,7 @@ public class OrderUser implements Serializable {
 	private int quantity;
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "orderUser")
 	private Delivery deliv;
+	@JsonBackReference
 	@ManyToOne
 	private User us;
 

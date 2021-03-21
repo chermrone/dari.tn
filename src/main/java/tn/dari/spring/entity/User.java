@@ -88,13 +88,20 @@ public class User implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<Subscription> subscriptions;
 	
+	@JsonManagedReference
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<OrderUser> orders;
 	
+	
 	@ToString.Exclude
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "us")
 	private ShoppingCart shoppingCart;
+	
+	@JsonManagedReference
+	@ToString.Exclude
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
+	private Set<FournitureAd> fournitureAds;
 	
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")

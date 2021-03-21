@@ -10,9 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,9 +37,8 @@ public class ShoppingCart {
 	private int Quantity;
 	@Temporal(TemporalType.DATE)
 	private Date dateadded;
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "shoppingCart")
-	private Set<FournitureAd> fournituresAd;
-	@ManyToOne
+	
+	@OneToOne
 	private User us;
 
 }
