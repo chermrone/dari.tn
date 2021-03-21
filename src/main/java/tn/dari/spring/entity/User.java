@@ -92,8 +92,9 @@ public class User implements Serializable {
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<OrderUser> orders;
-	
-	
+	 
+	//seiiifffff
+	@JsonManagedReference
 	@ToString.Exclude
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "us")
 	private ShoppingCart shoppingCart;
