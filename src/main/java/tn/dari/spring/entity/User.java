@@ -53,8 +53,6 @@ public class User implements Serializable {
 	
 	private int age;
 	
-	private String urlimguser;
-	
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	
@@ -112,7 +110,7 @@ public class User implements Serializable {
 	private Set<CreditSimulator> creditSimulators;
 
 	public User(Long idUser, String firstName, String lastName, String userName, String password, int age,
-			String urlimguser, Gender gender, int phoneNumber, String email, int cin, boolean userState,
+			 Gender gender, int phoneNumber, String email, int cin, boolean userState,
 			Date creationDate, Set<Ad> ads, Set<Ad> favorite, Set<Subscription> subscriptions, Set<OrderUser> orders,
 			ShoppingCart shoppingCart, Set<Appointment> appointments, Set<CreditSimulator> creditSimulators) {
 		super();
@@ -122,20 +120,12 @@ public class User implements Serializable {
 		this.userName = userName;
 		this.password = password;
 		this.age = age;
-		this.urlimguser = urlimguser;
 		this.gender = gender;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.cin = cin;
 		this.userState = userState;
 		this.creationDate = creationDate;
-		this.ads = ads;
-		Favorite = favorite;
-		this.subscriptions = subscriptions;
-		this.orders = orders;
-		this.shoppingCart = shoppingCart;
-		this.appointments = appointments;
-		this.creditSimulators = creditSimulators;
 	}
 	
 	@JsonManagedReference
