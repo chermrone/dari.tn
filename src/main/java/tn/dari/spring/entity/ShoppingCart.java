@@ -3,12 +3,13 @@ package tn.dari.spring.entity;
 import java.util.Date;
 import java.util.Set;
 
-
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -36,9 +37,7 @@ public class ShoppingCart {
 	private int Quantity;
 	@Temporal(TemporalType.DATE)
 	private Date dateadded;
-	//private Set<Long> ItemList;
 	
-	@JsonBackReference
 	@OneToOne
 	private User us;
 
