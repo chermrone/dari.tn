@@ -29,5 +29,7 @@ public interface UIadService {
 	
 	List<String> topfivecities();
 
+	Ad BuyedHouse(long id);
+
 
 }

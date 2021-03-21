@@ -121,4 +121,12 @@ public class AdController {
 		List<String> topcities = Adserv.ordercitiesByBuyingdesc();
 		return new ResponseEntity<String>(topcities.toString(), HttpStatus.OK);
 	}
+	
+	
+	@PostMapping("/change/buyed/{id}")
+	public ResponseEntity<Ad> BuyedAd(@PathVariable("id") long id) throws Exception {
+		Ad AdOne = Adserv.BuyedHouse(id);
+System.out.println("enter+"+ AdOne);
+		return new ResponseEntity<Ad>(AdOne, HttpStatus.OK);
+	}
 }

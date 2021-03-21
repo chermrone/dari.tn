@@ -1,5 +1,6 @@
 package tn.dari.spring.service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import tn.dari.spring.exception.*;
@@ -114,6 +115,15 @@ public class AdService implements UIadService {
 			}
 		}
 		return topcities;
+	}
+
+	@Override
+	public Ad BuyedHouse(long id) {
+		Ad ad=adrepository.findById(id).orElseThrow(() -> new AdNotFoundException("Ad  " + id + " not found"));
+		Date currentSqlDate = new Date(System.currentTimeMillis());
+
+		ad.setBuyingDate( currentSqlDate);
+		 return adrepository.save(ad);
 	}
 
 }
