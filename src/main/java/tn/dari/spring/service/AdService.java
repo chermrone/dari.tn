@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import tn.dari.spring.entity.Ad;
+import tn.dari.spring.entity.Role;
+import tn.dari.spring.enumeration.TypeBatiment;
+import tn.dari.spring.enumeration.Usertype;
 import tn.dari.spring.exception.SubscriptionNotFoundException;
 import tn.dari.spring.repository.AdRepository;
 
@@ -74,7 +77,7 @@ public class AdService implements UIadService {
 
 	@Override
 	public List<String> ordercitiesByBuyingdesc() {
-		List<Ad> ads=adrepository.findAll();
+		List<Ad> ads = adrepository.findAll();
 		for (int i = 1; i < ads.size(); i++) {
 			if (getBuyedHousesByCity(ads.get(i - 1).getCity()) < getBuyedHousesByCity(ads.get(i).getCity())) {
 				Ad aux = ads.get(i);
@@ -94,7 +97,7 @@ public class AdService implements UIadService {
 
 	@Override
 	public List<String> topfivecities() {
-		List<Ad> ads=adrepository.findAll();
+		List<Ad> ads = adrepository.findAll();
 		for (int i = 1; i < ads.size(); i++) {
 			if (getBuyedHousesByCity(ads.get(i - 1).getCity()) < getBuyedHousesByCity(ads.get(i).getCity())) {
 				Ad aux = ads.get(i);
@@ -104,7 +107,7 @@ public class AdService implements UIadService {
 		}
 		List<String> topcities = new ArrayList<>();
 		topcities.add(ads.get(0).getCity());
-		int k=0;
+		int k = 0;
 		for (int j = 1; j < ads.size(); j++) {
 			if (!ads.get(j).getCity().equals(ads.get(j - 1).getCity())) {
 				topcities.add(ads.get(j).getCity());
@@ -119,11 +122,113 @@ public class AdService implements UIadService {
 
 	@Override
 	public Ad BuyedHouse(long id) {
-		Ad ad=adrepository.findById(id).orElseThrow(() -> new AdNotFoundException("Ad  " + id + " not found"));
+		Ad ad = adrepository.findById(id).orElseThrow(() -> new AdNotFoundException("Ad  " + id + " not found"));
 		Date currentSqlDate = new Date(System.currentTimeMillis());
 
-		ad.setBuyingDate( currentSqlDate);
-		 return adrepository.save(ad);
+		ad.setBuyingDate(currentSqlDate);
+		return adrepository.save(ad);
+	}
+
+	@Override
+	public double EstimatedHouse(Ad ad) {
+		double x = ad.getArea();
+		String[] NorthE = { "bizerte", "tunis", "ariana", "manouba", "ben arous", "nabeul" };
+		String[] NorthW = { "beja", "jandouba", "kef", "siliana", "zaghouan" };
+		String[] MiddleE = { "mistir", "sousse", "mahdia" };
+		String[] MiddleW = { "karawen", "sidi bouzid", "gasrin" };
+
+		String[] SouthE = { "sfax", "gabes", "mednine", "jandouba" };
+		String[] SouthW = { "tozeur", "gafsa", "gbelli", "tataouine" };
+		///////////////// Case it is a terrain
+		if (ad.getType().equals(TypeBatiment.terrain)) {
+			System.out.println("terrain");
+			for (String city : NorthE) {
+				if (city.equals(ad.getCity().toLowerCase())) {
+					x *= 1000;
+				}
+
+			}
+
+			for (String city : NorthW) {
+				if (city.equals(ad.getCity().toLowerCase())) {
+					x *= 300;
+				}
+			}
+
+			for (String city : MiddleE) {
+				if (city.equals(ad.getCity().toLowerCase())) {
+					x *= 1000;
+				}
+			}
+
+			for (String city : MiddleW) {
+				if (city.equals(ad.getCity().toLowerCase())) {
+					x *= 200;
+				}
+			}
+			for (String city : SouthE) {
+				if (city.equals(ad.getCity().toLowerCase())) {
+					x *= 500;
+				}
+			}
+
+			for (String city : SouthW) {
+				if (city.equals(ad.getCity().toLowerCase())) {
+					x *= 100;
+				}
+
+			}
+
+		}
+
+		//////////// :::::case it is a house
+
+		if (ad.getType().equals(TypeBatiment.maison)) {
+			System.out.println("maison");
+		List<String> TopFive=topfivecities();
+			for (String city : NorthE) {
+				if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
+					x *= 3500;
+				}
+				else if(city.equals(ad.getCity().toLowerCase()))
+					x*=2000;
+
+			}
+
+			for (String city : NorthW) {
+				if (city.equals(ad.getCity().toLowerCase())) {
+					x *= 2000;
+				}
+			}
+
+			for (String city : MiddleE) {
+				if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
+					x *= 3000;}
+					else if (city.equals(ad.getCity().toLowerCase()))
+						x*=2000;
+				}
+
+			for (String city : MiddleW) {
+				if (city.equals(ad.getCity().toLowerCase())) {
+					x *= 1500;
+				}
+			}
+			for (String city : SouthE) {
+				if (city.equals(ad.getCity().toLowerCase())) {
+					x *= 1200;
+				}
+			}
+
+			for (String city : SouthW) {
+				if (city.equals(ad.getCity().toLowerCase())) {
+					x *= 1000;
+				}
+
+			}
+
+		}
+
+		return x;
 	}
 
 }

@@ -31,5 +31,7 @@ public interface UIadService {
 
 	Ad BuyedHouse(long id);
 
+	double EstimatedHouse(Ad ad);
+
 
 }

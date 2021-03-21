@@ -129,4 +129,10 @@ public class AdController {
 System.out.println("enter+"+ AdOne);
 		return new ResponseEntity<Ad>(AdOne, HttpStatus.OK);
 	}
+	@PostMapping("EstimatedPrice")
+	public ResponseEntity<String> EstimatedPrice(@RequestBody Ad ad){
+                
+			return new ResponseEntity<>("Estimated house: " + Adserv.EstimatedHouse(ad), HttpStatus.FOUND);
+	}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
 }

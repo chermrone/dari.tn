@@ -27,6 +27,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import tn.dari.spring.enumeration.TypeBatiment;
 import tn.dari.spring.enumeration.Typead;
 
 @Entity
@@ -40,6 +41,8 @@ public class Ad implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long adId;
 	private String titleAd;
+	@Enumerated(EnumType.STRING)
+	private TypeBatiment type;
 	private String Description;
 	@Temporal(TemporalType.DATE)
 	@CreationTimestamp
