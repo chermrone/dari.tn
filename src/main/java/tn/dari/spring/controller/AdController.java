@@ -56,7 +56,6 @@ public class AdController {
 		return new ResponseEntity<Ad>(AdOne, HttpStatus.CREATED);
 	}
 
-	// @PutMapping("/update/ad/{id}")
 	@PutMapping("/update/ad")
 
 	public ResponseEntity<Ad> updateAd(@RequestBody Ad ad) {
@@ -112,53 +111,14 @@ public class AdController {
 
 	@GetMapping("topfiveregionsbuy")
 	public ResponseEntity<String> GetTopFiveRegionBuy() {
-		List<Ad> ads = Adserv.getAll();
-		// tri by nbr buyed houses by region desc
-		for (int i = 1; i < ads.size(); i++) {
-			if (Adserv.getBuyedHousesByCity(ads.get(i - 1).getCity()) < Adserv
-					.getBuyedHousesByCity(ads.get(i).getCity())) {
-				Ad aux = ads.get(i);
-				ads.set(i, ads.get(i - 1));
-				ads.set(i - 1, aux);
-			}
-		}
-		List<String> topcities = new ArrayList<>();
-		topcities.add(ads.get(0).getCity());
-		int k = 0;
-		for (int j = 1; j < ads.size(); j++) {
-			if (!ads.get(j).getCity().equals(ads.get(j - 1).getCity())) {
-				topcities.add(ads.get(j).getCity());
-				k++;
-				if (k == 5) {
-					return new ResponseEntity<String>(topcities.toString(), HttpStatus.OK);
-				}
-			}
-		}
-		System.out.println(topcities.toString());
-
+		List<String> topcities = Adserv.topfivecities();
 		return new ResponseEntity<String>(topcities.toString(), HttpStatus.OK);
 
 	}
 
 	@GetMapping("GetRegionsordredbybuyingasc")
 	public ResponseEntity<String> GetRegionsordredbybuyingasc() {
-		List<Ad> ads = Adserv.getAll();
-		// tri by nbr buyed houses by region desc
-		for (int i = 1; i < ads.size(); i++) {
-			if (Adserv.getBuyedHousesByCity(ads.get(i - 1).getCity()) < Adserv
-					.getBuyedHousesByCity(ads.get(i).getCity())) {
-				Ad aux = ads.get(i);
-				ads.set(i, ads.get(i - 1));
-				ads.set(i - 1, aux);
-			}
-		}
-		List<String> topcities = new ArrayList<>();
-		topcities.add(ads.get(0).getCity());
-		for (int j = 1; j < ads.size(); j++) {
-			if (!ads.get(j).getCity().equals(ads.get(j - 1).getCity())) {
-				topcities.add(ads.get(j).getCity());
-			}
-		}
+		List<String> topcities = Adserv.ordercitiesByBuyingdesc();
 		return new ResponseEntity<String>(topcities.toString(), HttpStatus.OK);
 	}
 }
