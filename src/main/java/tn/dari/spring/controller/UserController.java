@@ -3,6 +3,7 @@ package tn.dari.spring.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,12 +78,27 @@ public class UserController {
 
 	@PutMapping("/ban/{id}")
 	ResponseEntity<String> UserBan(@PathVariable("id") Long id) {
-		User us = user.GetUserById(id);
-		user.BanUser(id);
-		if (!us.isUserState()) {
-			return new ResponseEntity<String>("user " + us.getFirstName() + " " + us.getLastName() + " is banned",
-					HttpStatus.OK);
+		List<Ad> ad = adserv.getAll();
+		List<Ad> aduser = new ArrayList<>();
+		for (Ad ad2 : ad) {
+			if (ad2.getUs().getIdUser() == id) {
+				aduser.add(ad2);
+			}
+		}
+		List<Claim> clmuser = new ArrayList<>();
+		for (Ad ad3 : aduser) {
+			clmuser.addAll(ad3.getClaims());
+		}
+		if (clmuser.size() >= 10) {
+			User us = user.GetUserById(id);
+			us.setUserState(false);
+			if (!us.isUserState()) {
+				user.UpdateUser(us);
+				return new ResponseEntity<String>("user " + us.getFirstName() + " " + us.getLastName() + " is banned",
+						HttpStatus.OK);
+			} else
+				return new ResponseEntity<String>("error in user ban", HttpStatus.BAD_REQUEST);
 		} else
-			return new ResponseEntity<String>("error", HttpStatus.NOT_MODIFIED);
+			return new ResponseEntity<String>(HttpStatus.OK);
 	}
 }
