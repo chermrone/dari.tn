@@ -39,7 +39,9 @@ public class OrderUser implements Serializable {
 	private Date dateShiped;
 	private boolean statusOrd = false;
 	private int quantity;
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "orderUser")
+	
+	@JsonManagedReference(value = "orderUser")
+	@OneToOne
 	private Delivery deliv;
 	@JsonBackReference
 	@ManyToOne

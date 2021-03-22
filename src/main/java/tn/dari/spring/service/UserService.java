@@ -14,6 +14,9 @@ import tn.dari.spring.repository.UserRepository;
 public class UserService implements UIuser {
 	@Autowired
 	UserRepository ur;
+	
+	@Autowired
+	AdService adserv;
 
 	@Override
 	public List<User> GetAllUsers() {
@@ -61,6 +64,26 @@ public class UserService implements UIuser {
 	public void DeleteUser(Long id) {
 		ur.deleteById(id);
 
+	}
+	
+	@Override
+	public void BanUser(Long id) {
+		List<Ad> ad = adserv.getAll();
+		List<Ad> aduser = new ArrayList<>();
+		for (Ad ad2 : ad) {
+			if (ad2.getUs().getIdUser() == id) {
+				aduser.add(ad2);
+			}
+		}
+		List<Claim> clmuser = new ArrayList<>();
+		for (Ad ad3 : aduser) {
+			clmuser.addAll(ad3.getClaims());
+		}
+		if (clmuser.size() >= 10) {
+			User us = GetUserById(id);
+			us.setUserState(false);
+			UpdateUser(us);
+		}
 	}
 
 }
