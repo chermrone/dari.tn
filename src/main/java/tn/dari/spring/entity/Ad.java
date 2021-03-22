@@ -18,6 +18,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Formula;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -56,6 +57,9 @@ public class Ad implements Serializable {
 	private int numbreOfRooms;
 	private double price;
 	private String city;
+	private double builta;
+    @Formula("area-Builta")
+private double nonBuiltUpArea;
 	@Enumerated(EnumType.STRING)
 	private Typead typead;
 	private int numberOfBathrooms;
