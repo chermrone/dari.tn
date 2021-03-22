@@ -32,8 +32,6 @@ public class ImgUserServ implements UIImgUser {
 	public ImgUser saveImg(MultipartFile file, String user, String type) throws Exception {
 		return (ImgUser) fileserv.saveImg(file, user, type);
 	}
-
-
 	@Override
 	public ImgUser retrievImage(String imageName) throws Exception {
 		return (ImgUser) fileserv.retrievImage(imageName);
