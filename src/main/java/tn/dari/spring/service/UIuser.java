@@ -9,9 +9,9 @@ public interface UIuser {
 
 	public User GetUserById(Long id);
 
-	public User GetUserByFirstName(String firstname);
+	public List<User> GetUserByFirstName(String firstname);
 
-	public User GetUserByLastName(String lastname);
+	public List<User> GetUserByLastName(String lastname);
 
 	public User GetUserByUserName(String username);
 
