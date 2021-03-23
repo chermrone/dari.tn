@@ -35,6 +35,7 @@ public class Subscription implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long subscriptionId;
+	private String title;
 	private String descriptionOffer;
 	private double price;
 	private boolean payed = false;
@@ -42,9 +43,6 @@ public class Subscription implements Serializable {
 	private SubscriptionType subscriptiontype;
 	@Temporal(TemporalType.DATE)
 	private Date payingDate = null;
-	@Temporal(TemporalType.DATE)
-	private Date duration= null;
-	private boolean validity;
 	@JsonBackReference
 	@ManyToOne
 	private User us;

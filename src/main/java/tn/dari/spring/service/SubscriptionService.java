@@ -43,4 +43,22 @@ public class SubscriptionService implements UISubscriptionService {
 		return sr.save(sub);
 	}
 
+	@Override
+	public List<Subscription> GetSubscriptionByTitle(String title) {
+		// TODO Auto-generated method stub
+		return sr.findByTitle(title);
+	}
+
+	@Override
+	public List<Subscription> GetSubscritionByPrice(double price) {
+		// TODO Auto-generated method stub
+		return sr.findByPrice(price);
+	}
+
+	@Override
+	public List<Subscription> GetSubscriptionByPriceAndTitle(String title, Double price) {
+		// TODO Auto-generated method stub
+		return sr.findByTitleAndPrice(title, price);
+	}
+
 }

@@ -14,5 +14,10 @@ public interface UISubscriptionService {
 	public Subscription GetSubscriptionById(Long id);
 
 	public Subscription UpdateSubscription(Subscription sub);
-
+	
+	List<Subscription> GetSubscriptionByTitle(String title);
+	
+	List<Subscription> GetSubscritionByPrice(double price);
+	
+	List<Subscription> GetSubscriptionByPriceAndTitle(String title, Double price);
 }

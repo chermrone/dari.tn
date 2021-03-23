@@ -21,6 +21,7 @@ import tn.dari.spring.entity.Subscription;
 import tn.dari.spring.entity.User;
 import tn.dari.spring.service.UISubscriptionService;
 import tn.dari.spring.service.UIuser;
+import tn.dari.spring.service.UserService;
 
 @CrossOrigin("*")
 @RestController
@@ -28,6 +29,9 @@ import tn.dari.spring.service.UIuser;
 public class SubscriptionController {
 	@Autowired
 	UISubscriptionService ss;
+	
+	@Autowired
+	UserService us;
 
 	@GetMapping("/all")
 	public ResponseEntity<List<Subscription>> getAllSubscriptions() {
@@ -75,15 +79,9 @@ public class SubscriptionController {
 	    ss.DeleteSubscription(id);
 	  }
 
-	/*
-	 * // l'accée à cette methode doit etre exclusive au admin
-	 * 
-	 * @DeleteMapping("/delete/{id}") public ResponseEntity<String>
-	 * delete(@PathVariable("id") Long id) throws Exception {
-	 * ss.DeleteSubscription(id); if (ss.GetSubscriptionById(id).getSubscriptionId()
-	 * == id) return new ResponseEntity<String>("Subscription deleted",
-	 * HttpStatus.OK); else return new ResponseEntity<String>("Error ",
-	 * HttpStatus.CONFLICT); }
-	 */
-
+	@PostMapping("/upgrade")
+	ResponseEntity<String> UpgradeToPremium(@RequestBody Long id,@RequestBody double price){
+		us.UpgradeToPremium(id, price);
+		return new ResponseEntity<String>("upgrad success", HttpStatus.OK);
+	}
 }
