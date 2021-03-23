@@ -38,7 +38,6 @@ public class ImgUserServ implements UIImgUser {
 	public ImgUser retrievImage(String imageName) throws Exception {
 		return (ImgUser) fileserv.retrievImage(imageName);
 	}
-
 	@Override
 	public ImgUser GetById(long id) {
 		return (ImgUser) fileserv.GetById(id);

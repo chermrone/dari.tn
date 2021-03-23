@@ -1,6 +1,9 @@
 package tn.dari.spring.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +32,7 @@ public class AdController {
 
 	@GetMapping("/all")
 	public ResponseEntity<List<Ad>> getAllAds() {
-		
+
 		List<Ad> ads = Adserv.getAll();
 		return new ResponseEntity<List<Ad>>(ads, HttpStatus.OK);
 	}
@@ -42,19 +45,17 @@ public class AdController {
 
 	@PostMapping("/add/ad")
 	public ResponseEntity<Ad> saveAd(@RequestBody Ad ad) {
-		/*List<Ad> ads = Adserv.getAll();
-		System.out.println(ads);
-		for (Ad announce : ads) {
-			if (ad.getAdId().equals(announce.getAdId())) {
-				return new ResponseEntity<Ad>(HttpStatus.NOT_ACCEPTABLE);
-			}
-
-		}*/
+		/*
+		 * List<Ad> ads = Adserv.getAll(); System.out.println(ads); for (Ad
+		 * announce : ads) { if (ad.getAdId().equals(announce.getAdId())) {
+		 * return new ResponseEntity<Ad>(HttpStatus.NOT_ACCEPTABLE); }
+		 * 
+		 * }
+		 */
 		Ad AdOne = Adserv.save(ad);
 		return new ResponseEntity<Ad>(AdOne, HttpStatus.CREATED);
 	}
 
-	// @PutMapping("/update/ad/{id}")
 	@PutMapping("/update/ad")
 
 	public ResponseEntity<Ad> updateAd(@RequestBody Ad ad) {
@@ -64,34 +65,74 @@ public class AdController {
 		} else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
+
 	@DeleteMapping("/delete/{id}")
-	  public void deleteEmployee(@PathVariable("id") Long id) {
-	    Adserv.Delete(id);
-	  }
-	
+	public void deleteEmployee(@PathVariable("id") Long id) {
+		Adserv.Delete(id);
+	}
+
 	@GetMapping("/buyedAdByRegion/{city}")
-	public ResponseEntity<String> GetbBuyedHousesByCity(@PathVariable("city") String city){
-		if(Adserv.getBuyedHousesByCity(city)>0){
+	public ResponseEntity<String> GetbBuyedHousesByCity(@PathVariable("city") String city) {
+		if (Adserv.getBuyedHousesByCity(city) > 0) {
 			return new ResponseEntity<>("number of houses: " + Adserv.getBuyedHousesByCity(city), HttpStatus.FOUND);
 		}
-		return new ResponseEntity<>("No houses found",HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>("No houses found", HttpStatus.NOT_FOUND);
 	}
-	
+
 	@GetMapping("/buyedAdByRegionandMaxPrice/{city}/{price}")
-	public ResponseEntity<String> GetBuyedHousesByCityAndMaxPrice(@PathVariable("city") String city,@PathVariable("price") double price){
-		if(Adserv.getBuyedHousesByCityAndMaxprice(city, price)>0){
-			return new ResponseEntity<>("number of houses: " + Adserv.getBuyedHousesByCityAndMaxprice(city, price), HttpStatus.FOUND);
-		}
-		else 
-			return new ResponseEntity<>("No houses found",HttpStatus.NOT_FOUND);
+	public ResponseEntity<String> GetBuyedHousesByCityAndMaxPrice(@PathVariable("city") String city,
+			@PathVariable("price") double price) {
+		if (Adserv.getBuyedHousesByCityAndMaxprice(city, price) > 0) {
+			return new ResponseEntity<>("number of houses: " + Adserv.getBuyedHousesByCityAndMaxprice(city, price),
+					HttpStatus.FOUND);
+		} else
+			return new ResponseEntity<>("No houses found", HttpStatus.NOT_FOUND);
 	}
 
 	@GetMapping("/buyedAdByRegionandMinPrice/{city}/{price}")
-	public ResponseEntity<String> GetBuyedHousesByCityAndMinPrice(@PathVariable("city") String city,@PathVariable("price") double price){
-		if(Adserv.getBuyedHousesByCityAndMinprice(city, price)>0){
-			return new ResponseEntity<>("number of houses: " + Adserv.getBuyedHousesByCityAndMinprice(city, price), HttpStatus.FOUND);
-		}
-		else 
-			return new ResponseEntity<>("No houses found",HttpStatus.NOT_FOUND);
+	public ResponseEntity<String> GetBuyedHousesByCityAndMinPrice(@PathVariable("city") String city,
+			@PathVariable("price") double price) {
+		if (Adserv.getBuyedHousesByCityAndMinprice(city, price) > 0) {
+			return new ResponseEntity<>("number of houses: " + Adserv.getBuyedHousesByCityAndMinprice(city, price),
+					HttpStatus.FOUND);
+		} else
+			return new ResponseEntity<>("No houses found", HttpStatus.NOT_FOUND);
 	}
+
+	@GetMapping("buyedAdInPeriod/{city}/{period}")
+	public ResponseEntity<String> GetBuyedHousesByCityInPeriodOfTime(@PathVariable("city") String city,
+			@PathVariable("period") int period) {
+		if (Adserv.getBuyedHousesByCityInPeriod(city, period) > 0) {
+			return new ResponseEntity<>("number of buyed houses in less then " + period + " days is:"
+					+ Adserv.getBuyedHousesByCityInPeriod(city, period), HttpStatus.OK);
+		} else
+			return new ResponseEntity<>("No houses found", HttpStatus.NOT_FOUND);
+	}
+
+	@GetMapping("topfiveregionsbuy")
+	public ResponseEntity<String> GetTopFiveRegionBuy() {
+		List<String> topcities = Adserv.topfivecities();
+		return new ResponseEntity<String>(topcities.toString(), HttpStatus.OK);
+
+	}
+
+	@GetMapping("GetRegionsordredbybuyingasc")
+	public ResponseEntity<String> GetRegionsordredbybuyingasc() {
+		List<String> topcities = Adserv.ordercitiesByBuyingdesc();
+		return new ResponseEntity<String>(topcities.toString(), HttpStatus.OK);
+	}
+	
+	
+	@PostMapping("/change/buyed/{id}")
+	public ResponseEntity<Ad> BuyedAd(@PathVariable("id") long id) throws Exception {
+		Ad AdOne = Adserv.BuyedHouse(id);
+System.out.println("enter+"+ AdOne);
+		return new ResponseEntity<Ad>(AdOne, HttpStatus.OK);
+	}
+	@PostMapping("EstimatedPrice")
+	public ResponseEntity<String> EstimatedPrice(@RequestBody Ad ad){
+		System.out.println(ad.getBuilda());
+			return new ResponseEntity<>("Estimated house: " + Adserv.EstimatedHouse(ad), HttpStatus.FOUND);
+	}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
 }

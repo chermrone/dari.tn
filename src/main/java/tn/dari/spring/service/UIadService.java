@@ -2,6 +2,8 @@ package tn.dari.spring.service;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.PathVariable;
+
 import tn.dari.spring.entity.Ad;
 
 public interface UIadService {
@@ -20,4 +22,16 @@ public interface UIadService {
 	float getBuyedHousesByCityAndMaxprice(String city, double price);
 	
 	float getBuyedHousesByCityAndMinprice(String city, double price);
+	
+	float getBuyedHousesByCityInPeriod(String city, int period);
+	
+	List<String> ordercitiesByBuyingdesc();
+	
+	List<String> topfivecities();
+
+	Ad BuyedHouse(long id);
+
+	double EstimatedHouse(Ad ad);
+
+
 }
