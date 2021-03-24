@@ -46,16 +46,16 @@ public class UserController {
 	}
 
 	@GetMapping("/findbyfirst/{firstname}")
-	public ResponseEntity<List<User>> getUserByFirstName(@PathVariable String firstname) {
+	public ResponseEntity<User> getUserByFirstName(@PathVariable String firstname) {
 		System.out.println("reception de la requete");
-		List<User> use = user.GetUserByFirstName(firstname);
-		return new ResponseEntity<List<User>>(use, HttpStatus.OK);
+		User use = user.GetUserByFirstName(firstname);
+		return new ResponseEntity<User>(use, HttpStatus.OK);
 	}
 
 	@GetMapping("/findbylast/{lastname}")
-	public ResponseEntity<List<User>> Getbylastname(@PathVariable String lastname) {
-		List<User> use = user.GetUserByLastName(lastname);
-		return new ResponseEntity<List<User>>(use, HttpStatus.OK);
+	public ResponseEntity<User> Getbylastname(@PathVariable String lastname) {
+		User use = user.GetUserByLastName(lastname);
+		return new ResponseEntity<User>(use, HttpStatus.OK);
 	}
 
 	@GetMapping("/findbyusername/{username}")

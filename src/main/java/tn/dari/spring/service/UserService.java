@@ -41,13 +41,13 @@ public class UserService implements UIuser {
 	}
 
 	@Override
-	public List<User> GetUserByFirstName(String firstname) {
+	public User GetUserByFirstName(String firstname) {
 
 		return ur.findByFirstName(firstname);
 	}
 
 	@Override
-	public List<User> GetUserByLastName(String lastname) {
+	public User GetUserByLastName(String lastname) {
 
 		return ur.findByLastName(lastname);
 	}
