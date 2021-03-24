@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,9 +43,9 @@ public class SubscriptionController {
 		return new ResponseEntity<Subscription>(sub, HttpStatus.OK);
 	}
 
-	// accé à cette methode qu'aprés payement
-	//kinjib el requete mel front lazem njibha bel user fi wostha
+	
 	@PostMapping("/add")
+	@PreAuthorize("hasRole('BUYER') or hasRole('ADMIN') or hasRole('SELLER) or hasRole('LANDLORD')")
 	public ResponseEntity<Subscription>save(@RequestBody Subscription subs){
 		List<Subscription> allsub = ss.GetAllSubscriptions();
 		for (Subscription sub : allsub) {
@@ -57,9 +58,9 @@ public class SubscriptionController {
 		return new ResponseEntity<Subscription>(subOne, HttpStatus.CREATED);
 	}
 
-	// l'accée à cette methode doit etre exclusive au admin
-	//kitjib el requete mel front jib el subscription bel id mta3ha kamla
+	
 	@PutMapping("/update")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Subscription> update(@RequestBody Subscription subscription) {
 		List<Subscription> allsub=ss.GetAllSubscriptions();
 		for (Subscription subscription2 : allsub) {
@@ -70,20 +71,11 @@ public class SubscriptionController {
 		}
 		return new ResponseEntity<Subscription>(HttpStatus.NOT_FOUND);
 	}
+	
 	@DeleteMapping("/delete/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	  void deleteEmployee(@PathVariable("id") Long id) throws Exception {
 	    ss.DeleteSubscription(id);
 	  }
-
-	/*
-	 * // l'accée à cette methode doit etre exclusive au admin
-	 * 
-	 * @DeleteMapping("/delete/{id}") public ResponseEntity<String>
-	 * delete(@PathVariable("id") Long id) throws Exception {
-	 * ss.DeleteSubscription(id); if (ss.GetSubscriptionById(id).getSubscriptionId()
-	 * == id) return new ResponseEntity<String>("Subscription deleted",
-	 * HttpStatus.OK); else return new ResponseEntity<String>("Error ",
-	 * HttpStatus.CONFLICT); }
-	 */
 
 }
