@@ -112,7 +112,7 @@ public class AdService implements UIadService {
 			if (!ads.get(j).getCity().equals(ads.get(j - 1).getCity())) {
 				topcities.add(ads.get(j).getCity());
 				k++;
-				if (k == 4) {
+				if (k == 5) {
 					return topcities;
 				}
 			}
