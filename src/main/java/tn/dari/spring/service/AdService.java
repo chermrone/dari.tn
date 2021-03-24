@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import tn.dari.spring.entity.Ad;
 import tn.dari.spring.entity.Role;
 import tn.dari.spring.enumeration.TypeBatiment;
-import tn.dari.spring.enumeration.Typead;
 import tn.dari.spring.enumeration.Usertype;
 import tn.dari.spring.exception.SubscriptionNotFoundException;
 import tn.dari.spring.repository.AdRepository;
@@ -132,8 +131,8 @@ public class AdService implements UIadService {
 
 	@Override
 	public double EstimatedHouse(Ad ad) {
-		double RentEstimatePrice=ad.getNumbreOfRooms();System.out.println(RentEstimatePrice);
-		double SellEstimatePrice = ad.getArea();
+		double x1=ad.getBuilda();System.out.println(x1);
+		double x = ad.getArea();
 		String[] NorthE = { "bizerte", "tunis", "ariana", "manouba", "ben arous", "nabeul" };
 		String[] NorthW = { "beja", "jandouba", "kef", "siliana", "zaghouan" };
 		String[] MiddleE = { "mistir", "sousse", "mahdia" };
@@ -141,46 +140,42 @@ public class AdService implements UIadService {
 
 		String[] SouthE = { "sfax", "gabes", "mednine", "jandouba" };
 		String[] SouthW = { "tozeur", "gafsa", "gbelli", "tataouine" };
-		
-		
-		///Case it is a selling house
 		///////////////// Case it is a terrain
-		if(ad.getTypead().equals(Typead.SELL))
-		{if (ad.getType().equals(TypeBatiment.ground)) {
+		if (ad.getType().equals(TypeBatiment.ground)) {
 			System.out.println("ground");
 			for (String city : NorthE) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 1000;
+					x *= 1000;
 				}
 
 			}
 
 			for (String city : NorthW) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 300;
+					x *= 300;
 				}
 			}
 
 			for (String city : MiddleE) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 1000;
+					x *= 1000;
 				}
 			}
 
 			for (String city : MiddleW) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 200;
+					x *= 200;
 				}
 			}
 			for (String city : SouthE) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 500;
+					x *= 500;
 				}
 			}
 
 			for (String city : SouthW) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 100;
+					x *= 100;
 				}
 
 			}
@@ -191,168 +186,97 @@ public class AdService implements UIadService {
 
 		if (ad.getType().equals(TypeBatiment.apartment)) {
 			System.out.println("apartment");
-			SellEstimatePrice = ad.getBuilda();
-			System.out.println(SellEstimatePrice);
+		 x = ad.getBuilda();
+			System.out.println(x);
 
 		List<String> TopFive=topfivecities();
 			for (String city : NorthE) {
 				if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
-					SellEstimatePrice *= 3500;
+					x *= 3500;
 				}
 				else if(city.equals(ad.getCity().toLowerCase()))
-					SellEstimatePrice*=2000;
+					x*=2000;
 
 			}
 
 			for (String city : NorthW) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 2000;
+					x *= 2000;
 				}
 			}
 
 			for (String city : MiddleE) {
 				if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
-					SellEstimatePrice *= 3000;}
+					x *= 3000;}
 					else if (city.equals(ad.getCity().toLowerCase()))
-						SellEstimatePrice*=2000;
+						x*=2000;
 				}
 
 			for (String city : MiddleW) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 1500;
+					x *= 1500;
 				}
 			}
 			for (String city : SouthE) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 1200;
+					x *= 1200;
 				}
 			}
 
 			for (String city : SouthW) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 1000;
+					x *= 1000;
 				}
 
 			}
-			SellEstimatePrice+=SellEstimatePrice*0.10*ad.getNumbreOfRooms();
+			x+=x*0.10*ad.getNumbreOfRooms();
 
 		}
 		////////////////////: case house 
 		if (ad.getType().equals(TypeBatiment.house)) {
 			System.out.println("house");	
-			System.out.println(ad.getArea()-ad.getBuilda());
+			System.out.println(ad.getBuilda());
 		List<String> TopFive=topfivecities();
-		SellEstimatePrice=0;
+		x=0;
 			for (String city : NorthE) {
 				if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
-					SellEstimatePrice = 3500*(ad.getBuilda())+1000*(ad.getArea()-ad.getBuilda());
+					x = 3500*(ad.getBuilda())+1000*(ad.getNonBuiltUpArea());
 					System.out.println(ad.getBuilda());
-					System.out.println(ad.getArea()-ad.getBuilda());
+					System.out.println(ad.getNonBuiltUpArea());
 				}
 				else if(city.equals(ad.getCity().toLowerCase()))
-					SellEstimatePrice = 2000*ad.getBuilda()+1000*(ad.getArea()-ad.getBuilda());
+					x = 2000*ad.getBuilda()+1000*(ad.getNonBuiltUpArea());
 			}
 
 			for (String city : NorthW) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice = 2000*ad.getBuilda()+300*(ad.getArea()-ad.getBuilda());				}
+					x = 2000*ad.getBuilda()+300*(ad.getNonBuiltUpArea());				}
 			}
 
 			for (String city : MiddleE) {
 				if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
-					SellEstimatePrice = 3000*ad.getBuilda()+1000*(ad.getArea()-ad.getBuilda());					}
+					x = 3000*ad.getBuilda()+1000*(ad.getNonBuiltUpArea());					}
 					else if (city.equals(ad.getCity().toLowerCase()))
-						SellEstimatePrice = 2000*ad.getBuilda()+1000*(ad.getArea()-ad.getBuilda());				}
+						x = 2000*ad.getBuilda()+1000*(ad.getNonBuiltUpArea());				}
 
 			for (String city : MiddleW) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice = 1500*ad.getBuilda()+200*(ad.getArea()-ad.getBuilda());				}
+					x = 1500*ad.getBuilda()+200*(ad.getNonBuiltUpArea());				}
 			}
 			for (String city : SouthE) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice = 1200*ad.getBuilda()+500*(ad.getArea()-ad.getBuilda());				}
+					x = 1200*ad.getBuilda()+500*(ad.getNonBuiltUpArea());				}
 			}
 
 			for (String city : SouthW) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice = 1000*ad.getBuilda()+100*(ad.getArea()-ad.getBuilda());				}
+					x = 1000*ad.getBuilda()+100*(ad.getNonBuiltUpArea());				}
 
 			}
-			
-			SellEstimatePrice+=SellEstimatePrice*0.10*ad.getNumbreOfRooms();
+			x+=x*0.10*ad.getNumbreOfRooms();
 
 		}
-		return SellEstimatePrice;
-	}	////////////////case a rent house
-	if(ad.getTypead().equals(Typead.RENT))
-	{System.out.println(RentEstimatePrice);
-	List<String> TopFive=topfivecities();
-	if((int)RentEstimatePrice==0) RentEstimatePrice=1;
-	else RentEstimatePrice++;
-		for (String city : NorthE) {
-			if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
-				if (RentEstimatePrice==1)RentEstimatePrice *= 400;
-				else RentEstimatePrice *=290;
-			}
-			else if(city.equals(ad.getCity().toLowerCase()))
-				{
-			if (RentEstimatePrice==1)RentEstimatePrice *= 350;
-			else RentEstimatePrice *=230;}
-		}
-
-		for (String city : NorthW) {
-			if (city.equals(ad.getCity().toLowerCase())) {
-				
-				if (RentEstimatePrice==1)RentEstimatePrice *= 250;
-				else RentEstimatePrice *=150;
-			}
-		}
-
-		for (String city : MiddleE) {
-			if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
-
-				if (RentEstimatePrice==1)RentEstimatePrice *= 380;
-				else RentEstimatePrice *=270;
-				
-				}
-				else if (city.equals(ad.getCity().toLowerCase()))
-					{
-					if (RentEstimatePrice==1)RentEstimatePrice *= 300;
-					else RentEstimatePrice *=200;
-					}
-					
-			}
-
-		for (String city : MiddleW) {
-			if (city.equals(ad.getCity().toLowerCase())) {
-				if (RentEstimatePrice==1)RentEstimatePrice *= 250;
-				else RentEstimatePrice *=130;
-
-			}
-		}
-		for (String city : SouthE) {
-			if (city.equals(ad.getCity().toLowerCase())) {
-				if (RentEstimatePrice==1)RentEstimatePrice *= 150;
-				else RentEstimatePrice *=100;
-				
-			}
-		}
-
-		for (String city : SouthW) {
-			if (city.equals(ad.getCity().toLowerCase())) {
-				if (RentEstimatePrice==1)RentEstimatePrice *= 150;
-				else RentEstimatePrice *=50;
-				
-			}
-
-		}
-		return RentEstimatePrice;
-
-		
-	}
-	return 0;
+		return x;
 	}
 
-	
-	
 }
