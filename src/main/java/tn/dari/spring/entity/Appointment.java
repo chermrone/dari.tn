@@ -1,6 +1,7 @@
 package tn.dari.spring.entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -19,7 +20,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table
 @Getter
 @Setter
 @AllArgsConstructor
@@ -30,9 +30,13 @@ public class Appointment implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long AppointmentId;
 	@Temporal(TemporalType.DATE)
-	private Date dateApp;
+	private Date dateApp;/*"ddMMyyyy HH:mm:ss"*/
 	private String placeApp;
 	private String nameApp;
+	private String jour;
+	private boolean isAccepted=false;
 	@ManyToOne
 	private User us;
+	
+	
 }
