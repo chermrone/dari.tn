@@ -45,7 +45,7 @@ public class SubscriptionController {
 
 	
 	@PostMapping("/add")
-	@PreAuthorize("hasRole('BUYER') or hasRole('ADMIN') or hasRole('SELLER) or hasRole('LANDLORD')")
+	@PreAuthorize("hasRole('BUYER') or hasRole('ADMIN') or hasRole('SELLER') or hasRole('LANDLORD')")
 	public ResponseEntity<Subscription>save(@RequestBody Subscription subs){
 		List<Subscription> allsub = ss.GetAllSubscriptions();
 		for (Subscription sub : allsub) {
