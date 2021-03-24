@@ -40,7 +40,7 @@ public class OrderUser implements Serializable {
 	private boolean statusOrd = false;
 	private int quantity;
 	
-	@JsonManagedReference(value = "orderUser")
+	@JsonManagedReference
 	@OneToOne
 	private Delivery deliv;
 	@JsonBackReference
