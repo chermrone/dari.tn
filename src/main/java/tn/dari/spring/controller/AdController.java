@@ -131,7 +131,7 @@ System.out.println("enter+"+ AdOne);
 	}
 	@PostMapping("EstimatedPrice")
 	public ResponseEntity<String> EstimatedPrice(@RequestBody Ad ad){
-		System.out.println(ad.getBuilda());
+		System.out.println(ad.getBuilta());
 			return new ResponseEntity<>("Estimated house: " + Adserv.EstimatedHouse(ad), HttpStatus.FOUND);
 	}
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             

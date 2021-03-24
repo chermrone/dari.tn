@@ -53,7 +53,7 @@ public class Ad implements Serializable {
 	private int numbreOfRooms;
 	private double price;
 	private String city;
-	private double builda;
+	private double builta;
     @Formula("area-Builta")
 private double nonBuiltUpArea;
 	@Enumerated(EnumType.STRING)

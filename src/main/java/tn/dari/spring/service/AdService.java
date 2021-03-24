@@ -131,7 +131,7 @@ public class AdService implements UIadService {
 
 	@Override
 	public double EstimatedHouse(Ad ad) {
-		double x1=ad.getBuilda();System.out.println(x1);
+		double x1=ad.getBuilta();System.out.println(x1);
 		double x = ad.getArea();
 		String[] NorthE = { "bizerte", "tunis", "ariana", "manouba", "ben arous", "nabeul" };
 		String[] NorthW = { "beja", "jandouba", "kef", "siliana", "zaghouan" };
@@ -186,7 +186,7 @@ public class AdService implements UIadService {
 
 		if (ad.getType().equals(TypeBatiment.apartment)) {
 			System.out.println("apartment");
-		 x = ad.getBuilda();
+		 x = ad.getBuilta();
 			System.out.println(x);
 
 		List<String> TopFive=topfivecities();
@@ -234,43 +234,42 @@ public class AdService implements UIadService {
 		}
 		////////////////////: case house 
 		if (ad.getType().equals(TypeBatiment.house)) {
-			System.out.println("house");	
-			System.out.println(ad.getBuilda());
+			System.out.println("house");	System.out.println(ad.getBuilta());
 		List<String> TopFive=topfivecities();
 		x=0;
 			for (String city : NorthE) {
 				if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
-					x = 3500*(ad.getBuilda())+1000*(ad.getNonBuiltUpArea());
-					System.out.println(ad.getBuilda());
+					x = 3500*(ad.getBuilta())+1000*(ad.getNonBuiltUpArea());
+					System.out.println(ad.getBuilta());
 					System.out.println(ad.getNonBuiltUpArea());
 				}
 				else if(city.equals(ad.getCity().toLowerCase()))
-					x = 2000*ad.getBuilda()+1000*(ad.getNonBuiltUpArea());
+					x = 2000*ad.getBuilta()+1000*(ad.getNonBuiltUpArea());
 			}
 
 			for (String city : NorthW) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					x = 2000*ad.getBuilda()+300*(ad.getNonBuiltUpArea());				}
+					x = 2000*ad.getBuilta()+300*(ad.getNonBuiltUpArea());				}
 			}
 
 			for (String city : MiddleE) {
 				if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
-					x = 3000*ad.getBuilda()+1000*(ad.getNonBuiltUpArea());					}
+					x = 3000*ad.getBuilta()+1000*(ad.getNonBuiltUpArea());					}
 					else if (city.equals(ad.getCity().toLowerCase()))
-						x = 2000*ad.getBuilda()+1000*(ad.getNonBuiltUpArea());				}
+						x = 2000*ad.getBuilta()+1000*(ad.getNonBuiltUpArea());				}
 
 			for (String city : MiddleW) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					x = 1500*ad.getBuilda()+200*(ad.getNonBuiltUpArea());				}
+					x = 1500*ad.getBuilta()+200*(ad.getNonBuiltUpArea());				}
 			}
 			for (String city : SouthE) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					x = 1200*ad.getBuilda()+500*(ad.getNonBuiltUpArea());				}
+					x = 1200*ad.getBuilta()+500*(ad.getNonBuiltUpArea());				}
 			}
 
 			for (String city : SouthW) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					x = 1000*ad.getBuilda()+100*(ad.getNonBuiltUpArea());				}
+					x = 1000*ad.getBuilta()+100*(ad.getNonBuiltUpArea());				}
 
 			}
 			x+=x*0.10*ad.getNumbreOfRooms();
