@@ -35,7 +35,11 @@ public class DeliveryMan {
 	private String email;
 	
 	//@JsonBackReference
+
 	@JsonManagedReference(value = "delivery")
+
+	//@JsonManagedReference
+
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "deliveryMan")
 	private Set<Delivery> deliveries;
 }
