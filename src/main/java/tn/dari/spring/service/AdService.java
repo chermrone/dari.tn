@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import tn.dari.spring.entity.Ad;
 import tn.dari.spring.entity.Role;
 import tn.dari.spring.enumeration.TypeBatiment;
+import tn.dari.spring.enumeration.Typead;
 import tn.dari.spring.enumeration.Usertype;
 import tn.dari.spring.exception.SubscriptionNotFoundException;
 import tn.dari.spring.repository.AdRepository;
@@ -131,7 +132,8 @@ public class AdService implements UIadService {
 
 	@Override
 	public double EstimatedHouse(Ad ad) {
-		double x = ad.getArea();
+		double RentEstimatePrice=ad.getNumbreOfRooms();System.out.println(RentEstimatePrice);
+		double SellEstimatePrice = ad.getArea();
 		String[] NorthE = { "bizerte", "tunis", "ariana", "manouba", "ben arous", "nabeul" };
 		String[] NorthW = { "beja", "jandouba", "kef", "siliana", "zaghouan" };
 		String[] MiddleE = { "mistir", "sousse", "mahdia" };
@@ -139,96 +141,218 @@ public class AdService implements UIadService {
 
 		String[] SouthE = { "sfax", "gabes", "mednine", "jandouba" };
 		String[] SouthW = { "tozeur", "gafsa", "gbelli", "tataouine" };
+		
+		
+		///Case it is a selling house
 		///////////////// Case it is a terrain
-		if (ad.getType().equals(TypeBatiment.terrain)) {
-			System.out.println("terrain");
+		if(ad.getTypead().equals(Typead.SELL))
+		{if (ad.getType().equals(TypeBatiment.ground)) {
+			System.out.println("ground");
 			for (String city : NorthE) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					x *= 1000;
+					SellEstimatePrice *= 1000;
 				}
 
 			}
 
 			for (String city : NorthW) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					x *= 300;
+					SellEstimatePrice *= 300;
 				}
 			}
 
 			for (String city : MiddleE) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					x *= 1000;
+					SellEstimatePrice *= 1000;
 				}
 			}
 
 			for (String city : MiddleW) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					x *= 200;
+					SellEstimatePrice *= 200;
 				}
 			}
 			for (String city : SouthE) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					x *= 500;
+					SellEstimatePrice *= 500;
 				}
 			}
 
 			for (String city : SouthW) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					x *= 100;
+					SellEstimatePrice *= 100;
 				}
 
 			}
 
 		}
 
-		//////////// :::::case it is a house
+		//////////// :::::case it is a apartment
 
-		if (ad.getType().equals(TypeBatiment.maison)) {
-			System.out.println("maison");
+		if (ad.getType().equals(TypeBatiment.apartment)) {
+			System.out.println("apartment");
+			SellEstimatePrice = ad.getBuilda();
+			System.out.println(SellEstimatePrice);
+
 		List<String> TopFive=topfivecities();
 			for (String city : NorthE) {
 				if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
-					x *= 3500;
+					SellEstimatePrice *= 3500;
 				}
 				else if(city.equals(ad.getCity().toLowerCase()))
-					x*=2000;
+					SellEstimatePrice*=2000;
 
 			}
 
 			for (String city : NorthW) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					x *= 2000;
+					SellEstimatePrice *= 2000;
 				}
 			}
 
 			for (String city : MiddleE) {
 				if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
-					x *= 3000;}
+					SellEstimatePrice *= 3000;}
 					else if (city.equals(ad.getCity().toLowerCase()))
-						x*=2000;
+						SellEstimatePrice*=2000;
 				}
 
 			for (String city : MiddleW) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					x *= 1500;
+					SellEstimatePrice *= 1500;
 				}
 			}
 			for (String city : SouthE) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					x *= 1200;
+					SellEstimatePrice *= 1200;
 				}
 			}
 
 			for (String city : SouthW) {
 				if (city.equals(ad.getCity().toLowerCase())) {
-					x *= 1000;
+					SellEstimatePrice *= 1000;
 				}
 
 			}
+			SellEstimatePrice+=SellEstimatePrice*0.10*ad.getNumbreOfRooms();
 
 		}
+		////////////////////: case house 
+		if (ad.getType().equals(TypeBatiment.house)) {
+			System.out.println("house");	
+			System.out.println(ad.getArea()-ad.getBuilda());
+		List<String> TopFive=topfivecities();
+		SellEstimatePrice=0;
+			for (String city : NorthE) {
+				if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
+					SellEstimatePrice = 3500*(ad.getBuilda())+1000*(ad.getArea()-ad.getBuilda());
+					System.out.println(ad.getBuilda());
+					System.out.println(ad.getArea()-ad.getBuilda());
+				}
+				else if(city.equals(ad.getCity().toLowerCase()))
+					SellEstimatePrice = 2000*ad.getBuilda()+1000*(ad.getArea()-ad.getBuilda());
+			}
 
-		return x;
+			for (String city : NorthW) {
+				if (city.equals(ad.getCity().toLowerCase())) {
+					SellEstimatePrice = 2000*ad.getBuilda()+300*(ad.getArea()-ad.getBuilda());				}
+			}
+
+			for (String city : MiddleE) {
+				if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
+					SellEstimatePrice = 3000*ad.getBuilda()+1000*(ad.getArea()-ad.getBuilda());					}
+					else if (city.equals(ad.getCity().toLowerCase()))
+						SellEstimatePrice = 2000*ad.getBuilda()+1000*(ad.getArea()-ad.getBuilda());				}
+
+			for (String city : MiddleW) {
+				if (city.equals(ad.getCity().toLowerCase())) {
+					SellEstimatePrice = 1500*ad.getBuilda()+200*(ad.getArea()-ad.getBuilda());				}
+			}
+			for (String city : SouthE) {
+				if (city.equals(ad.getCity().toLowerCase())) {
+					SellEstimatePrice = 1200*ad.getBuilda()+500*(ad.getArea()-ad.getBuilda());				}
+			}
+
+			for (String city : SouthW) {
+				if (city.equals(ad.getCity().toLowerCase())) {
+					SellEstimatePrice = 1000*ad.getBuilda()+100*(ad.getArea()-ad.getBuilda());				}
+
+			}
+			
+			SellEstimatePrice+=SellEstimatePrice*0.10*ad.getNumbreOfRooms();
+
+		}
+		return SellEstimatePrice;
+	}	////////////////case a rent house
+	if(ad.getTypead().equals(Typead.RENT))
+	{System.out.println(RentEstimatePrice);
+	List<String> TopFive=topfivecities();
+	if((int)RentEstimatePrice==0) RentEstimatePrice=1;
+	else RentEstimatePrice++;
+		for (String city : NorthE) {
+			if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
+				if (RentEstimatePrice==1)RentEstimatePrice *= 400;
+				else RentEstimatePrice *=290;
+			}
+			else if(city.equals(ad.getCity().toLowerCase()))
+				{
+			if (RentEstimatePrice==1)RentEstimatePrice *= 350;
+			else RentEstimatePrice *=230;}
+		}
+
+		for (String city : NorthW) {
+			if (city.equals(ad.getCity().toLowerCase())) {
+				
+				if (RentEstimatePrice==1)RentEstimatePrice *= 250;
+				else RentEstimatePrice *=150;
+			}
+		}
+
+		for (String city : MiddleE) {
+			if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
+
+				if (RentEstimatePrice==1)RentEstimatePrice *= 380;
+				else RentEstimatePrice *=270;
+				
+				}
+				else if (city.equals(ad.getCity().toLowerCase()))
+					{
+					if (RentEstimatePrice==1)RentEstimatePrice *= 300;
+					else RentEstimatePrice *=200;
+					}
+					
+			}
+
+		for (String city : MiddleW) {
+			if (city.equals(ad.getCity().toLowerCase())) {
+				if (RentEstimatePrice==1)RentEstimatePrice *= 250;
+				else RentEstimatePrice *=130;
+
+			}
+		}
+		for (String city : SouthE) {
+			if (city.equals(ad.getCity().toLowerCase())) {
+				if (RentEstimatePrice==1)RentEstimatePrice *= 150;
+				else RentEstimatePrice *=100;
+				
+			}
+		}
+
+		for (String city : SouthW) {
+			if (city.equals(ad.getCity().toLowerCase())) {
+				if (RentEstimatePrice==1)RentEstimatePrice *= 150;
+				else RentEstimatePrice *=50;
+				
+			}
+
+		}
+		return RentEstimatePrice;
+
+		
+	}
+	return 0;
 	}
 
+	
+	
 }

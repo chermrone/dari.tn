@@ -18,6 +18,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Formula;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -48,16 +49,20 @@ public class Ad implements Serializable {
 	@CreationTimestamp
 	private Date creationDate;
 	private boolean sell;
+	@Temporal(TemporalType.DATE)
+	private Date BuyingDate = null;
 	private boolean visibility;
+	@Temporal(TemporalType.DATE)
+	private Date periodeOfVisibility = null;// when would he want to rent his house
 	private int numbreOfRooms;
 	private double price;
 	private String city;
+	private double builda;
+	private double area;
 	@Enumerated(EnumType.STRING)
 	private Typead typead;
 	private int numberOfBathrooms;
-	private double area;
-	@Temporal(TemporalType.DATE)
-	private Date periodeOfVisibility = null;
+	
 	@Temporal(TemporalType.DATE)
 	private Date checkInDate = null;
 	@Temporal(TemporalType.DATE)
@@ -81,4 +86,5 @@ public class Ad implements Serializable {
 	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<Review> rev;
+
 }
