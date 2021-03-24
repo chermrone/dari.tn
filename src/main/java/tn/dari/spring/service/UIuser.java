@@ -20,6 +20,4 @@ public interface UIuser {
 	public User UpdateUser(User u);
 
 	public void DeleteUser(Long id);
-	
-	void BanUser(Long id);
 }

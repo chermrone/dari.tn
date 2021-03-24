@@ -15,7 +15,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,7 +43,6 @@ public class OrderUser implements Serializable {
 	@JsonManagedReference(value = "orderUser")
 	@OneToOne
 	private Delivery deliv;
-	
 	@JsonBackReference
 	@ManyToOne
 	private User us;

@@ -1,13 +1,10 @@
 package tn.dari.spring.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import tn.dari.spring.entity.Ad;
-import tn.dari.spring.entity.Claim;
 import tn.dari.spring.entity.User;
 
 import tn.dari.spring.exception.UserNotFoundException;

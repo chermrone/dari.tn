@@ -49,11 +49,7 @@ public class Ad implements Serializable {
 	@CreationTimestamp
 	private Date creationDate;
 	private boolean sell;
-	@Temporal(TemporalType.DATE)
-	private Date BuyingDate = null;
 	private boolean visibility;
-	@Temporal(TemporalType.DATE)
-	private Date periodeOfVisibility = null;// when would he want to rent his house
 	private int numbreOfRooms;
 	private double price;
 	private String city;
@@ -63,6 +59,8 @@ public class Ad implements Serializable {
 	private Typead typead;
 	private int numberOfBathrooms;
 	
+	@Temporal(TemporalType.DATE)
+	private Date periodeOfVisibility = null;
 	@Temporal(TemporalType.DATE)
 	private Date checkInDate = null;
 	@Temporal(TemporalType.DATE)
@@ -86,5 +84,4 @@ public class Ad implements Serializable {
 	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<Review> rev;
-
 }
