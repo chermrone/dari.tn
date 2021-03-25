@@ -62,7 +62,7 @@ public class SignUpForm {
 	 
 	private Set<OrderUser> orders;
 	 
-	private ShoppingCart shoppingCart;
+
 	
 	private Set<FournitureAd> fournitureAds;
 	

@@ -14,13 +14,17 @@ import tn.dari.spring.repository.FournitureAdRepository;
 
 @Service
 public class FournitureAdService implements IFournitureAdService {
-
+	
+	
 	@Autowired
 	FournitureAdRepository fournitureAdRepository;
-
+	
+	
 	@Override
 	public List<FournitureAd> getAllAd() {
-		return fournitureAdRepository.findAll();
+		
+		
+		return fournitureAdRepository.findAll() ;
 	}
 
 	@Override
@@ -32,8 +36,8 @@ public class FournitureAdService implements IFournitureAdService {
 
 	@Override
 	public FournitureAd postAd(FournitureAd fournitureAd) {
-		Date date = new Date();
-		fournitureAd.setCreated(date);
+		//Date date = new Date();
+		//fournitureAd.setCreated(date);
 		fournitureAdRepository.save(fournitureAd);
 		return fournitureAd;
 	}
@@ -59,6 +63,18 @@ public class FournitureAdService implements IFournitureAdService {
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("FournitureAd deleted : ", Boolean.TRUE);
 		return response;
+	}
+
+	@Override
+	public List<FournitureAd> getMyAd(String username) {
+		
+		return fournitureAdRepository.findByUserName(username);
+	}
+
+	@Override
+	public List<FournitureAd> getOtherAd(String username) {
+		
+		return fournitureAdRepository.findByUserNameNotLike(username);
 	}
 
 }

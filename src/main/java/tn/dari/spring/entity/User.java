@@ -88,22 +88,19 @@ public class User implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<Subscription> subscriptions;
 	
+	//seiiifffff
+	
 	@JsonManagedReference
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<OrderUser> orders;
-	 
-	//seiiifffff
-	@JsonManagedReference
-	@ToString.Exclude
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "us")
-	private ShoppingCart shoppingCart;
 	
-	@JsonManagedReference
+	//@JsonManagedReference
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
+	@OneToMany(cascade = CascadeType.ALL)
 	private Set<FournitureAd> fournitureAds;
 	
+	//seiiifffff
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<Appointment> appointments;
@@ -134,7 +131,6 @@ public class User implements Serializable {
 		Favorite = favorite;
 		this.subscriptions = subscriptions;
 		this.orders = orders;
-		this.shoppingCart = shoppingCart;
 		this.appointments = appointments;
 		this.creditSimulators = creditSimulators;
 	}
