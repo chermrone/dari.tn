@@ -36,8 +36,7 @@ public class FournitureAdService implements IFournitureAdService {
 
 	@Override
 	public FournitureAd postAd(FournitureAd fournitureAd) {
-		//Date date = new Date();
-		//fournitureAd.setCreated(date);
+		
 		fournitureAdRepository.save(fournitureAd);
 		return fournitureAd;
 	}
@@ -48,8 +47,7 @@ public class FournitureAdService implements IFournitureAdService {
 			FournitureAd fournitureAd1 = fournitureAdRepository.findById(faID)
 					.orElseThrow(() -> new ResourceNotFoundException("FournitureAd Not Founf For this ID :: " + faID));
 
-			Date date = new Date();
-			fournitureAd.setCreated(date);
+			
 			fournitureAdRepository.save(fournitureAd);
 		}
 		return fournitureAd;
