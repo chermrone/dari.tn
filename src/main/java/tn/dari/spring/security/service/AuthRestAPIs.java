@@ -56,7 +56,7 @@ public class AuthRestAPIs {
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
 		
-		System.out.println("d5al lel authenticateuser");
+		System.out.println("d5al lel authenticate user");
 		System.out.println(loginRequest.getUsername() +" " + loginRequest.getPassword());
 		
 		

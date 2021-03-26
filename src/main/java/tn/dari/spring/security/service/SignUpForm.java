@@ -53,4 +53,21 @@ public class SignUpForm {
 	private boolean userState;
 	
 	private Date creationDate;
+	
+	private Set<Ad> ads;
+	 
+	private Set<Ad> Favorite;
+	
+	private Set<Subscription> subscriptions;
+	 
+	private Set<OrderUser> orders;
+	 
+
+	
+	private Set<FournitureAd> fournitureAds;
+	
+	 
+	private Set<Appointment> appointments;
+	 
+	private Set<CreditSimulator> creditSimulators;
 }
