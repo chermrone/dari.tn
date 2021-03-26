@@ -22,6 +22,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -83,9 +84,9 @@ public class User implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL)
 	private Set<Ad> Favorite;
 	
-	@JsonManagedReference
+	//@JsonManagedReference
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
+	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<Subscription> subscriptions;
 	
 	@JsonManagedReference

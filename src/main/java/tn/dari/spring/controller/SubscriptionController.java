@@ -49,14 +49,11 @@ public class SubscriptionController {
 	// accé à cette methode qu'aprés payement
 	//kinjib el requete mel front lazem njibha bel user fi wostha
 	@PostMapping("/add")
+<<<<<<< Updated upstream
+=======
+	//@PreAuthorize("hasRole('BUYER') or hasRole('ADMIN') or hasRole('SELLER') or hasRole('LANDLORD')")
+>>>>>>> Stashed changes
 	public ResponseEntity<Subscription>save(@RequestBody Subscription subs){
-		List<Subscription> allsub = ss.GetAllSubscriptions();
-		for (Subscription sub : allsub) {
-			if (sub.getSubscriptionId().equals(subs.getSubscriptionId())) {
-				return new ResponseEntity<Subscription>(HttpStatus.NOT_ACCEPTABLE);
-			}
-			
-		}
 		Subscription subOne = ss.AddSubscription(subs);
 		return new ResponseEntity<Subscription>(subOne, HttpStatus.CREATED);
 	}
@@ -78,6 +75,16 @@ public class SubscriptionController {
 	  void deleteEmployee(@PathVariable("id") Long id) throws Exception {
 	    ss.DeleteSubscription(id);
 	  }
+	
+	@PutMapping("/upgrade/{iduser}/{subscriptionid}")
+	//@PreAuthorize("hasRole('BUYER') or hasRole('ADMIN') or hasRole('SELLER') or hasRole('LANDLORD')")
+	ResponseEntity<String> UpgradeToPremium(@PathVariable Long iduser, @PathVariable Long subscriptionid){
+		Subscription s=ss.UpgradeUser(iduser, subscriptionid);
+		if(s!=null){
+			return new ResponseEntity<String>("user upgrated", HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("error upgrading", HttpStatus.NOT_MODIFIED);
+	}
 
 	@PostMapping("/upgrade")
 	ResponseEntity<String> UpgradeToPremium(@RequestBody Long id,@RequestBody double price){
