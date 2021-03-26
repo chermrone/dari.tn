@@ -56,7 +56,7 @@ public class AuthRestAPIs {
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
 		
-		System.out.println("d5al lel authenticate user");
+		System.out.println("d5al lel authenticateuser");
 		System.out.println(loginRequest.getUsername() +" " + loginRequest.getPassword());
 		
 		
@@ -87,7 +87,7 @@ public class AuthRestAPIs {
 		// Creating user's account
 		User user = new User(null, signUpRequest.getFirstName(),signUpRequest.getLastName(), signUpRequest.getUserName(), encoder.encode(signUpRequest.getPassword()),
 
-				 signUpRequest.getAge(), signUpRequest.getGender(), signUpRequest.getPhoneNumber(),signUpRequest.getEmail(),signUpRequest.getCin(), true,signUpRequest.getCreationDate() , null, null, null, null, null, null, null);
+				 signUpRequest.getAge(), signUpRequest.getUrlimguser(), signUpRequest.getGender(), signUpRequest.getPhoneNumber(),signUpRequest.getEmail(),signUpRequest.getCin(), true,signUpRequest.getCreationDate() , null, null, null, null, null, null, null);
 
 		Set<String> strRoles = signUpRequest.getRoles();
 		Set<Role> roles = new HashSet<>();
