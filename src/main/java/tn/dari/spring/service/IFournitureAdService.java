@@ -15,5 +15,9 @@ public interface IFournitureAdService {
 	public FournitureAd putAd(Long faID, FournitureAd fournitureAd) throws ResourceNotFoundException;
 
 	public Map<String, Boolean> deleteAd(Long faID) throws ResourceNotFoundException;
+	
+	
+	public List<FournitureAd> getMyAd(String username);
+	public List<FournitureAd> getOtherAd(String username);
 
 }
