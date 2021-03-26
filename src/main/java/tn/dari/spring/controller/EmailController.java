@@ -23,10 +23,10 @@ public class EmailController {
 		boolean result=this.emailService.sendMail(request.getFrom(),request.getTo(),request.getSubject(),request.getMsg());
 		if(result)
 		{
-		return ResponseEntity.ok("Done email sent");
+		return ResponseEntity.ok("Done email send");
 		}else
 		{
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("email not sent");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("email not send");
 		}
 		
 	}
