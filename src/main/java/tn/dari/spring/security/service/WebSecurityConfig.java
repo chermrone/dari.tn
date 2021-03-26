@@ -59,7 +59,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     	System.out.println("d5al lel configure");
         http.cors().and().csrf().disable().
                 authorizeRequests()
-                .antMatchers("/api/auth/**","/stomp").permitAll()
+                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/dari/subscriptions/all").permitAll()
+                .antMatchers("/dari/subscriptions/find/**").permitAll()
+                .antMatchers("/dari/ads/buyedAdByRegion/**").permitAll()
+                .antMatchers("/dari/ads/buyedAdByRegionandMaxPrice/**").permitAll()
+                .antMatchers("/dari/ads/buyedAdByRegionandMinPrice/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
