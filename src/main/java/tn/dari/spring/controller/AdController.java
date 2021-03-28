@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +40,7 @@ public class AdController {
 	}
 
 	@PostMapping("/add/ad")
+	//@PreAuthorize("hasRole('USER')or hasRole('ADMIN')")
 	public ResponseEntity<Ad> saveAd(@RequestBody Ad ad) {
 		/*
 		 * List<Ad> ads = Adserv.getAll(); System.out.println(ads); for (Ad
@@ -48,6 +49,7 @@ public class AdController {
 		 * 
 		 * }
 		 */
+		System.out.println("hello");
 		Ad AdOne = Adserv.save(ad);
 		return new ResponseEntity<Ad>(AdOne, HttpStatus.CREATED);
 	}

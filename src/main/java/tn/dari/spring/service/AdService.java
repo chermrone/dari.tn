@@ -3,6 +3,8 @@ package tn.dari.spring.service;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 import tn.dari.spring.exception.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,22 +14,37 @@ import org.springframework.stereotype.Service;
 
 import tn.dari.spring.entity.Ad;
 import tn.dari.spring.entity.Role;
+import tn.dari.spring.entity.User;
 import tn.dari.spring.enumeration.TypeBatiment;
 import tn.dari.spring.enumeration.Typead;
 import tn.dari.spring.enumeration.Usertype;
 import tn.dari.spring.exception.SubscriptionNotFoundException;
 import tn.dari.spring.repository.AdRepository;
+import tn.dari.spring.repository.RoleRepository;
+import tn.dari.spring.repository.UserRepository;
 
 @Service
 public class AdService implements UIadService {
 
 	@Autowired
 	AdRepository adrepository;
-
+@Autowired 
+UserRepository userrep;
+@Autowired
+RoleRepository rolerepository;
 	@Override
 	public Ad save(Ad ad) {
+	//System.out.println("that user ad   "+ad.getUs());
+	User user=ad.getUs();	System.out.println("that user instanciation   "+user);
+	Set<Role> strRoles = user.getRoles();
+	Role Seller = rolerepository.findByName(Usertype.SELLER).get();
+	System.out.println(rolerepository.findByName(Usertype.SELLER).get());
+	strRoles.add(Seller);
+	user.setRoles(strRoles);
+	userrep.save(user);
+	System.out.println("that user ad after add seller  "+user);
 
-		return adrepository.save(ad);
+return adrepository.save(ad);
 	}
 
 	@Override
