@@ -14,5 +14,14 @@ public interface UISubscriptionService {
 	public Subscription GetSubscriptionById(Long id);
 
 	public Subscription UpdateSubscription(Subscription sub);
-
+	
+<<<<<<< Updated upstream
+	List<Subscription> GetSubscriptionByTitle(String title);
+	
+	List<Subscription> GetSubscritionByPrice(double price);
+	
+	List<Subscription> GetSubscriptionByPriceAndTitle(String title, Double price);
+=======
+	public Subscription UpgradeUser(Long iduser, Long subscription_id);
+>>>>>>> Stashed changes
 }
