@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +28,7 @@ import tn.dari.spring.enumeration.Typead;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@JsonPropertyOrder({"deliveryManID", "firstName","email", "deliveries" })
 public class DeliveryMan {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,12 +36,8 @@ public class DeliveryMan {
 	private String firstName;
 	private String email;
 	
-	//@JsonBackReference
-
+	
 	@JsonManagedReference(value = "delivery")
-
-	//@JsonManagedReference
-
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "deliveryMan")
 	private Set<Delivery> deliveries;
 }

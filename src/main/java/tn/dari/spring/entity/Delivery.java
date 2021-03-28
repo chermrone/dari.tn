@@ -14,6 +14,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +29,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@JsonPropertyOrder({"deliveryId", "place","status", "cost" })
 public class Delivery implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,15 +39,11 @@ public class Delivery implements Serializable {
 	private double cost;
 	
 	@JsonBackReference(value = "orderUser")
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "deliv")
+	@OneToOne
 	private OrderUser orderUser;
 	
-	//@JsonManagedReference
-
+	
 	@JsonBackReference(value = "delivery")
-
-	//@JsonBackReference
-
 	@ManyToOne
 	DeliveryMan deliveryMan;
 }

@@ -53,4 +53,6 @@ public class SignUpForm {
 	private boolean userState;
 	
 	private Date creationDate;
+	
+	
 }
