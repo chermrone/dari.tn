@@ -60,16 +60,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable().
                 authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
-<<<<<<< HEAD
                 .antMatchers("/dari/subscriptions/all").permitAll()
                 .antMatchers("/dari/subscriptions/find/**").permitAll()
                 .antMatchers("/dari/ads/buyedAdByRegion/**").permitAll()
                 .antMatchers("/dari/ads/buyedAdByRegionandMaxPrice/**").permitAll()
                 .antMatchers("/dari/ads/buyedAdByRegionandMinPrice/**").permitAll()
                 .antMatchers("/dari/ads/all").permitAll()
-
-=======
->>>>>>> parent of ddd9d5f (Merge branch 'master' of https://github.com/chermrone/dari.tn)
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()

@@ -53,24 +53,5 @@ public class SignUpForm {
 	private boolean userState;
 	
 	private Date creationDate;
-<<<<<<< HEAD
-	
-	private Set<Ad> ads;
-	 
-	private Set<Ad> Favorite;
-	
-	private Set<Subscription> subscriptions;
-	 
-	private Set<OrderUser> orders;
-	 
-	private ShoppingCart shoppingCart;
-	
-	private Set<FournitureAd> fournitureAds;
-	
-	 
-	private Set<Appointment> appointments;
-	 
-	private Set<CreditSimulator> creditSimulators;
-=======
->>>>>>> parent of 8822871 (Merge branch 'master' into jihen)
+
 }

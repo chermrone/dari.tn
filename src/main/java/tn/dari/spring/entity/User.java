@@ -100,11 +100,7 @@ public class User implements Serializable {
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<FournitureAd> fournitureAds;
-<<<<<<< HEAD
 	@JsonManagedReference(value = "us")
-=======
-	
->>>>>>> parent of 8822871 (Merge branch 'master' into jihen)
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<Appointment> appointments;
