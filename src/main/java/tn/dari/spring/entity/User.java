@@ -53,8 +53,6 @@ public class User implements Serializable {
 	
 	private int age;
 	
-	private String urlimguser;
-	
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	
@@ -102,21 +100,21 @@ public class User implements Serializable {
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<FournitureAd> fournitureAds;
+<<<<<<< HEAD
 	@JsonManagedReference(value = "us")
+=======
+	
+>>>>>>> parent of 8822871 (Merge branch 'master' into jihen)
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<Appointment> appointments;
-	@JsonManagedReference(value = "landlord")
-	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "landlord")
-	private Set<Appointment> appointment;
 	
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
 	private Set<CreditSimulator> creditSimulators;
 
 	public User(Long idUser, String firstName, String lastName, String userName, String password, int age,
-			String urlimguser, Gender gender, int phoneNumber, String email, int cin, boolean userState,
+			Gender gender, int phoneNumber, String email, int cin, boolean userState,
 			Date creationDate, Set<Ad> ads, Set<Ad> favorite, Set<Subscription> subscriptions, Set<OrderUser> orders,
 			ShoppingCart shoppingCart, Set<Appointment> appointments, Set<CreditSimulator> creditSimulators) {
 		super();
@@ -126,7 +124,6 @@ public class User implements Serializable {
 		this.userName = userName;
 		this.password = password;
 		this.age = age;
-		this.urlimguser = urlimguser;
 		this.gender = gender;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
