@@ -22,6 +22,4 @@ public interface UIuser {
 	public void DeleteUser(Long id);
 	
 	void BanUser(Long id);
-	
-	void UpgradeToPremium(Long id, double price);
 }

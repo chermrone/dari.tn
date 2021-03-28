@@ -1,19 +1,15 @@
 package tn.dari.spring.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tn.dari.spring.entity.Ad;
 import tn.dari.spring.entity.Claim;
-import tn.dari.spring.entity.Role;
-import tn.dari.spring.entity.Subscription;
 import tn.dari.spring.entity.User;
-import tn.dari.spring.enumeration.Usertype;
+
 import tn.dari.spring.exception.UserNotFoundException;
 import tn.dari.spring.repository.UserRepository;
 
@@ -24,9 +20,6 @@ public class UserService implements UIuser {
 	
 	@Autowired
 	AdService adserv;
-	
-	@Autowired
-	SubscriptionService ss;
 
 	@Override
 	public List<User> GetAllUsers() {
@@ -94,27 +87,6 @@ public class UserService implements UIuser {
 			us.setUserState(false);
 			UpdateUser(us);
 		}
-	}
-
-	@Override
-	public void UpgradeToPremium(Long id, double price) {
-		User us= ur.findById(id).get();
-		Set<Role> role=us.getRoles();
-		if(!role.contains("PREMIUM")){
-			Role r=new Role();
-			r.setName(Usertype.PREMIUM);
-			role.add(r);
-			List<Subscription> subs= ss.GetSubscriptionByPriceAndTitle("PREMIUM", price);
-			Subscription s= ss.AddSubscription(subs.get(subs.size()));
-			s.setUs(us);
-			s.setPayed(true);
-			s.setPayingDate(new Date(System.currentTimeMillis()));
-			System.out.println(s.getPayingDate().toString());
-			ss.AddSubscription(s);
-			UpdateUser(us);
-		}
-		
-		
 	}
 
 }
