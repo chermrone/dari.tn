@@ -15,7 +15,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,11 +45,15 @@ public class OrderUser implements Serializable {
 	private int quantity;
 	
 	@JsonManagedReference(value = "orderUser")
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "orderUser")
 	private Delivery deliv;
+	
 	
 	@JsonBackReference
 	@ManyToOne
 	private User us;
+	
+	@OneToOne
+	private ShoppingCart shoppingCart;
 
 }
