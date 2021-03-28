@@ -1,12 +1,17 @@
 package tn.dari.spring.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tn.dari.spring.entity.Role;
 import tn.dari.spring.entity.Subscription;
+import tn.dari.spring.entity.User;
+import tn.dari.spring.enumeration.Usertype;
 import tn.dari.spring.exception.SubscriptionNotFoundException;
+import tn.dari.spring.repository.RoleRepository;
 import tn.dari.spring.repository.SubscriptionRepository;
 
 @Service
@@ -35,8 +40,6 @@ public class SubscriptionService implements UISubscriptionService {
 		return sr.findById(id)
 				.orElseThrow(() -> new SubscriptionNotFoundException("subscription by id= " + id + " was not found"));
 	}
-
-
 
 	@Override
 	public Subscription UpdateSubscription(Subscription sub) {

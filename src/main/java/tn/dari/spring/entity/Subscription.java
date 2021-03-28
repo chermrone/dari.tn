@@ -2,6 +2,7 @@ package tn.dari.spring.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,12 +12,15 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,24 +41,18 @@ public class Subscription implements Serializable {
 	private Long subscriptionId;
 	private String descriptionOffer;
 	private double price;
-	private boolean payed = false;
 	@Enumerated(EnumType.STRING)
 	private SubscriptionType subscriptiontype;
-	@Temporal(TemporalType.DATE)
-	private Date payingDate = null;
-	@Temporal(TemporalType.DATE)
-	private Date duration= null;
 	private boolean validity;
-	@JsonBackReference
-	@ManyToOne
-	private User us;
-	public Subscription(Long subscriptionId, String descriptionOffer, double price, boolean payed, Date payingDate) {
+	private long duration;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "subscription")
+	@JsonManagedReference(value ="subscription")
+	private Set<SubscriptionOrdred> subord;
+	public Subscription(Long subscriptionId, String descriptionOffer, double price) {
 		super();
 		this.subscriptionId = subscriptionId;
 		this.descriptionOffer = descriptionOffer;
 		this.price = price;
-		this.payed = payed;
-		this.payingDate = payingDate;
 	}
 	
 }

@@ -45,7 +45,7 @@ public class SubscriptionController {
 
 	
 	@PostMapping("/add")
-	@PreAuthorize("hasRole('BUYER') or hasRole('ADMIN') or hasRole('SELLER') or hasRole('LANDLORD')")
+	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
 	public ResponseEntity<Subscription>save(@RequestBody Subscription subs){
 		List<Subscription> allsub = ss.GetAllSubscriptions();
 		for (Subscription sub : allsub) {
@@ -60,7 +60,7 @@ public class SubscriptionController {
 
 	
 	@PutMapping("/update")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Subscription> update(@RequestBody Subscription subscription) {
 		List<Subscription> allsub=ss.GetAllSubscriptions();
 		for (Subscription subscription2 : allsub) {
@@ -73,9 +73,10 @@ public class SubscriptionController {
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	  void deleteEmployee(@PathVariable("id") Long id) throws Exception {
 	    ss.DeleteSubscription(id);
 	  }
-
+	
+	
 }
