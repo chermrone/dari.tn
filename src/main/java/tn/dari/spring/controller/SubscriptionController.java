@@ -45,6 +45,7 @@ public class SubscriptionController {
 	// accé à cette methode qu'aprés payement
 	//kinjib el requete mel front lazem njibha bel user fi wostha
 	@PostMapping("/add")
+	@PreAuthorize("hasRole('BUYER') or hasRole('ADMIN') or hasRole('SELLER') or hasRole('LANDLORD')")
 	public ResponseEntity<Subscription>save(@RequestBody Subscription subs){
 		List<Subscription> allsub = ss.GetAllSubscriptions();
 		for (Subscription sub : allsub) {
@@ -74,16 +75,5 @@ public class SubscriptionController {
 	  void deleteEmployee(@PathVariable("id") Long id) throws Exception {
 	    ss.DeleteSubscription(id);
 	  }
-
-	/*
-	 * // l'accée à cette methode doit etre exclusive au admin
-	 * 
-	 * @DeleteMapping("/delete/{id}") public ResponseEntity<String>
-	 * delete(@PathVariable("id") Long id) throws Exception {
-	 * ss.DeleteSubscription(id); if (ss.GetSubscriptionById(id).getSubscriptionId()
-	 * == id) return new ResponseEntity<String>("Subscription deleted",
-	 * HttpStatus.OK); else return new ResponseEntity<String>("Error ",
-	 * HttpStatus.CONFLICT); }
-	 */
 
 }
