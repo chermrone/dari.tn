@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import tn.dari.spring.entity.Role;
 import tn.dari.spring.entity.SubscriptionOrdred;
 import tn.dari.spring.entity.User;
+import tn.dari.spring.enumeration.SubscriptionType;
 import tn.dari.spring.enumeration.Usertype;
 import tn.dari.spring.repository.RoleRepository;
 import tn.dari.spring.repository.SubscriptionOrderRepository;
@@ -23,6 +24,9 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 
 	@Autowired
 	RoleRepository rr;
+	
+	@Autowired
+	SubscriptionService ss;
 
 	@Override
 	public SubscriptionOrdred AddSubscriptionorder(SubscriptionOrdred s) {
@@ -64,9 +68,10 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 				.orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
 		if(!roleuser.contains(r)){
 			roleuser.add(r);
+			userservice.UpdateUser(us);
 		}
-		userservice.UpdateUser(us);
 		s.setUs(us);
+		s.setSubscription(ss.GetSubscriptionBySubscriptionType(SubscriptionType.premium));
 		return sr.save(s);
 	}
 

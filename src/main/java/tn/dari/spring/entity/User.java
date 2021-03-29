@@ -65,7 +65,7 @@ public class User implements Serializable {
 	private int cin;
 	
 	@ToString.Exclude
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 	
@@ -76,16 +76,16 @@ public class User implements Serializable {
 	
 	@JsonManagedReference
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us", fetch = FetchType.EAGER)
 	private Set<Ad> ads;
 	
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<Ad> Favorite;
 	
 	@JsonManagedReference(value="us")
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us", fetch = FetchType.EAGER)
 	private Set<SubscriptionOrdred> subscriptions;
 	
 	//seiiifffff
@@ -103,15 +103,15 @@ public class User implements Serializable {
 	//seiiifffff
      @JsonManagedReference(value = "us")
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us",fetch = FetchType.EAGER)
 	private Set<Appointment> appointments;
 	@JsonManagedReference(value = "landlord")
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "landlord")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "landlord", fetch = FetchType.EAGER)
 	private Set<Appointment> appointment;
 	
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us", fetch = FetchType.EAGER)
 	private Set<CreditSimulator> creditSimulators;
 
 	public User(Long idUser, String firstName, String lastName, String userName, String password, int age,
@@ -142,6 +142,6 @@ public class User implements Serializable {
 	
 	@JsonManagedReference
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us",fetch = FetchType.EAGER)
 	private Set<ImgUser> imguser;
 }

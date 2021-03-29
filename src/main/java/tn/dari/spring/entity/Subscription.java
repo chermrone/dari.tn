@@ -1,7 +1,6 @@
 package tn.dari.spring.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,14 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -45,7 +39,7 @@ public class Subscription implements Serializable {
 	private SubscriptionType subscriptiontype;
 	private boolean validity;
 	private long duration;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "subscription")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "subscription", fetch = FetchType.EAGER)
 	@JsonManagedReference(value ="subscription")
 	private Set<SubscriptionOrdred> subord;
 	public Subscription(Long subscriptionId, String descriptionOffer, double price) {
