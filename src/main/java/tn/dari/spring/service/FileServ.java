@@ -36,13 +36,6 @@ public class FileServ implements UIFileService{
 	public Object saveImg(MultipartFile file,String object,String type) throws Exception {
 Ad adJson = new Ad();
 User UserJson=new User();		
-//		try {
-//			ObjectMapper objectMapper = new ObjectMapper();
-//			adJson = objectMapper.readValue(ad, Ad.class);
-//			System.out.println("Ad json=> objet"+adJson);
-//		} catch (IOException err) {
-//			System.out.printf("Error", err.toString());
-//		}
 try {
 	ObjectMapper objectMapper = new ObjectMapper();
 	UserJson = objectMapper.readValue(object, User.class);

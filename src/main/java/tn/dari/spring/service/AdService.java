@@ -37,10 +37,11 @@ RoleRepository rolerepository;
 
 @Autowired
 UIuser userserv;
+@Autowired
+EmailService email;
 	@Override
 	public Ad save(Ad ad) {
-	//System.out.println("that user ad   "+ad.getUs());
-	User user=ad.getUs();	System.out.println("that user instanciation   "+user);
+	User user=ad.getUs();
 	Set<Role> strRoles = user.getRoles();
 	Role Seller = rolerepository.findByName(Usertype.SELLER).get();
 	System.out.println(rolerepository.findByName(Usertype.SELLER).get());
@@ -48,7 +49,9 @@ UIuser userserv;
 	user.setRoles(strRoles);
 	userrep.save(user);
 	System.out.println("that user ad after add seller  "+user);
-
+	String subject="Confirmation add announcement";
+if(email.sendMail("tuntechdari.tn@gmail.com",user.getEmail(), subject, "your ad has successfully added"))
+	System.out.println("email has successfully  sent");
 return adrepository.save(ad);
 	}
 
