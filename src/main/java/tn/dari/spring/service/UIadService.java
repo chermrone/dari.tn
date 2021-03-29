@@ -7,33 +7,31 @@ import org.springframework.web.bind.annotation.PathVariable;
 import tn.dari.spring.entity.Ad;
 
 public interface UIadService {
-	Ad save(Ad ad);
+	public Ad save(Ad ad);
 
-	String Delete(long id);
+	public String Delete(long id);
 
-	List<Ad> getAll();
+	public List<Ad> getAll();
 
-	Ad getById(long id);
+	public Ad getById(long id);
 	
-	float getBuyedHousesByCity(String city);
+	public float getBuyedHousesByCity(String city);
 	
-	float getBuyedHousesByCityAndMaxprice(String city, double price);
+	public float getBuyedHousesByCityAndMaxprice(String city, double price);
 	
-	float getBuyedHousesByCityAndMinprice(String city, double price);
+	public float getBuyedHousesByCityAndMinprice(String city, double price);
 	
-	float getBuyedHousesByCityInPeriod(String city, int period);
+	public float getBuyedHousesByCityInPeriod(String city, int period);
 	
-	List<String> ordercitiesByBuyingdesc();
+	public List<String> ordercitiesByBuyingdesc();
 	
-	List<String> topfivecities();
+	public List<String> topfivecities();
 
-	Ad BuyedHouse(long id);
+	public Ad BuyedHouse(long id);
 
-	double EstimatedHouse(Ad ad);
+	public double EstimatedHouse(Ad ad);
 
-	List<Ad> GetAdsOwned();
+	public List<Ad> GetAdsOwned();
 
-	Ad modify(Ad ad);
-
-
+	public Ad modify(Ad ad);
 }

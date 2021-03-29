@@ -6,14 +6,14 @@ import tn.dari.spring.entity.Claim;
 
 public interface UIclaim {
 
-	List<Claim> GetAllClaims();
+	public List<Claim> GetAllClaims();
 
-	Claim GetClaimById(Long clmid);
+	public Claim GetClaimById(Long clmid);
 
-	Claim addClaim(Claim c);
+	public Claim addClaim(Claim c);
 
-	Claim updateClaim(Claim c);
+	public Claim updateClaim(Claim c);
 
-	void DeleteClaim(Long clmid);
+	public void DeleteClaim(Long clmid);
 
 }
