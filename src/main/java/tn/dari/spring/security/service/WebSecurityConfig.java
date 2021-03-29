@@ -3,6 +3,7 @@ package tn.dari.spring.security.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -32,6 +33,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public JwtAuthTokenFilter authenticationJwtTokenFilter() {
     	System.out.println("d5al lel jwtauthfilter bean");
         return new JwtAuthTokenFilter();
+    }
+    
+    @Bean
+    public JavaMailSenderImpl mailSender() {
+        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+
+        javaMailSender.setProtocol("SMTP");
+        javaMailSender.setHost("127.0.0.1");
+        javaMailSender.setPort(25);
+
+        return javaMailSender;
     }
 
     @Override
@@ -70,7 +82,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+				.rememberMe()
+					.key("uniqueAndSecret")
+					.rememberMeCookieName("javasampleapproach-remember-me")
+					.tokenValiditySeconds(24 * 60 * 60)
+			.and()
+				.logout()
+				.deleteCookies("JSESSIONID")
+				.permitAll();;
         
         /*http.csrf().disable().authorizeRequests().antMatchers("/api/auth/**").permitAll().anyRequest()
 		.authenticated().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);*/

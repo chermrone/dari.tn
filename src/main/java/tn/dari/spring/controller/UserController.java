@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import tn.dari.spring.entity.Ad;
@@ -21,6 +23,7 @@ import tn.dari.spring.entity.Claim;
 import tn.dari.spring.entity.User;
 import tn.dari.spring.service.UIadService;
 import tn.dari.spring.service.UIuser;
+import tn.dari.spring.service.UserService;
 
 @CrossOrigin("*")
 @RestController
@@ -29,6 +32,10 @@ public class UserController {
 	@Autowired
 	private UIuser user;
 
+	@Autowired
+	private UserService userService;
+	@Autowired
+	PasswordEncoder encoder;
 	@Autowired
 	private UIadService adserv;
 
@@ -85,4 +92,21 @@ public class UserController {
 		} else
 			return new ResponseEntity<String>("error", HttpStatus.NOT_MODIFIED);
 	}
+	@PostMapping("/forgot-password")
+	public String forgotPassword(@RequestParam String email) {
+
+		String response = userService.forgotPassword(email);
+
+		if (!response.startsWith("Invalid")) {
+			response = "http://localhost:8082/dari/Users/reset-password?token=" + response;
+		}
+		return response;
+	}
+	@PutMapping("/reset-password")
+	public String resetPassword(@RequestParam String token,
+			@RequestParam String password) {
+
+		return userService.resetPassword(token, password);
+	}
+
 }
