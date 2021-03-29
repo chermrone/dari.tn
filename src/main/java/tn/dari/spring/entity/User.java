@@ -1,11 +1,13 @@
 package tn.dari.spring.entity;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -52,7 +54,11 @@ public class User implements Serializable {
 	private String password;
 	
 	private int age;
+	private String token;
+	@Column(columnDefinition = "TIMESTAMP")
+	private LocalDateTime tokenCreationDate;
 	
+
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	
@@ -120,6 +126,7 @@ public class User implements Serializable {
 		this.userName = userName;
 		this.password = password;
 		this.age = age;
+
 		this.gender = gender;
 		this.phoneNumber = phoneNumber;
 		this.email = email;

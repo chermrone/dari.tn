@@ -1,6 +1,7 @@
 package tn.dari.spring.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import tn.dari.spring.entity.User;
 
@@ -22,4 +23,6 @@ public interface UIuser {
 	public void DeleteUser(Long id);
 	
 	void BanUser(Long id);
+	
+	
 }
