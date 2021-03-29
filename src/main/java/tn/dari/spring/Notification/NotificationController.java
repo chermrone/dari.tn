@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class NotificationController {
 	  // mapped to handle chat messages to the /sendmsg destination
     @MessageMapping("/sendmsg")
-    // the return value is broadcast to all subscribers of /chat/messages
+    // the return value is broadcast to all subscribers of /notification/messages
     @SendTo("/notification/messages")
     public Notification chat(Notification message) throws Exception {
         Thread.sleep(1000); // simulated delay

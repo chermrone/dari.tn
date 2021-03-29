@@ -51,7 +51,15 @@ public class AdService implements UIadService {
 		userAd = userserv.GetUserByUserName(userAuthenticated);
 		ad.setUs(userAd);
 		User user = ad.getUs();
-
+		// check if he is premium or not :max 10 post ad if he is not
+		if (!user.getRoles().contains(rolerepository.findByName(Usertype.PREMIUM).get())) {
+			System.out.println("user isn't premium");
+			// search for ad of the after if > 10 out
+			Set<Ad> adofUser = user.getAds();
+			System.out.println("size" + adofUser.size());
+			if (adofUser.size() >= 10)
+				return null;
+		}
 		//// add role SELLER
 		Set<Role> strRoles = user.getRoles();
 		Role Seller = rolerepository.findByName(Usertype.SELLER).get();
@@ -72,6 +80,23 @@ public class AdService implements UIadService {
 	public String Delete(long id) {
 		adrepository.deleteById(id);
 		return "deleted successfully";
+	}
+
+	@Override
+	public Ad modify(Ad ad) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String userAuthenticated = auth.getName();
+		System.out.println(userAuthenticated);
+		User userAd = new User();
+		userAd = userserv.GetUserByUserName(userAuthenticated);
+		ad.setUs(userAd);
+		User user = ad.getUs();
+		System.out.println(user);
+		String subject = "Modify announcement";
+		if (email.sendMail("tuntechdari.tn@gmail.com", user.getEmail(), subject,
+				"your ad has been successfully modified"))
+			System.out.println("email has successfully  sent");
+		return adrepository.save(ad);
 	}
 
 	@Override
@@ -414,20 +439,4 @@ public class AdService implements UIadService {
 		return AdList;
 	}
 
-	@Override
-	public Ad modify(Ad ad) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String userAuthenticated = auth.getName();
-		System.out.println(userAuthenticated);
-		User userAd = new User();
-		userAd = userserv.GetUserByUserName(userAuthenticated);
-		ad.setUs(userAd);
-		User user = ad.getUs();
-		System.out.println(user);
-		String subject = "Modify announcement";
-		if (email.sendMail("tuntechdari.tn@gmail.com", user.getEmail(), subject,
-				"your ad has been successfully modified"))
-			System.out.println("email has successfully  sent");
-		return adrepository.save(ad);
-	}
 }
