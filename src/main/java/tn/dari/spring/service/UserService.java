@@ -137,7 +137,7 @@ public class UserService implements UIuser {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(password);
         user.setPassword(encodedPassword);
-		user.setPassword(password);
+		
 		user.setToken(null);
 		user.setTokenCreationDate(null);
 

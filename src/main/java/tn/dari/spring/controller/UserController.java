@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,6 +41,7 @@ public class UserController {
 	private UIadService adserv;
 
 	@GetMapping("/all")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<List<User>> getAllUser() {
 		System.out.println("reception de la requete");
 		List<User> use = user.GetAllUsers();
@@ -47,12 +49,14 @@ public class UserController {
 	}
 
 	@GetMapping("/find/{id}")
+
 	public ResponseEntity<User> Getbyid(@PathVariable("id") Long id) {
 		User use = user.GetUserById(id);
 		return new ResponseEntity<User>(use, HttpStatus.OK);
 	}
 
 	@GetMapping("/findbyfirst/{firstname}")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<User> getUserByFirstName(@PathVariable String firstname) {
 		System.out.println("reception de la requete");
 		User use = user.GetUserByFirstName(firstname);
@@ -60,29 +64,34 @@ public class UserController {
 	}
 
 	@GetMapping("/findbylast/{lastname}")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<User> Getbylastname(@PathVariable String lastname) {
 		User use = user.GetUserByLastName(lastname);
 		return new ResponseEntity<User>(use, HttpStatus.OK);
 	}
 
 	@GetMapping("/findbyusername/{username}")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<User> Getbyusername(@PathVariable String username) {
 		User use = user.GetUserByUserName(username);
 		return new ResponseEntity<User>(use, HttpStatus.OK);
 	}
 
 	@PutMapping("/update")
+	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
 	public ResponseEntity<User> update(@RequestBody User u) {
 		User us = user.UpdateUser(u);
 		return new ResponseEntity<User>(us, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/delete/{id}")
+	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
 	void deleteEmployee(@PathVariable("id") Long id) {
 		user.DeleteUser(id);
 	}
 
 	@PutMapping("/ban/{id}")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	ResponseEntity<String> UserBan(@PathVariable("id") Long id) {
 		User us = user.GetUserById(id);
 		user.BanUser(id);
