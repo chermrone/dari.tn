@@ -41,7 +41,15 @@ UIuser userserv;
 EmailService email;
 	@Override
 	public Ad save(Ad ad) {
-	User user=ad.getUs();
+		//enter the user connected to ad
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String userAuthenticated=auth.getName();
+		System.out.println(userAuthenticated);
+		User userAd=new User();
+		userAd=userserv.GetUserByUserName(userAuthenticated);
+		ad.setUs(userAd);
+	User user=ad.getUs();System.out.println(user);
+	//// add role SELLER
 	Set<Role> strRoles = user.getRoles();
 	Role Seller = rolerepository.findByName(Usertype.SELLER).get();
 	System.out.println(rolerepository.findByName(Usertype.SELLER).get());
@@ -50,7 +58,7 @@ EmailService email;
 	userrep.save(user);
 	System.out.println("that user ad after add seller  "+user);
 	String subject="Confirmation add announcement";
-if(email.sendMail("tuntechdari.tn@gmail.com",user.getEmail(), subject, "your ad has successfully added"))
+if(email.sendMail("tuntechdari.tn@gmail.com",user.getEmail(), subject, "your ad has been successfully added"))
 	System.out.println("email has successfully  sent");
 return adrepository.save(ad);
 	}
@@ -58,7 +66,6 @@ return adrepository.save(ad);
 	@Override
 	public Ad modify(long id) {
 		Ad add = adrepository.findById(id).get();
-
 		return adrepository.save(add);
 	}
 
