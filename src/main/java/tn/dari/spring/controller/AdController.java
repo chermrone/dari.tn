@@ -53,9 +53,7 @@ public class AdController {
 	
 
 	@PostMapping("/add/ad")
-	//@PreAuthorize("hasRole('USER')or hasRole('ADMIN')")
 	public ResponseEntity<Ad> saveAd(@RequestBody Ad ad) {
-		System.out.println("hello");
 		Ad AdOne = Adserv.save(ad);
 		return new ResponseEntity<Ad>(AdOne, HttpStatus.CREATED);
 	}
