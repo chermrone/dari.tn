@@ -33,5 +33,7 @@ public interface UIadService {
 
 	double EstimatedHouse(Ad ad);
 
+	List<Ad> GetAdsOwned();
+
 
 }

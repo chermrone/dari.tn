@@ -10,6 +10,8 @@ import tn.dari.spring.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import tn.dari.spring.entity.Ad;
@@ -32,6 +34,9 @@ public class AdService implements UIadService {
 UserRepository userrep;
 @Autowired
 RoleRepository rolerepository;
+
+@Autowired
+UIuser userserv;
 	@Override
 	public Ad save(Ad ad) {
 	//System.out.println("that user ad   "+ad.getUs());
@@ -372,4 +377,19 @@ return adrepository.save(ad);
 
 	
 	
+	
+	@Override
+	public List<Ad> GetAdsOwned() {
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	String userAuthenticated=auth.getName();
+	System.out.println(userAuthenticated);
+	User userAd=new User();
+	userAd=userserv.GetUserByUserName(userAuthenticated);
+	System.out.println(userAd);
+	Set<Ad>ads=userAd.getAds();
+	System.out.println(ads);
+	   List<Ad> AdList = new ArrayList<>(ads);
+
+	return AdList;
+	}
 }

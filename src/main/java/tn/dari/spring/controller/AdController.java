@@ -1,10 +1,14 @@
 package tn.dari.spring.controller;
 
 import java.util.List;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tn.dari.spring.entity.*;
 
 import tn.dari.spring.service.UIadService;
+import tn.dari.spring.service.UIuser;
 
 @RestController
 @CrossOrigin("*")
@@ -38,17 +43,18 @@ public class AdController {
 		Ad ad = Adserv.getById(id);
 		return new ResponseEntity<Ad>(ad, HttpStatus.OK);
 	}
+	@GetMapping("/adowned")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
+
+	public ResponseEntity<List<Ad>> getAdsConnected() {
+		
+		return new ResponseEntity<List<Ad>>(Adserv.GetAdsOwned(), HttpStatus.OK);
+	}
+	
 
 	@PostMapping("/add/ad")
 	//@PreAuthorize("hasRole('USER')or hasRole('ADMIN')")
 	public ResponseEntity<Ad> saveAd(@RequestBody Ad ad) {
-		/*
-		 * List<Ad> ads = Adserv.getAll(); System.out.println(ads); for (Ad
-		 * announce : ads) { if (ad.getAdId().equals(announce.getAdId())) {
-		 * return new ResponseEntity<Ad>(HttpStatus.NOT_ACCEPTABLE); }
-		 * 
-		 * }
-		 */
 		System.out.println("hello");
 		Ad AdOne = Adserv.save(ad);
 		return new ResponseEntity<Ad>(AdOne, HttpStatus.CREATED);
