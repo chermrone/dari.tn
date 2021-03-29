@@ -53,6 +53,7 @@ public class AdController {
 		Ad AdOne = Adserv.save(ad);
 		return new ResponseEntity<Ad>(AdOne, HttpStatus.CREATED);
 	}
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
 
 	@PutMapping("/update/ad")
 
@@ -63,7 +64,7 @@ public class AdController {
 		} else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
-
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
 	@DeleteMapping("/delete/{id}")
 	public void deleteEmployee(@PathVariable("id") Long id) {
 		Adserv.Delete(id);
@@ -108,7 +109,7 @@ public class AdController {
 	}
 
 	@GetMapping("topfiveregionsbuy")
-	public ResponseEntity<String> GetTopFiveRegionBuy() {
+	public ResponseEntity<String> GetTopFiveRegionBuy() { 
 		List<String> topcities = Adserv.topfivecities();
 		return new ResponseEntity<String>(topcities.toString(), HttpStatus.OK);
 
@@ -120,7 +121,7 @@ public class AdController {
 		return new ResponseEntity<String>(topcities.toString(), HttpStatus.OK);
 	}
 	
-	
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
 	@PostMapping("/change/buyed/{id}")
 	public ResponseEntity<Ad> BuyedAd(@PathVariable("id") long id) throws Exception {
 		Ad AdOne = Adserv.BuyedHouse(id);
