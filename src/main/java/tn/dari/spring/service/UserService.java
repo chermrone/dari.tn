@@ -98,7 +98,7 @@ public class UserService implements UIuser {
 			UpdateUser(us);
 		}
 	}
-	public String forgotPassword(String email) {
+	public String forgotPassword(String email,String password) {
 
 		Optional<User> userOptional = Optional
 				.ofNullable(ur.findByEmail(email));
@@ -108,7 +108,9 @@ public class UserService implements UIuser {
 		}
 
 		User user = userOptional.get();
-		
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(password);
+        user.setPassword(encodedPassword);
 		user.setToken(generateToken());
 		user.setTokenCreationDate(LocalDateTime.now());
 
@@ -117,7 +119,8 @@ public class UserService implements UIuser {
 		return user.getToken();
 	}
 
-	public String resetPassword(String token, String password){
+	public String resetPassword(String token, String password) {
+
 		Optional<User> userOptional = Optional
 				.ofNullable(ur.findByToken(token));
 
@@ -133,10 +136,8 @@ public class UserService implements UIuser {
 		}
 
 		User user = userOptional.get();
-		
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(password);
-        user.setPassword(encodedPassword);
+
+		user.setPassword(password);
 		user.setToken(null);
 		user.setTokenCreationDate(null);
 
@@ -171,28 +172,4 @@ public class UserService implements UIuser {
 
 		return diff.toMinutes() >= EXPIRE_TOKEN_AFTER_MINUTES;
 	}
-
-	
-	public void updateResetPasswordToken(String token, String email) throws UserNotFoundException {
-        User customer = ur.findByEmail(email);
-        if (customer != null) {
-            customer.setToken(token);
-          ur.save(customer);
-        } else {
-            throw new UserNotFoundException("Could not find any customer with the email " + email);
-        }
-    }
-     
-    public User getByResetPasswordToken(String token) {
-        return ur.findByToken(token);
-    }
-     
-    public void updatePassword(User customer, String newPassword) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(newPassword);
-        customer.setPassword(encodedPassword);
-         
-        customer.setToken(null);
-        ur.save(customer);
-    }
 }
