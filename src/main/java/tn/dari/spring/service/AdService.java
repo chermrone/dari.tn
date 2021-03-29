@@ -30,43 +30,43 @@ public class AdService implements UIadService {
 
 	@Autowired
 	AdRepository adrepository;
-@Autowired 
-UserRepository userrep;
-@Autowired
-RoleRepository rolerepository;
+	@Autowired
+	UserRepository userrep;
+	@Autowired
+	RoleRepository rolerepository;
 
-@Autowired
-UIuser userserv;
-@Autowired
-EmailService email;
+	@Autowired
+	UIuser userserv;
+	@Autowired
+	EmailService email;
+
 	@Override
 	public Ad save(Ad ad) {
-		//enter the user connected to ad
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String userAuthenticated=auth.getName();
-		System.out.println(userAuthenticated);
-		User userAd=new User();
-		userAd=userserv.GetUserByUserName(userAuthenticated);
-		ad.setUs(userAd);
-	User user=ad.getUs();System.out.println(user);
-	//// add role SELLER
-	Set<Role> strRoles = user.getRoles();
-	Role Seller = rolerepository.findByName(Usertype.SELLER).get();
-	System.out.println(rolerepository.findByName(Usertype.SELLER).get());
-	strRoles.add(Seller);
-	user.setRoles(strRoles);
-	userrep.save(user);
-	System.out.println("that user ad after add seller  "+user);
-	String subject="Confirmation add announcement";
-if(email.sendMail("tuntechdari.tn@gmail.com",user.getEmail(), subject, "your ad has been successfully added"))
-	System.out.println("email has successfully  sent");
-return adrepository.save(ad);
-	}
 
-	@Override
-	public Ad modify(long id) {
-		Ad add = adrepository.findById(id).get();
-		return adrepository.save(add);
+		// enter the user connected to ad
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String userAuthenticated = auth.getName();
+		System.out.println(userAuthenticated);
+		User userAd = new User();
+		userAd = userserv.GetUserByUserName(userAuthenticated);
+		ad.setUs(userAd);
+		User user = ad.getUs();
+		System.out.println(user);
+
+		//// add role SELLER
+		Set<Role> strRoles = user.getRoles();
+		Role Seller = rolerepository.findByName(Usertype.SELLER).get();
+		System.out.println(rolerepository.findByName(Usertype.SELLER).get());
+		strRoles.add(Seller);
+		user.setRoles(strRoles);
+		userrep.save(user);
+		System.out.println("that user ad after add seller  " + user);
+
+		// send mail
+		String subject = "Confirmation add announcement";
+		if (email.sendMail("tuntechdari.tn@gmail.com", user.getEmail(), subject, "your ad has been successfully added"))
+			System.out.println("email has successfully  sent");
+		return adrepository.save(ad);
 	}
 
 	@Override
@@ -98,13 +98,11 @@ return adrepository.save(ad);
 
 	@Override
 	public float getBuyedHousesByCityAndMaxprice(String city, double price) {
-		// TODO Auto-generated method stub
 		return adrepository.retrieveSellsAdsByCityMaxPrice(city, price);
 	}
 
 	@Override
 	public float getBuyedHousesByCityInPeriod(String city, int period) {
-		// TODO Auto-generated method stub
 		return adrepository.retrieveSellsAdsInPeriod(city, period);
 	}
 
@@ -164,7 +162,8 @@ return adrepository.save(ad);
 
 	@Override
 	public double EstimatedHouse(Ad ad) {
-		double RentEstimatePrice=ad.getNumbreOfRooms();System.out.println(RentEstimatePrice);
+		double RentEstimatePrice = ad.getNumbreOfRooms();
+		System.out.println(RentEstimatePrice);
 		double SellEstimatePrice = ad.getArea();
 		String[] NorthE = { "bizerte", "tunis", "ariana", "manouba", "ben arous", "nabeul" };
 		String[] NorthW = { "beja", "jandouba", "kef", "siliana", "zaghouan" };
@@ -173,233 +172,263 @@ return adrepository.save(ad);
 
 		String[] SouthE = { "sfax", "gabes", "mednine", "jandouba" };
 		String[] SouthW = { "tozeur", "gafsa", "gbelli", "tataouine" };
-		
-		
-		///Case it is a selling house
+
+		/// Case it is a selling house
 		///////////////// Case it is a terrain
-		if(ad.getTypead().equals(Typead.SELL))
-		{if (ad.getType().equals(TypeBatiment.ground)) {
-			System.out.println("ground");
-			for (String city : NorthE) {
-				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 1000;
-				}
-
-			}
-
-			for (String city : NorthW) {
-				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 300;
-				}
-			}
-
-			for (String city : MiddleE) {
-				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 1000;
-				}
-			}
-
-			for (String city : MiddleW) {
-				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 200;
-				}
-			}
-			for (String city : SouthE) {
-				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 500;
-				}
-			}
-
-			for (String city : SouthW) {
-				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 100;
-				}
-
-			}
-
-		}
-
-		//////////// :::::case it is a apartment
-
-		if (ad.getType().equals(TypeBatiment.apartment)) {
-			System.out.println("apartment");
-			SellEstimatePrice = ad.getBuilda();
-			System.out.println(SellEstimatePrice);
-
-		List<String> TopFive=topfivecities();
-			for (String city : NorthE) {
-				if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
-					SellEstimatePrice *= 3500;
-				}
-				else if(city.equals(ad.getCity().toLowerCase()))
-					SellEstimatePrice*=2000;
-
-			}
-
-			for (String city : NorthW) {
-				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 2000;
-				}
-			}
-
-			for (String city : MiddleE) {
-				if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
-					SellEstimatePrice *= 3000;}
-					else if (city.equals(ad.getCity().toLowerCase()))
-						SellEstimatePrice*=2000;
-				}
-
-			for (String city : MiddleW) {
-				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 1500;
-				}
-			}
-			for (String city : SouthE) {
-				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 1200;
-				}
-			}
-
-			for (String city : SouthW) {
-				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice *= 1000;
-				}
-
-			}
-			SellEstimatePrice+=SellEstimatePrice*0.10*ad.getNumbreOfRooms();
-
-		}
-		////////////////////: case house 
-		if (ad.getType().equals(TypeBatiment.house)) {
-			System.out.println("house");	
-			System.out.println(ad.getArea()-ad.getBuilda());
-		List<String> TopFive=topfivecities();
-		SellEstimatePrice=0;
-			for (String city : NorthE) {
-				if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
-					SellEstimatePrice = 3500*(ad.getBuilda())+1000*(ad.getArea()-ad.getBuilda());
-					System.out.println(ad.getBuilda());
-					System.out.println(ad.getArea()-ad.getBuilda());
-				}
-				else if(city.equals(ad.getCity().toLowerCase()))
-					SellEstimatePrice = 2000*ad.getBuilda()+1000*(ad.getArea()-ad.getBuilda());
-			}
-
-			for (String city : NorthW) {
-				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice = 2000*ad.getBuilda()+300*(ad.getArea()-ad.getBuilda());				}
-			}
-
-			for (String city : MiddleE) {
-				if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
-					SellEstimatePrice = 3000*ad.getBuilda()+1000*(ad.getArea()-ad.getBuilda());					}
-					else if (city.equals(ad.getCity().toLowerCase()))
-						SellEstimatePrice = 2000*ad.getBuilda()+1000*(ad.getArea()-ad.getBuilda());				}
-
-			for (String city : MiddleW) {
-				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice = 1500*ad.getBuilda()+200*(ad.getArea()-ad.getBuilda());				}
-			}
-			for (String city : SouthE) {
-				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice = 1200*ad.getBuilda()+500*(ad.getArea()-ad.getBuilda());				}
-			}
-
-			for (String city : SouthW) {
-				if (city.equals(ad.getCity().toLowerCase())) {
-					SellEstimatePrice = 1000*ad.getBuilda()+100*(ad.getArea()-ad.getBuilda());				}
-
-			}
-			
-			SellEstimatePrice+=SellEstimatePrice*0.10*ad.getNumbreOfRooms();
-
-		}
-		return SellEstimatePrice;
-	}	////////////////case a rent house
-	if(ad.getTypead().equals(Typead.RENT))
-	{System.out.println(RentEstimatePrice);
-	List<String> TopFive=topfivecities();
-	if((int)RentEstimatePrice==0) RentEstimatePrice=1;
-	else RentEstimatePrice++;
-		for (String city : NorthE) {
-			if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
-				if (RentEstimatePrice==1)RentEstimatePrice *= 400;
-				else RentEstimatePrice *=290;
-			}
-			else if(city.equals(ad.getCity().toLowerCase()))
-				{
-			if (RentEstimatePrice==1)RentEstimatePrice *= 350;
-			else RentEstimatePrice *=230;}
-		}
-
-		for (String city : NorthW) {
-			if (city.equals(ad.getCity().toLowerCase())) {
-				
-				if (RentEstimatePrice==1)RentEstimatePrice *= 250;
-				else RentEstimatePrice *=150;
-			}
-		}
-
-		for (String city : MiddleE) {
-			if (city.equals(ad.getCity().toLowerCase())&&TopFive.contains(city)) {
-
-				if (RentEstimatePrice==1)RentEstimatePrice *= 380;
-				else RentEstimatePrice *=270;
-				
-				}
-				else if (city.equals(ad.getCity().toLowerCase()))
-					{
-					if (RentEstimatePrice==1)RentEstimatePrice *= 300;
-					else RentEstimatePrice *=200;
+		if (ad.getTypead().equals(Typead.SELL)) {
+			if (ad.getType().equals(TypeBatiment.ground)) {
+				System.out.println("ground");
+				for (String city : NorthE) {
+					if (city.equals(ad.getCity().toLowerCase())) {
+						SellEstimatePrice *= 1000;
 					}
-					
+
+				}
+
+				for (String city : NorthW) {
+					if (city.equals(ad.getCity().toLowerCase())) {
+						SellEstimatePrice *= 300;
+					}
+				}
+
+				for (String city : MiddleE) {
+					if (city.equals(ad.getCity().toLowerCase())) {
+						SellEstimatePrice *= 1000;
+					}
+				}
+
+				for (String city : MiddleW) {
+					if (city.equals(ad.getCity().toLowerCase())) {
+						SellEstimatePrice *= 200;
+					}
+				}
+				for (String city : SouthE) {
+					if (city.equals(ad.getCity().toLowerCase())) {
+						SellEstimatePrice *= 500;
+					}
+				}
+
+				for (String city : SouthW) {
+					if (city.equals(ad.getCity().toLowerCase())) {
+						SellEstimatePrice *= 100;
+					}
+
+				}
+
 			}
 
-		for (String city : MiddleW) {
-			if (city.equals(ad.getCity().toLowerCase())) {
-				if (RentEstimatePrice==1)RentEstimatePrice *= 250;
-				else RentEstimatePrice *=130;
+			//////////// :::::case it is a apartment
+
+			if (ad.getType().equals(TypeBatiment.apartment)) {
+				System.out.println("apartment");
+				SellEstimatePrice = ad.getBuilda();
+				System.out.println(SellEstimatePrice);
+
+				List<String> TopFive = topfivecities();
+				for (String city : NorthE) {
+					if (city.equals(ad.getCity().toLowerCase()) && TopFive.contains(city)) {
+						SellEstimatePrice *= 3500;
+					} else if (city.equals(ad.getCity().toLowerCase()))
+						SellEstimatePrice *= 2000;
+
+				}
+
+				for (String city : NorthW) {
+					if (city.equals(ad.getCity().toLowerCase())) {
+						SellEstimatePrice *= 2000;
+					}
+				}
+
+				for (String city : MiddleE) {
+					if (city.equals(ad.getCity().toLowerCase()) && TopFive.contains(city)) {
+						SellEstimatePrice *= 3000;
+					} else if (city.equals(ad.getCity().toLowerCase()))
+						SellEstimatePrice *= 2000;
+				}
+
+				for (String city : MiddleW) {
+					if (city.equals(ad.getCity().toLowerCase())) {
+						SellEstimatePrice *= 1500;
+					}
+				}
+				for (String city : SouthE) {
+					if (city.equals(ad.getCity().toLowerCase())) {
+						SellEstimatePrice *= 1200;
+					}
+				}
+
+				for (String city : SouthW) {
+					if (city.equals(ad.getCity().toLowerCase())) {
+						SellEstimatePrice *= 1000;
+					}
+
+				}
+				SellEstimatePrice += SellEstimatePrice * 0.10 * ad.getNumbreOfRooms();
 
 			}
+			//////////////////// : case house
+			if (ad.getType().equals(TypeBatiment.house)) {
+				System.out.println("house");
+				System.out.println(ad.getArea() - ad.getBuilda());
+				List<String> TopFive = topfivecities();
+				SellEstimatePrice = 0;
+				for (String city : NorthE) {
+					if (city.equals(ad.getCity().toLowerCase()) && TopFive.contains(city)) {
+						SellEstimatePrice = 3500 * (ad.getBuilda()) + 1000 * (ad.getArea() - ad.getBuilda());
+						System.out.println(ad.getBuilda());
+						System.out.println(ad.getArea() - ad.getBuilda());
+					} else if (city.equals(ad.getCity().toLowerCase()))
+						SellEstimatePrice = 2000 * ad.getBuilda() + 1000 * (ad.getArea() - ad.getBuilda());
+				}
+
+				for (String city : NorthW) {
+					if (city.equals(ad.getCity().toLowerCase())) {
+						SellEstimatePrice = 2000 * ad.getBuilda() + 300 * (ad.getArea() - ad.getBuilda());
+					}
+				}
+
+				for (String city : MiddleE) {
+					if (city.equals(ad.getCity().toLowerCase()) && TopFive.contains(city)) {
+						SellEstimatePrice = 3000 * ad.getBuilda() + 1000 * (ad.getArea() - ad.getBuilda());
+					} else if (city.equals(ad.getCity().toLowerCase()))
+						SellEstimatePrice = 2000 * ad.getBuilda() + 1000 * (ad.getArea() - ad.getBuilda());
+				}
+
+				for (String city : MiddleW) {
+					if (city.equals(ad.getCity().toLowerCase())) {
+						SellEstimatePrice = 1500 * ad.getBuilda() + 200 * (ad.getArea() - ad.getBuilda());
+					}
+				}
+				for (String city : SouthE) {
+					if (city.equals(ad.getCity().toLowerCase())) {
+						SellEstimatePrice = 1200 * ad.getBuilda() + 500 * (ad.getArea() - ad.getBuilda());
+					}
+				}
+
+				for (String city : SouthW) {
+					if (city.equals(ad.getCity().toLowerCase())) {
+						SellEstimatePrice = 1000 * ad.getBuilda() + 100 * (ad.getArea() - ad.getBuilda());
+					}
+
+				}
+
+				SellEstimatePrice += SellEstimatePrice * 0.10 * ad.getNumbreOfRooms();
+
+			}
+			return SellEstimatePrice;
+		} //////////////// case a rent house
+		if (ad.getTypead().equals(Typead.RENT)) {
+			System.out.println(RentEstimatePrice);
+			List<String> TopFive = topfivecities();
+			if ((int) RentEstimatePrice == 0)
+				RentEstimatePrice = 1;
+			else
+				RentEstimatePrice++;
+			for (String city : NorthE) {
+				if (city.equals(ad.getCity().toLowerCase()) && TopFive.contains(city)) {
+					if (RentEstimatePrice == 1)
+						RentEstimatePrice *= 400;
+					else
+						RentEstimatePrice *= 290;
+				} else if (city.equals(ad.getCity().toLowerCase())) {
+					if (RentEstimatePrice == 1)
+						RentEstimatePrice *= 350;
+					else
+						RentEstimatePrice *= 230;
+				}
+			}
+
+			for (String city : NorthW) {
+				if (city.equals(ad.getCity().toLowerCase())) {
+
+					if (RentEstimatePrice == 1)
+						RentEstimatePrice *= 250;
+					else
+						RentEstimatePrice *= 150;
+				}
+			}
+
+			for (String city : MiddleE) {
+				if (city.equals(ad.getCity().toLowerCase()) && TopFive.contains(city)) {
+
+					if (RentEstimatePrice == 1)
+						RentEstimatePrice *= 380;
+					else
+						RentEstimatePrice *= 270;
+
+				} else if (city.equals(ad.getCity().toLowerCase())) {
+					if (RentEstimatePrice == 1)
+						RentEstimatePrice *= 300;
+					else
+						RentEstimatePrice *= 200;
+				}
+
+			}
+
+			for (String city : MiddleW) {
+				if (city.equals(ad.getCity().toLowerCase())) {
+					if (RentEstimatePrice == 1)
+						RentEstimatePrice *= 250;
+					else
+						RentEstimatePrice *= 130;
+
+				}
+			}
+			for (String city : SouthE) {
+				if (city.equals(ad.getCity().toLowerCase())) {
+					if (RentEstimatePrice == 1)
+						RentEstimatePrice *= 150;
+					else
+						RentEstimatePrice *= 100;
+
+				}
+			}
+
+			for (String city : SouthW) {
+				if (city.equals(ad.getCity().toLowerCase())) {
+					if (RentEstimatePrice == 1)
+						RentEstimatePrice *= 150;
+					else
+						RentEstimatePrice *= 50;
+
+				}
+
+			}
+			return RentEstimatePrice;
+
 		}
-		for (String city : SouthE) {
-			if (city.equals(ad.getCity().toLowerCase())) {
-				if (RentEstimatePrice==1)RentEstimatePrice *= 150;
-				else RentEstimatePrice *=100;
-				
-			}
-		}
-
-		for (String city : SouthW) {
-			if (city.equals(ad.getCity().toLowerCase())) {
-				if (RentEstimatePrice==1)RentEstimatePrice *= 150;
-				else RentEstimatePrice *=50;
-				
-			}
-
-		}
-		return RentEstimatePrice;
-
-		
+		return 0;
 	}
-	return 0;
-	}
 
-	
-	
-	
 	@Override
 	public List<Ad> GetAdsOwned() {
-	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	String userAuthenticated=auth.getName();
-	System.out.println(userAuthenticated);
-	User userAd=new User();
-	userAd=userserv.GetUserByUserName(userAuthenticated);
-	System.out.println(userAd);
-	Set<Ad>ads=userAd.getAds();
-	System.out.println(ads);
-	   List<Ad> AdList = new ArrayList<>(ads);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String userAuthenticated = auth.getName();
+		System.out.println(userAuthenticated);
+		User userAd = new User();
+		userAd = userserv.GetUserByUserName(userAuthenticated);
+		System.out.println(userAd);
+		Set<Ad> ads = userAd.getAds();
+		System.out.println(ads);
+		List<Ad> AdList = new ArrayList<>(ads);
 
-	return AdList;
+		return AdList;
+	}
+
+	@Override
+	public Ad modify(Ad ad) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String userAuthenticated = auth.getName();
+		System.out.println(userAuthenticated);
+		User userAd = new User();
+		userAd = userserv.GetUserByUserName(userAuthenticated);
+		ad.setUs(userAd);
+		User user = ad.getUs();
+		System.out.println(user);
+		String subject = "Modify announcement";
+		if (email.sendMail("tuntechdari.tn@gmail.com", user.getEmail(), subject,
+				"your ad has been successfully modified"))
+			System.out.println("email has successfully  sent");
+		return adrepository.save(ad);
 	}
 }

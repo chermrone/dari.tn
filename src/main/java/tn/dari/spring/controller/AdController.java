@@ -65,7 +65,7 @@ public class AdController {
 
 	public ResponseEntity<Ad> updateAd(@RequestBody Ad ad) {
 		if (Adserv.getById(ad.getAdId()) != null) {
-			Ad addd = Adserv.save(ad);
+			Ad addd = Adserv.modify(ad);
 			return new ResponseEntity<Ad>(addd, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

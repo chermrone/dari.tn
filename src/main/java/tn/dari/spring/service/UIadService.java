@@ -9,8 +9,6 @@ import tn.dari.spring.entity.Ad;
 public interface UIadService {
 	Ad save(Ad ad);
 
-	Ad modify(long id);
-
 	String Delete(long id);
 
 	List<Ad> getAll();
@@ -34,6 +32,8 @@ public interface UIadService {
 	double EstimatedHouse(Ad ad);
 
 	List<Ad> GetAdsOwned();
+
+	Ad modify(Ad ad);
 
 
 }
