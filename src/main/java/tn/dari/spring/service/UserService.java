@@ -98,7 +98,7 @@ public class UserService implements UIuser {
 			UpdateUser(us);
 		}
 	}
-	public String forgotPassword(String email,String password) {
+	public String forgotPassword(String email) {
 
 		Optional<User> userOptional = Optional
 				.ofNullable(ur.findByEmail(email));
@@ -108,9 +108,7 @@ public class UserService implements UIuser {
 		}
 
 		User user = userOptional.get();
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(password);
-        user.setPassword(encodedPassword);
+		
 		user.setToken(generateToken());
 		user.setTokenCreationDate(LocalDateTime.now());
 
@@ -136,7 +134,9 @@ public class UserService implements UIuser {
 		}
 
 		User user = userOptional.get();
-
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(password);
+        user.setPassword(encodedPassword);
 		user.setPassword(password);
 		user.setToken(null);
 		user.setTokenCreationDate(null);
