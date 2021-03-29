@@ -42,20 +42,7 @@ public class ClaimController {
 
 	@PostMapping("/add")
 	public ResponseEntity<Claim> save(@RequestBody Claim cl) {
-		List<Claim> allclaim = claim.GetAllClaims();
-		for (Claim claim : allclaim) {
-			if (claim.getClmId().equals(cl.getClmId())) {
-				return new ResponseEntity<Claim>(HttpStatus.NOT_ACCEPTABLE);
-			}
-
-		}
-		int nb_of_claims = allclaim.size();
 		Claim claone = claim.addClaim(cl);
-		if (nb_of_claims == 9) {
-			User us = cl.getAd().getUs();
-			us.setUserState(false);
-		}
-
 		return new ResponseEntity<Claim>(claone, HttpStatus.CREATED);
 	}
 
