@@ -8,15 +8,15 @@ import tn.dari.spring.entity.User;
 
 public interface IAppointmentService {
 	
-	List<Appointment> GetAllAppointment();
-	Appointment GetAppById (long appointmentId);
-	Appointment AddApp (Appointment app,long idAd);
-	Appointment UpdateApp (Appointment app);
-	String DeleteApp (long appointmentId);
-    List<Appointment> findByplaceApp(String placeapp);
-    List<Appointment> findBydateAppdeb(Date dateAppdeb);
-    String AcceptedAppointment(long appointmentId) ;
-    List<Appointment> retrieveListAppointmentBYLandlord(long idLandlord);
-   // double CalculPourcentage (Long idLandlord , Date dateDebut, Date dateFin);
+	public List<Appointment> GetAllAppointment();
+	public Appointment GetAppById (long appointmentId);
+	public Appointment AddApp (Appointment app,long idAd);
+	public Appointment UpdateApp (Appointment app);
+	public String DeleteApp (long appointmentId);
+	public List<Appointment> findByplaceApp(String placeapp);
+	public List<Appointment> findBydateAppdeb(Date dateAppdeb);
+	public String AcceptedAppointment(long appointmentId) ;
+	public List<Appointment> retrieveListAppointmentBYLandlord(long idLandlord);
+   // public double CalculPourcentage (Long idLandlord , Date dateDebut, Date dateFin);
 
 }

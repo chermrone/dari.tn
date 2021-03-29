@@ -21,5 +21,5 @@ public interface UIuser {
 
 	public void DeleteUser(Long id);
 	
-	void BanUser(Long id);
+	public void BanUser(Long id);
 }

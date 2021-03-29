@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,6 +47,7 @@ public class SubscriptionOrderController {
 	}
 	
 	@DeleteMapping("/delete/{id}")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<SubscriptionOrdred> DeleteById(@PathVariable Long id){
 		sos.deleteSubscriptionOrder(id);
 		SubscriptionOrdred s=sos.GetSubscriptionorder(id);
@@ -56,12 +58,14 @@ public class SubscriptionOrderController {
 	}
 	
 	@PutMapping("/update")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<SubscriptionOrdred> UpdateById(@RequestBody SubscriptionOrdred s){
 		sos.UpdateSubscriptionorder(s);
 		return new ResponseEntity<SubscriptionOrdred>(s,HttpStatus.OK);
 	}
 	
 	@PostMapping("/addpremium/{iduser}")
+	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
 	public ResponseEntity<SubscriptionOrdred> AddPremiumById(@RequestBody SubscriptionOrdred s,@PathVariable Long iduser){
 		return new ResponseEntity<>(sos.AddPremiumSubscriptionorder(s, iduser), HttpStatus.OK);
 	}
