@@ -71,19 +71,21 @@ public class UserService implements UIuser {
 	
 	@Override
 	public void BanUser(Long id) {
-		List<Ad> ad = adserv.getAll();
+		User us= ur.findById(id).get();
+		List<Claim> clmuser = new ArrayList<>();
+		us.getAds().forEach(ad -> clmuser.addAll(ad.getClaims()));
+		/*List<Ad> ad = adserv.getAll();
 		List<Ad> aduser = new ArrayList<>();
 		for (Ad ad2 : ad) {
 			if (ad2.getUs().getIdUser() == id) {
 				aduser.add(ad2);
 			}
 		}
-		List<Claim> clmuser = new ArrayList<>();
 		for (Ad ad3 : aduser) {
 			clmuser.addAll(ad3.getClaims());
-		}
+		}*/
 		if (clmuser.size() >= 10) {
-			User us = GetUserById(id);
+			//User us = GetUserById(id);
 			us.setUserState(false);
 			UpdateUser(us);
 		}

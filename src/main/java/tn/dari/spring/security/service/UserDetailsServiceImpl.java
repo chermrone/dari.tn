@@ -2,7 +2,6 @@ package tn.dari.spring.security.service;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -18,7 +17,6 @@ import tn.dari.spring.entity.Role;
 import tn.dari.spring.entity.Subscription;
 import tn.dari.spring.entity.SubscriptionOrdred;
 import tn.dari.spring.entity.User;
-import tn.dari.spring.enumeration.SubscriptionType;
 import tn.dari.spring.enumeration.Usertype;
 import tn.dari.spring.repository.RoleRepository;
 import tn.dari.spring.repository.UserRepository;
@@ -48,9 +46,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		try {
 			User user = userServ.GetUserByUserName(username);
 			if (user.isUserState()) {
-				System.out.println(" ------->usertype :"+rr.findByName(Usertype.PREMIUM).get());
 				if (user.getRoles().contains(rr.findByName(Usertype.PREMIUM).get())) {
-					System.out.println("\n ---------->conditon ta3 el role premium");
 					Set<SubscriptionOrdred> allsubord = user.getSubscriptions();
 					SubscriptionOrdred subordpremium = null;
 					List<Subscription> subs = new ArrayList<Subscription>();
@@ -64,23 +60,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 								if (subscription.getSubscription().equals(s)) {
 									subordpremium = subscription;
 									duration = s.getDuration();
+									Date sysdate = new Date();
+									Date datepay = subordpremium.getPayingDate();
+									long diffInMillies = Math.abs(sysdate.getTime() - datepay.getTime());
+									long diff = TimeUnit.MILLISECONDS.toDays(diffInMillies);						if (diff >= duration) {
+										Set<Role> r = user.getRoles();
+										r.remove(rr.findByName(Usertype.PREMIUM).get());
+										user.setRoles(r);
+										subordpremium.setEnable(false);
+										userServ.UpdateUser(user);
+										return UserPrinciple.build(user);
+									}
 								}
 							}
 						}
 					}
-					Date sysdate = new Date();
-					System.out.println(sysdate.toString());
-					if (subordpremium != null) {
-						Date datepay = subordpremium.getPayingDate();
-						long diffInMillies = Math.abs(sysdate.getTime() - datepay.getTime());
-						long diff = TimeUnit.MILLISECONDS.toDays(diffInMillies);						if (diff >= duration) {
-							Set<Role> r = user.getRoles();
-							r.remove(rr.findByName(Usertype.PREMIUM).get());
-							user.setRoles(r);
-							subordpremium.setEnable(false);
-							userServ.UpdateUser(user);
-						}
-					}
+					
 				}
 				return UserPrinciple.build(user);
 			} else

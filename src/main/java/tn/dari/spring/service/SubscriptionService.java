@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import tn.dari.spring.entity.Role;
 import tn.dari.spring.entity.Subscription;
 import tn.dari.spring.entity.User;
+import tn.dari.spring.enumeration.SubscriptionType;
 import tn.dari.spring.enumeration.Usertype;
 import tn.dari.spring.exception.SubscriptionNotFoundException;
 import tn.dari.spring.repository.RoleRepository;
@@ -44,6 +45,12 @@ public class SubscriptionService implements UISubscriptionService {
 	@Override
 	public Subscription UpdateSubscription(Subscription sub) {
 		return sr.save(sub);
+	}
+
+	@Override
+	public Subscription GetSubscriptionBySubscriptionType(SubscriptionType stype) {
+		// TODO Auto-generated method stub
+		return sr.findBySubscriptiontype(stype);
 	}
 
 }

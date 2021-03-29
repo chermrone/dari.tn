@@ -64,10 +64,10 @@ public class AdService implements UIadService {
 		Set<Role> strRoles = user.getRoles();
 		Role Seller = rolerepository.findByName(Usertype.SELLER).get();
 		System.out.println(rolerepository.findByName(Usertype.SELLER).get());
+		if(!strRoles.contains(Seller)){
 		strRoles.add(Seller);
 		user.setRoles(strRoles);
-		userrep.save(user);
-		System.out.println("that user ad after add seller  " + user);
+		userrep.save(user);}
 
 		// send mail
 		String subject = "Confirmation add announcement";
