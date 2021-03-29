@@ -73,11 +73,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 					if (subordpremium != null) {
 						Date datepay = subordpremium.getPayingDate();
 						long diffInMillies = Math.abs(sysdate.getTime() - datepay.getTime());
-						long diff = TimeUnit.MILLISECONDS.toDays(diffInMillies);
-						System.out.println("temps actuel: " + sysdate + "différence en jours: " + diff);
-						if (diff >= duration) {
+						long diff = TimeUnit.MILLISECONDS.toDays(diffInMillies);						if (diff >= duration) {
 							Set<Role> r = user.getRoles();
-							r.remove(rr.findByName(Usertype.PREMIUM));
+							r.remove(rr.findByName(Usertype.PREMIUM).get());
 							user.setRoles(r);
 							subordpremium.setEnable(false);
 							userServ.UpdateUser(user);
