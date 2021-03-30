@@ -67,6 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/dari/ads/buyedAdByRegionandMinPrice/**").permitAll()
                 .antMatchers("/dari/ads/all").permitAll()
                 .antMatchers("/dari/ads/ad/**").permitAll()
+               
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
