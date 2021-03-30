@@ -81,4 +81,10 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 		return sr.findByEnable(enable);
 	}
 
+	@Override
+	public List<SubscriptionOrdred> GetByUser(Long id) {
+		
+		return sr.findByUs(userservice.GetUserById(id));
+	}
+
 }

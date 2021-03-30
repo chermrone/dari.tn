@@ -17,5 +17,4 @@ public interface UISubscriptionService {
 	public Subscription UpdateSubscription(Subscription sub);
 	
 	public Subscription GetSubscriptionBySubscriptionType(SubscriptionType stype);
-
 }

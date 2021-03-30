@@ -69,4 +69,13 @@ public class SubscriptionOrderController {
 	public ResponseEntity<SubscriptionOrdred> AddPremiumById(@RequestBody SubscriptionOrdred s,@PathVariable Long iduser){
 		return new ResponseEntity<>(sos.AddPremiumSubscriptionorder(s, iduser), HttpStatus.OK);
 	}
+	
+	@GetMapping("/getbyuser/{iduser}")
+	public ResponseEntity<List<SubscriptionOrdred>> GetByUser(@PathVariable Long iduser){
+		List<SubscriptionOrdred> usersubsord= sos.GetByUser(iduser);
+		if(usersubsord!=null){
+			return new ResponseEntity<List<SubscriptionOrdred>>(usersubsord, HttpStatus.FOUND);
+		}
+		else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
 }

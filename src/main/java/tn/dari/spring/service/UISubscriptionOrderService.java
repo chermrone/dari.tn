@@ -12,4 +12,5 @@ public interface UISubscriptionOrderService {
 	public List<SubscriptionOrdred> GetAll();
 	public SubscriptionOrdred GetSubscriptionorder(Long id);
 	public List<SubscriptionOrdred> GetByEnable(boolean enable);
+	public List<SubscriptionOrdred> GetByUser(Long id);
 }
