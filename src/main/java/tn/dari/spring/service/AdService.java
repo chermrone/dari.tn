@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import tn.dari.spring.exception.*;
 
@@ -106,6 +107,11 @@ public class AdService implements UIadService {
 
 	@Override
 	public Ad getById(long id) {
+		Ad ad=adrepository.findById(id).get();
+		 int Visites=ad.getNumbeOfVisites();System.out.println(Visites);
+		 Visites++;System.out.println(Visites);
+		 ad.setNumbeOfVisites(Visites);
+		 adrepository.save(ad);
 		return adrepository.findById(id)
 				.orElseThrow(() -> new AdNotFoundException("Ad by id= " + id + " was not found"));
 	}
@@ -439,4 +445,85 @@ public class AdService implements UIadService {
 		return AdList;
 	}
 
+	@Override
+	public Ad GetAdOwned(long id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String userAuthenticated = auth.getName();
+		System.out.println(userAuthenticated);
+		User userAd = new User();
+		userAd = userserv.GetUserByUserName(userAuthenticated);
+		System.out.println(userAd);
+		Set<Ad> ads = userAd.getAds();
+for (Ad ad : ads) {
+	if(ad.getAdId().equals(id))
+		return ad;
 }
+		return null;
+	}
+
+	
+	@Override
+	public Set<Long> saveFavorite(long id) {
+		Ad ad=adrepository.findById(id).get();
+long favorite=ad.getAdId();
+Set<Long> Favorites=ad.getUs().getFavorite();
+		Favorites.add(favorite);
+		User user=ad.getUs();
+		user.setFavorite(Favorites);
+		userrep.save(user);
+		return ad.getUs().getFavorite();
+	}
+
+	
+	@Override
+	public int getNumberOfFavoriteAd(long id) {
+		Ad ad=adrepository.findById(id).get();
+		User user = ad.getUs();
+		// check if he is premium or not : 
+		if (!user.getRoles().contains(rolerepository.findByName(Usertype.PREMIUM).get()))
+		return 0;
+long favorite=ad.getAdId();
+List<User> Users=userrep.findAll();
+int nmberOfFavorites=0;
+for (User userr : Users) {
+
+if(userr.getFavorite().contains(favorite))
+		{ nmberOfFavorites++;
+		}
+}
+return nmberOfFavorites;
+	}
+	
+	
+	@Override
+	public double SituationAd(long id) {
+Ad ad=adrepository.findById(id).get();
+		User user = ad.getUs();
+		// check if he is premium or not : 
+		if (!user.getRoles().contains(rolerepository.findByName(Usertype.PREMIUM).get()))
+		{			System.out.println("user not premium");
+
+			return 403;}
+		else if (ad.getBuyingDate()==null)
+		{//compare if number of visite = 0 feedback
+			if(ad.getNumbeOfVisites()==0)
+			{ad.setFeedback("you should enter detailled information to your ad and clear image");
+		adrepository.save(ad);}
+		if(getNumberOfFavoriteAd(id)!=0 &&  ad.getNumbeOfVisites()!=0 ){
+		//compare date of creation with sysdate if > 7 return estimated price
+			Date currentSqlDate = new Date(System.currentTimeMillis());
+			long diffInMillies = Math.abs(currentSqlDate.getTime() - ad.getCreationDate().getTime());
+			System.out.println(diffInMillies);
+			long diff = TimeUnit.MILLISECONDS.toDays(diffInMillies);		
+			System.out.println(diff);
+			ad.setFeedback("you should reduce the price to attract people");
+			adrepository.save(ad);
+			if (diff >= 7) {
+			return EstimatedHouse(ad);}
+		}
+	}			
+
+		return 0;
+
+}
+	}
