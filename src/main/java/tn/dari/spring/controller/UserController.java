@@ -90,4 +90,12 @@ public class UserController {
 		} else
 			return new ResponseEntity<String>("error", HttpStatus.NOT_MODIFIED);
 	}
+	
+	@GetMapping("/usersubscribe/{agemin}/{agemax}/{sid}")
+	public ResponseEntity<Long> UserSubscribeByAge(@PathVariable("agemin") int agemin,@PathVariable("agemax") int agemax,@PathVariable("sid") Long sid ){
+		Long nbr=user.UserSubscribeAge(agemin, agemax, sid);
+		if(nbr==0) return new ResponseEntity<Long>((long) 0,HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Long>(nbr, HttpStatus.OK);
+		
+	}
 }
