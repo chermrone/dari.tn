@@ -6,7 +6,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+
+import javax.persistence.Column;
+
 import javax.persistence.ElementCollection;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -17,12 +21,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +33,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import tn.dari.spring.enumeration.Gender;
-import tn.dari.spring.entity.Ad;
 
 @Entity
 @Getter
@@ -64,6 +66,15 @@ public class User implements Serializable {
 	private String email;
 	
 	private int cin;
+	
+	@JsonIgnore
+    private String resetToken;
+	
+	
+	@Column(columnDefinition = "integer default 0 not null")
+	private int counterLogin;
+	@Column(columnDefinition="tinyint(1) default 0 not null")
+	private boolean desactivate;
 	
 	@ToString.Exclude
 	@ManyToMany(fetch = FetchType.EAGER)
