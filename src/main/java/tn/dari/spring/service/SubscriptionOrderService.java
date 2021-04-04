@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tn.dari.spring.entity.Role;
+import tn.dari.spring.entity.Subscription;
 import tn.dari.spring.entity.SubscriptionOrdred;
 import tn.dari.spring.entity.User;
 import tn.dari.spring.enumeration.SubscriptionType;
@@ -43,9 +44,22 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 
 	@Override
 	public void deleteSubscriptionOrder(Long id) {
-		if(sr.findById(id)!=null){
-			sr.deleteById(id);
-		}
+		SubscriptionOrdred s=GetSubscriptionorder(id);
+		
+		//removing this subscription order fromuser
+		User u=s.getUs();
+		Set<SubscriptionOrdred> allso=u.getSubscriptions();
+		allso.remove(s);
+		u.setSubscriptions(allso);
+		userservice.UpdateUser(u);
+		
+		//removing this subscription order from subscription
+		Subscription subs=s.getSubscription();
+		Set<SubscriptionOrdred> allso1=subs.getSubord();
+		allso1.remove(s);
+		subs.setSubord(allso1);
+		ss.UpdateSubscription(subs);
+			sr.delete(GetSubscriptionorder(id));
 	}
 
 	@Override

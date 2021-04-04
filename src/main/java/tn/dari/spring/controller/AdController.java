@@ -96,6 +96,43 @@ public class AdController {
 		Adserv.Delete(id);
 	}
 
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
+	@PostMapping("/change/buyed/{id}")
+	public ResponseEntity<Ad> BuyedAd(@PathVariable("id") long id) throws Exception {
+		Ad AdOne = Adserv.BuyedHouse(id);
+		System.out.println("enter+" + AdOne);
+		return new ResponseEntity<Ad>(AdOne, HttpStatus.OK);
+	}
+
+	@PostMapping("EstimatedPrice")
+	public ResponseEntity<String> EstimatedPrice(@RequestBody Ad ad) {
+		System.out.println(ad.getBuilda());
+		return new ResponseEntity<>("Estimated house: " + Adserv.EstimatedHouse(ad), HttpStatus.FOUND);
+	}
+	
+	
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
+	@GetMapping("ad/numfav/{id}")
+	public ResponseEntity<Integer> NumberOffavoriteAd(@PathVariable("id") long id)  {
+		int numberFav = Adserv.getNumberOfFavoriteAd(id);
+		System.out.println("number of favorite ad +" + numberFav);
+		return new ResponseEntity<Integer>(numberFav, HttpStatus.OK);
+	}
+	//ad if premium if he pass  7 days without
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
+	@GetMapping("ad/situation/{id}")
+	public ResponseEntity<Double> SituationAd(@PathVariable("id") long id) {
+		double state = Adserv.SituationAd(id);
+		System.out.println("state ad +" + state);
+		if(state==403)
+			return new ResponseEntity<>( HttpStatus.FORBIDDEN);
+
+		return new ResponseEntity<Double>(state, HttpStatus.OK);
+	}
+	
+	
+			/****************Ad statistics**************************/
+	
 	@GetMapping("/buyedAdByRegion/{city}")
 	public ResponseEntity<String> GetbBuyedHousesByCity(@PathVariable("city") String city) {
 		if (Adserv.getBuyedHousesByCity(city) > 0) {
@@ -145,40 +182,6 @@ public class AdController {
 	public ResponseEntity<String> GetRegionsordredbybuyingasc() {
 		List<String> topcities = Adserv.ordercitiesByBuyingdesc();
 		return new ResponseEntity<String>(topcities.toString(), HttpStatus.OK);
-	}
-
-	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
-	@PostMapping("/change/buyed/{id}")
-	public ResponseEntity<Ad> BuyedAd(@PathVariable("id") long id) throws Exception {
-		Ad AdOne = Adserv.BuyedHouse(id);
-		System.out.println("enter+" + AdOne);
-		return new ResponseEntity<Ad>(AdOne, HttpStatus.OK);
-	}
-
-	@PostMapping("EstimatedPrice")
-	public ResponseEntity<String> EstimatedPrice(@RequestBody Ad ad) {
-		System.out.println(ad.getBuilda());
-		return new ResponseEntity<>("Estimated house: " + Adserv.EstimatedHouse(ad), HttpStatus.FOUND);
-	}
-	
-	
-	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
-	@GetMapping("ad/numfav/{id}")
-	public ResponseEntity<Integer> NumberOffavoriteAd(@PathVariable("id") long id)  {
-		int numberFav = Adserv.getNumberOfFavoriteAd(id);
-		System.out.println("number of favorite ad +" + numberFav);
-		return new ResponseEntity<Integer>(numberFav, HttpStatus.OK);
-	}
-	//ad if premium if he pass  7 days without
-	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
-	@GetMapping("ad/situation/{id}")
-	public ResponseEntity<Double> SituationAd(@PathVariable("id") long id) {
-		double state = Adserv.SituationAd(id);
-		System.out.println("state ad +" + state);
-		if(state==403)
-			return new ResponseEntity<>( HttpStatus.FORBIDDEN);
-
-		return new ResponseEntity<Double>(state, HttpStatus.OK);
 	}
 	
 	
