@@ -51,6 +51,16 @@ public class AdController {
 
 		return new ResponseEntity<List<Ad>>(Adserv.GetAdsOwned(), HttpStatus.OK);
 	}
+	
+	@GetMapping("/adowned/{id}")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
+
+	public ResponseEntity<Ad> getAdConnected(@PathVariable("id") Long id) {
+
+		return new ResponseEntity<Ad>(Adserv.GetAdOwned(id), HttpStatus.OK);
+	}
+	
+	
 
 	@PostMapping("/add/ad")
 	public ResponseEntity<Ad> saveAd(@RequestBody Ad ad) {
@@ -60,6 +70,14 @@ public class AdController {
 		return new ResponseEntity<Ad>(AdOne, HttpStatus.CREATED);
 	}
 
+	@PostMapping("/add/favorite/{id}")
+	public ResponseEntity<Set<Long>> saveFavorite(@PathVariable("id") Long id) {
+		Set<Long> favorites = Adserv.saveFavorite(id);
+		if (favorites == null)
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Set<Long>>(favorites, HttpStatus.CREATED);
+	}
+	
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
 
 	@PutMapping("/update/ad")
@@ -142,5 +160,27 @@ public class AdController {
 		System.out.println(ad.getBuilda());
 		return new ResponseEntity<>("Estimated house: " + Adserv.EstimatedHouse(ad), HttpStatus.FOUND);
 	}
+	
+	
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
+	@GetMapping("ad/numfav/{id}")
+	public ResponseEntity<Integer> NumberOffavoriteAd(@PathVariable("id") long id)  {
+		int numberFav = Adserv.getNumberOfFavoriteAd(id);
+		System.out.println("number of favorite ad +" + numberFav);
+		return new ResponseEntity<Integer>(numberFav, HttpStatus.OK);
+	}
+	//ad if premium if he pass  7 days without
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
+	@GetMapping("ad/situation/{id}")
+	public ResponseEntity<Double> SituationAd(@PathVariable("id") long id) {
+		double state = Adserv.SituationAd(id);
+		System.out.println("state ad +" + state);
+		if(state==403)
+			return new ResponseEntity<>( HttpStatus.FORBIDDEN);
+
+		return new ResponseEntity<Double>(state, HttpStatus.OK);
+	}
+	
+	
 
 }

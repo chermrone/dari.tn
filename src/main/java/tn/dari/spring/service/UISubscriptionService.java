@@ -17,4 +17,6 @@ public interface UISubscriptionService {
 	public Subscription UpdateSubscription(Subscription sub);
 	
 	public Subscription GetSubscriptionBySubscriptionType(SubscriptionType stype);
+	
+	public List<Subscription> OrderSubscriptionsByMaxUserByAge(int agemin, int agemax);
 }

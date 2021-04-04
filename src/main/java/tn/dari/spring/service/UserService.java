@@ -30,7 +30,6 @@ public class UserService implements UIuser {
 	@Override
 	public User GetUserById(Long id) {
 		return ur.findById(id).get();
-		//return ur.findById(id).orElseThrow(() -> new UserNotFoundException("user by id= " + id + " was not found"));
 	}
 
 	@Override
@@ -48,7 +47,7 @@ public class UserService implements UIuser {
 	@Override
 	public User GetUserByUserName(String username) {
 
-		return ur.findByUserName(username);//.get();
+		return ur.findByUserName(username);
 	}
 
 	@Override
@@ -74,21 +73,15 @@ public class UserService implements UIuser {
 		User us= ur.findById(id).get();
 		List<Claim> clmuser = new ArrayList<>();
 		us.getAds().forEach(ad -> clmuser.addAll(ad.getClaims()));
-		/*List<Ad> ad = adserv.getAll();
-		List<Ad> aduser = new ArrayList<>();
-		for (Ad ad2 : ad) {
-			if (ad2.getUs().getIdUser() == id) {
-				aduser.add(ad2);
-			}
-		}
-		for (Ad ad3 : aduser) {
-			clmuser.addAll(ad3.getClaims());
-		}*/
 		if (clmuser.size() >= 10) {
-			//User us = GetUserById(id);
 			us.setUserState(false);
 			UpdateUser(us);
 		}
+	}
+	
+	@Override
+	public Long UserSubscribeAge(int agemin, int agemax, Long sid) {
+		return ur.UserSubscribeByAge(agemin, agemax, sid);
 	}
 
 }

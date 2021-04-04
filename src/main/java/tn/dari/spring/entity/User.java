@@ -6,7 +6,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
+
+import javax.persistence.ElementCollection;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -88,8 +92,8 @@ public class User implements Serializable {
 	private Set<Ad> ads;
 	
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<Ad> Favorite;
+	@ElementCollection(targetClass=Long.class)
+	private Set<Long> Favorite;
 	
 	@JsonManagedReference(value="us")
 	@ToString.Exclude
@@ -124,7 +128,7 @@ public class User implements Serializable {
 
 	public User(Long idUser, String firstName, String lastName, String userName, String password, int age,
 			String urlimguser, Gender gender, int phoneNumber, String email, int cin, boolean userState,
-			Date creationDate, Set<Ad> ads, Set<Ad> favorite, Set<SubscriptionOrdred> subscriptions, Set<OrderUser> orders,
+			Date creationDate, Set<Ad> ads, Set<Long> favorite, Set<SubscriptionOrdred> subscriptions, Set<OrderUser> orders,
 			ShoppingCart shoppingCart, Set<Appointment> appointments, Set<CreditSimulator> creditSimulators) {
 		super();
 		this.idUser = idUser;

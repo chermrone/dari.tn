@@ -22,4 +22,6 @@ public interface UIuser {
 	public void DeleteUser(Long id);
 	
 	public void BanUser(Long id);
+	
+	public Long UserSubscribeAge(int agemin,int agemax,Long sid);
 }

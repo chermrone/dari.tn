@@ -1,6 +1,7 @@
 package tn.dari.spring.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -34,4 +35,12 @@ public interface UIadService {
 	public List<Ad> GetAdsOwned();
 
 	public Ad modify(Ad ad);
+
+	public Set<Long> saveFavorite(long id);
+
+	Ad GetAdOwned(long id);
+
+	public double SituationAd(long id);
+
+	int getNumberOfFavoriteAd(long id);
 }

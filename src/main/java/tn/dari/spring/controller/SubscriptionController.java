@@ -78,5 +78,15 @@ public class SubscriptionController {
 	    ss.DeleteSubscription(id);
 	  }
 	
+	@GetMapping("/ordersubbyusersub/{agemin}/{agemax}")
+	public ResponseEntity<List<Subscription>> OrderSubscriptionsByUsersByAge(@PathVariable("agemin") int agemin,@PathVariable("agemax") int agemax ){
+		List<Subscription> ordredSubscriptions=ss.OrderSubscriptionsByMaxUserByAge(agemin, agemax);
+		if(!ordredSubscriptions.isEmpty()){
+			return new ResponseEntity<List<Subscription>>(ordredSubscriptions,HttpStatus.OK);
+		}
+		return new ResponseEntity<List<Subscription>>(HttpStatus.NO_CONTENT);
+		
+	}
+	
 	
 }
