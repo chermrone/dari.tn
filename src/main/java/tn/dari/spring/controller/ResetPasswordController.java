@@ -83,8 +83,7 @@ public class ResetPasswordController {
 
 		// Set new password
 		resetUser.setPassword(passwordencoder.encode(resetpass.getPassword()));
-		resetUser.setDesactivate(false);
-		resetUser.setCounterLogin(0);
+		
 		// Set the reset token to null so it cannot be used again
 		resetUser.setResetToken(null);
 

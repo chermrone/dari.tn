@@ -28,5 +28,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@Query(nativeQuery = true, value ="Select count(*) From Subscription,Subscription_Ordred,User Where Subscription.subscription_Id=Subscription_Ordred.subscription_subscription_id And User.Id_user=Subscription_Ordred.us_id_user And User.age< :agemax And User.age> :agemin And Subscription.Subscription_Id= :sid")
 	public Long UserSubscribeByAge(@Param("agemin") int agemin, @Param("agemax") int agemax, @Param("sid") Long sid );
 
+	
+
+	
+
 
 }

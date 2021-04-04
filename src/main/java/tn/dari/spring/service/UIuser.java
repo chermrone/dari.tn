@@ -2,6 +2,8 @@ package tn.dari.spring.service;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+
 import tn.dari.spring.entity.User;
 
 public interface UIuser {
@@ -24,4 +26,6 @@ public interface UIuser {
 	public void BanUser(Long id);
 	
 	public Long UserSubscribeAge(int agemin,int agemax,Long sid);
+
+	void logout(Authentication auth);
 }

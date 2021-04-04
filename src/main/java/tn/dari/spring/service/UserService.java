@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import tn.dari.spring.entity.Ad;
@@ -79,6 +80,13 @@ public class UserService implements UIuser {
 		}
 	}
 	
+	@Override
+	public void logout(Authentication auth) {
+		User u = ur.findByUserName(auth.getName());
+		u.setConnected(false);
+		ur.save(u);
+	}
+
 	@Override
 	public Long UserSubscribeAge(int agemin, int agemax, Long sid) {
 		return ur.UserSubscribeByAge(agemin, agemax, sid);
