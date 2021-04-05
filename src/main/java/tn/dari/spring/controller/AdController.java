@@ -118,7 +118,7 @@ public class AdController {
 		System.out.println("number of favorite ad +" + numberFav);
 		return new ResponseEntity<Integer>(numberFav, HttpStatus.OK);
 	}
-	//ad if premium if he pass  7 days without
+	//ad if premium if the house pass  7 days without being buyed
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
 	@GetMapping("ad/situation/{id}")
 	public ResponseEntity<Double> SituationAd(@PathVariable("id") long id) {
