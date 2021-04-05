@@ -84,6 +84,11 @@ public class User implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date creationDate;
 	
+	@Temporal(TemporalType.DATE)
+	private Date banDate=null;
+	
+	private int banNbr=0;
+	
 	@JsonManagedReference
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us", fetch = FetchType.EAGER)

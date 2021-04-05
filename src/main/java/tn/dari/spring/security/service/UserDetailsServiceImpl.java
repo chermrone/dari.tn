@@ -78,8 +78,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 					
 				}
 				return UserPrinciple.build(user);
-			} else
-				return null;
+			} else if(user.getBanNbr()<=3 && TimeUnit.MILLISECONDS.toDays( Math.abs(new Date().getTime() - user.getBanDate().getTime()))>=3){
+				userServ.Activate_Acount(user.getIdUser());
+				userServ.UpdateUser(user);
+				return UserPrinciple.build(user);
+			}
+			else return null;
 		} catch (Exception UsernameNotFoundException) {
 			new UsernameNotFoundException("User Not Found with -> username or email : " + username);
 		}

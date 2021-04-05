@@ -1,17 +1,16 @@
 package tn.dari.spring.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import tn.dari.spring.entity.Ad;
 import tn.dari.spring.entity.Claim;
 import tn.dari.spring.entity.User;
 
-import tn.dari.spring.exception.UserNotFoundException;
 import tn.dari.spring.repository.UserRepository;
 
 @Service
@@ -76,13 +75,14 @@ public class UserService implements UIuser {
 		us.getAds().forEach(ad -> clmuser.addAll(ad.getClaims()));
 		if (clmuser.size() >= 10) {
 			us.setUserState(false);
+			us.setBanDate(new Date());
+			us.setBanNbr(us.getBanNbr()+1);
 			UpdateUser(us);
 		}
 	}
 	@Override
-	public void activate_Acount(Long id) {
+	public void Activate_Acount(Long id) {
 		User user = ur.findById(id).get();
-		
 		user.setUserState(true);
 		ur.save(user);
 	}

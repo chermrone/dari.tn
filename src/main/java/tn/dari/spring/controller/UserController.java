@@ -93,7 +93,7 @@ public class UserController {
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public  ResponseEntity<?>  activate_Acount(@PathVariable("id") Long id) {
           
-          user .activate_Acount(id);
+          user.Activate_Acount(id);
            return new ResponseEntity<String>("User account activated",HttpStatus.OK);
 	}
 	
