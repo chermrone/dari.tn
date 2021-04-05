@@ -482,6 +482,12 @@ Ad ad=adrepository.findById(id).get();
 		return 0;
 
 }
+	
+	@Override
+	public  List<Ad>  retriveAdforNonAdmin(long id){
+		Role r=rolerepository.findById(id).get();
+				return adrepository.retriveAdDependingOnRole(r.getName()); 
+	}
 	/********************* Statistics*********************************/
 	@Override
 	@Scheduled(cron="0 46 18 * * *")//execute every day on 18:465)

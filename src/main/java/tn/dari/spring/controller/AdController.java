@@ -129,6 +129,12 @@ public class AdController {
 
 		return new ResponseEntity<Double>(state, HttpStatus.OK);
 	}
+	@GetMapping("ad/find/{id}")
+	public ResponseEntity<List<Ad>> GetAdFromUserByRole(@PathVariable long id)  {
+List <Ad> ads=Adserv.retriveAdforNonAdmin(id);
+System.out.println("number of ad +"+ads);
+		return new ResponseEntity<List<Ad>>(ads, HttpStatus.OK);
+	}
 	
 	
 			/****************Ad statistics**************************/

@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import tn.dari.spring.entity.Ad;
+import tn.dari.spring.entity.Role;
 
 public interface UIadService {
 	public Ad save(Ad ad);
@@ -43,4 +44,6 @@ public interface UIadService {
 	public double SituationAd(long id);
 
 	int getNumberOfFavoriteAd(long id);
+
+	List<Ad> retriveAdforNonAdmin(long id);
 }
