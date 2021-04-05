@@ -8,12 +8,10 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,7 +69,6 @@ public class AuthRestAPIs {
 
 		String jwt = jwtProvider.generateJwtToken(authentication);
 		System.out.println("jwt mrigal" + " "+ jwt);
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		UserPrinciple userDetails1 = (UserPrinciple) authentication.getPrincipal();
 		 User user=userRepository.findById(userDetails1.getId()).get();
 		  user.setConnected(true); userRepository.save(user);
