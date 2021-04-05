@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -43,7 +44,6 @@ public class AuthRestAPIs {
 	@Autowired
 	UIuser userservice;
 
-
 	@Autowired
 	PasswordEncoder encoder;
 
@@ -52,8 +52,6 @@ public class AuthRestAPIs {
 	
 	@Autowired
 	RoleRepository rolerepository;
-	
-	
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
@@ -130,9 +128,8 @@ public class AuthRestAPIs {
 		return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
 	}
 	
-	
 	@PostMapping(value = "/logout")
-	
+	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
 	@ResponseBody	
 		public ResponseEntity<?> logout(Authentication auth) {
 			  userservice.logout(auth);
