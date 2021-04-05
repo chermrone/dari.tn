@@ -11,6 +11,7 @@ import tn.dari.spring.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -483,6 +484,7 @@ Ad ad=adrepository.findById(id).get();
 }
 	/********************* Statistics*********************************/
 	@Override
+	@Scheduled(cron="0 46 18 * * *")//execute every day on 18:465)
 	public List<String> ordercitiesByBuyingdesc() {
 		List<Ad> ads = adrepository.findAll();
 		//tri of list ads with buyed houses by city
