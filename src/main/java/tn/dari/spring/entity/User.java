@@ -56,7 +56,7 @@ public class User implements Serializable {
 	
 	private int age;
 	
-	private String urlimguser;
+	
 	
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
@@ -70,11 +70,9 @@ public class User implements Serializable {
 	@JsonIgnore
     private String resetToken;
 	
-	
-	@Column(columnDefinition = "integer default 0 not null")
-	private int counterLogin;
-	@Column(columnDefinition="tinyint(1) default 0 not null")
-	private boolean desactivate;
+	@JsonIgnore
+	private boolean isConnected;
+
 	
 	@ToString.Exclude
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -137,7 +135,7 @@ public class User implements Serializable {
 		this.userName = userName;
 		this.password = password;
 		this.age = age;
-		this.urlimguser = urlimguser;
+	
 		this.gender = gender;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
