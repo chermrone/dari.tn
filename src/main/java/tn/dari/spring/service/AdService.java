@@ -137,51 +137,6 @@ public class AdService implements UIadService {
 	}
 
 	@Override
-	public List<String> ordercitiesByBuyingdesc() {
-		List<Ad> ads = adrepository.findAll();
-		for (int i = 1; i < ads.size(); i++) {
-			if (getBuyedHousesByCity(ads.get(i - 1).getCity()) < getBuyedHousesByCity(ads.get(i).getCity())) {
-				Ad aux = ads.get(i);
-				ads.set(i, ads.get(i - 1));
-				ads.set(i - 1, aux);
-			}
-		}
-		List<String> topcities = new ArrayList<>();
-		topcities.add(ads.get(0).getCity());
-		for (int j = 1; j < ads.size(); j++) {
-			if (!ads.get(j).getCity().equals(ads.get(j - 1).getCity())) {
-				topcities.add(ads.get(j).getCity());
-			}
-		}
-		return topcities;
-	}
-
-	@Override
-	public List<String> topfivecities() {
-		List<Ad> ads = adrepository.findAll();
-		for (int i = 1; i < ads.size(); i++) {
-			if (getBuyedHousesByCity(ads.get(i - 1).getCity()) < getBuyedHousesByCity(ads.get(i).getCity())) {
-				Ad aux = ads.get(i);
-				ads.set(i, ads.get(i - 1));
-				ads.set(i - 1, aux);
-			}
-		}
-		List<String> topcities = new ArrayList<>();
-		topcities.add(ads.get(0).getCity());
-		int k = 0;
-		for (int j = 1; j < ads.size(); j++) {
-			if (!ads.get(j).getCity().equals(ads.get(j - 1).getCity())) {
-				topcities.add(ads.get(j).getCity());
-				k++;
-				if (k == 4) {
-					return topcities;
-				}
-			}
-		}
-		return topcities;
-	}
-
-	@Override
 	public Ad BuyedHouse(long id) {
 		Ad ad = adrepository.findById(id).orElseThrow(() -> new AdNotFoundException("Ad  " + id + " not found"));
 		Date currentSqlDate = new Date(System.currentTimeMillis());
@@ -526,4 +481,53 @@ Ad ad=adrepository.findById(id).get();
 		return 0;
 
 }
+	/********************* Statistics*********************************/
+	@Override
+	public List<String> ordercitiesByBuyingdesc() {
+		List<Ad> ads = adrepository.findAll();
+		//tri of list ads with buyed houses by city
+		for (int i = 1; i < ads.size(); i++) {
+			if (getBuyedHousesByCity(ads.get(i - 1).getCity()) < getBuyedHousesByCity(ads.get(i).getCity())) {
+				Ad aux = ads.get(i);
+				ads.set(i, ads.get(i - 1));
+				ads.set(i - 1, aux);
+			}
+		}
+		List<String> topcities = new ArrayList<>();
+		//adding (DISTINCT) city in the list of topcities 
+		topcities.add(ads.get(0).getCity());
+		for (int j = 1; j < ads.size(); j++) {
+			if (!ads.get(j).getCity().equals(ads.get(j - 1).getCity())) {
+				topcities.add(ads.get(j).getCity());
+			}
+		}
+		return topcities;
+	}
+
+	@Override
+	public List<String> topfivecities() {
+		List<Ad> ads = adrepository.findAll();
+		//ordering list ads by buyed houses by city
+		for (int i = 1; i < ads.size(); i++) {
+			if (getBuyedHousesByCity(ads.get(i - 1).getCity()) < getBuyedHousesByCity(ads.get(i).getCity())) {
+				Ad aux = ads.get(i);
+				ads.set(i, ads.get(i - 1));
+				ads.set(i - 1, aux);
+			}
+		}
+		List<String> topcities = new ArrayList<>();
+		//adding (DISTINCT) city in the list of topcities 
+		topcities.add(ads.get(0).getCity());
+		int k = 0;
+		for (int j = 1; j < ads.size(); j++) {
+			if (!ads.get(j).getCity().equals(ads.get(j - 1).getCity())) {
+				topcities.add(ads.get(j).getCity());
+				k++;
+				if (k == 4) {//this condition(k==4) to stop for if we have 5 cities in our list
+					return topcities;
+				}
+			}
+		}
+		return topcities;
+	}
 	}

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import tn.dari.spring.entity.Role;
@@ -14,29 +16,36 @@ import tn.dari.spring.enumeration.SubscriptionType;
 import tn.dari.spring.enumeration.Usertype;
 import tn.dari.spring.repository.RoleRepository;
 import tn.dari.spring.repository.SubscriptionOrderRepository;
+
 @Service
 public class SubscriptionOrderService implements UISubscriptionOrderService {
-	
+
 	@Autowired
 	SubscriptionOrderRepository sr;
-	
+
 	@Autowired
 	UserService userservice;
 
 	@Autowired
 	RoleRepository rr;
-	
+
 	@Autowired
 	SubscriptionService ss;
 
 	@Override
 	public SubscriptionOrdred AddSubscriptionorder(SubscriptionOrdred s) {
+		// enter the user connected to ad
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String userAuthenticated = auth.getName();
+		User user = new User();
+		user = userservice.GetUserByUserName(userAuthenticated);
+		s.setUs(user);
 		return sr.save(s);
 	}
 
 	@Override
 	public SubscriptionOrdred UpdateSubscriptionorder(SubscriptionOrdred s) {
-		if(sr.findById(s.getSubscriptionOrderId())!=null){
+		if (sr.findById(s.getSubscriptionOrderId()) != null) {
 			return sr.save(s);
 		}
 		return null;
@@ -44,27 +53,27 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 
 	@Override
 	public void deleteSubscriptionOrder(Long id) {
-		SubscriptionOrdred s=GetSubscriptionorder(id);
-		
-		//removing this subscription order fromuser
-		User u=s.getUs();
-		Set<SubscriptionOrdred> allso=u.getSubscriptions();
+		SubscriptionOrdred s = GetSubscriptionorder(id);
+
+		// removing this subscription order fromuser
+		User u = s.getUs();
+		Set<SubscriptionOrdred> allso = u.getSubscriptions();
 		allso.remove(s);
 		u.setSubscriptions(allso);
 		userservice.UpdateUser(u);
-		
-		//removing this subscription order from subscription
-		Subscription subs=s.getSubscription();
-		Set<SubscriptionOrdred> allso1=subs.getSubord();
+
+		// removing this subscription order from subscription
+		Subscription subs = s.getSubscription();
+		Set<SubscriptionOrdred> allso1 = subs.getSubord();
 		allso1.remove(s);
 		subs.setSubord(allso1);
 		ss.UpdateSubscription(subs);
-			sr.delete(GetSubscriptionorder(id));
+		sr.delete(GetSubscriptionorder(id));
 	}
 
 	@Override
 	public List<SubscriptionOrdred> GetAll() {
-		
+
 		return sr.findAll();
 	}
 
@@ -80,7 +89,7 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 		Set<Role> roleuser = us.getRoles();
 		Role r = rr.findByName(Usertype.PREMIUM)
 				.orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
-		if(!roleuser.contains(r)){
+		if (!roleuser.contains(r)) {
 			roleuser.add(r);
 			userservice.UpdateUser(us);
 		}
@@ -97,7 +106,7 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 
 	@Override
 	public List<SubscriptionOrdred> GetByUser(Long id) {
-		
+
 		return sr.findByUs(userservice.GetUserById(id));
 	}
 

@@ -32,6 +32,7 @@ public class SubscriptionOrderController {
 	RoleRepository rr;
 	
 	@GetMapping("/all")
+	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
 	public ResponseEntity<List<SubscriptionOrdred>> getall(){
 		List<SubscriptionOrdred> allsos=sos.GetAll();
 		if(allsos.isEmpty()){
@@ -41,8 +42,38 @@ public class SubscriptionOrderController {
 	}
 	
 	@GetMapping("/find/{id}")
+	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
 	public ResponseEntity<SubscriptionOrdred> GetById(@PathVariable Long id){
 		SubscriptionOrdred s=sos.GetSubscriptionorder(id);
+		return new ResponseEntity<SubscriptionOrdred>(s,HttpStatus.OK);
+	}
+	
+	@GetMapping("/getbyuser/{iduser}")
+	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
+	public ResponseEntity<List<SubscriptionOrdred>> GetByUser(@PathVariable Long iduser){
+		List<SubscriptionOrdred> usersubsord= sos.GetByUser(iduser);
+		if(usersubsord!=null){
+			return new ResponseEntity<List<SubscriptionOrdred>>(usersubsord, HttpStatus.FOUND);
+		}
+		else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	
+	@PostMapping("/addpremium/{iduser}")
+	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
+	public ResponseEntity<SubscriptionOrdred> AddPremiumById(@RequestBody SubscriptionOrdred s,@PathVariable Long iduser){
+		return new ResponseEntity<>(sos.AddPremiumSubscriptionorder(s, iduser), HttpStatus.OK);
+	}
+	
+	@PostMapping("/add")
+	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
+	public ResponseEntity<SubscriptionOrdred> AddSubscriptionOrder(@RequestBody SubscriptionOrdred s){
+		return new ResponseEntity<>(sos.AddSubscriptionorder(s), HttpStatus.OK);
+	}
+	
+	@PutMapping("/update")
+	@PreAuthorize("hasAuthority('ADMIN')")
+	public ResponseEntity<SubscriptionOrdred> UpdateById(@RequestBody SubscriptionOrdred s){
+		sos.UpdateSubscriptionorder(s);
 		return new ResponseEntity<SubscriptionOrdred>(s,HttpStatus.OK);
 	}
 	
@@ -55,27 +86,5 @@ public class SubscriptionOrderController {
 			return new ResponseEntity<SubscriptionOrdred>(HttpStatus.NOT_MODIFIED);
 		}
 		return new ResponseEntity<SubscriptionOrdred>(HttpStatus.OK);
-	}
-	
-	@PutMapping("/update")
-	@PreAuthorize("hasAuthority('ADMIN')")
-	public ResponseEntity<SubscriptionOrdred> UpdateById(@RequestBody SubscriptionOrdred s){
-		sos.UpdateSubscriptionorder(s);
-		return new ResponseEntity<SubscriptionOrdred>(s,HttpStatus.OK);
-	}
-	
-	@PostMapping("/addpremium/{iduser}")
-	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
-	public ResponseEntity<SubscriptionOrdred> AddPremiumById(@RequestBody SubscriptionOrdred s,@PathVariable Long iduser){
-		return new ResponseEntity<>(sos.AddPremiumSubscriptionorder(s, iduser), HttpStatus.OK);
-	}
-	
-	@GetMapping("/getbyuser/{iduser}")
-	public ResponseEntity<List<SubscriptionOrdred>> GetByUser(@PathVariable Long iduser){
-		List<SubscriptionOrdred> usersubsord= sos.GetByUser(iduser);
-		if(usersubsord!=null){
-			return new ResponseEntity<List<SubscriptionOrdred>>(usersubsord, HttpStatus.FOUND);
-		}
-		else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 }

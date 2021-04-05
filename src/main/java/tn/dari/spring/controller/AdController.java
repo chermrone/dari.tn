@@ -134,6 +134,7 @@ public class AdController {
 			/****************Ad statistics**************************/
 	
 	@GetMapping("/buyedAdByRegion/{city}")
+	@PreAuthorize("hasAuthority('PREMIUM') or hasAuthority('ADMIN')")
 	public ResponseEntity<String> GetbBuyedHousesByCity(@PathVariable("city") String city) {
 		if (Adserv.getBuyedHousesByCity(city) > 0) {
 			return new ResponseEntity<>("number of houses: " + Adserv.getBuyedHousesByCity(city), HttpStatus.FOUND);
@@ -142,6 +143,7 @@ public class AdController {
 	}
 
 	@GetMapping("/buyedAdByRegionandMaxPrice/{city}/{price}")
+	@PreAuthorize("hasAuthority('PREMIUM') or hasAuthority('ADMIN')")
 	public ResponseEntity<String> GetBuyedHousesByCityAndMaxPrice(@PathVariable("city") String city,
 			@PathVariable("price") double price) {
 		if (Adserv.getBuyedHousesByCityAndMaxprice(city, price) > 0) {
@@ -152,6 +154,7 @@ public class AdController {
 	}
 
 	@GetMapping("/buyedAdByRegionandMinPrice/{city}/{price}")
+	@PreAuthorize("hasAuthority('PREMIUM') or hasAuthority('ADMIN')")
 	public ResponseEntity<String> GetBuyedHousesByCityAndMinPrice(@PathVariable("city") String city,
 			@PathVariable("price") double price) {
 		if (Adserv.getBuyedHousesByCityAndMinprice(city, price) > 0) {
@@ -162,6 +165,7 @@ public class AdController {
 	}
 
 	@GetMapping("buyedAdInPeriod/{city}/{period}")
+	@PreAuthorize("hasAuthority('PREMIUM') or hasAuthority('ADMIN')")
 	public ResponseEntity<String> GetBuyedHousesByCityInPeriodOfTime(@PathVariable("city") String city,
 			@PathVariable("period") int period) {
 		if (Adserv.getBuyedHousesByCityInPeriod(city, period) > 0) {
@@ -172,6 +176,7 @@ public class AdController {
 	}
 
 	@GetMapping("topfiveregionsbuy")
+	@PreAuthorize("hasAuthority('PREMIUM') or hasAuthority('ADMIN')")
 	public ResponseEntity<String> GetTopFiveRegionBuy() {
 		List<String> topcities = Adserv.topfivecities();
 		return new ResponseEntity<String>(topcities.toString(), HttpStatus.OK);
@@ -179,6 +184,7 @@ public class AdController {
 	}
 
 	@GetMapping("GetRegionsordredbybuyingasc")
+	@PreAuthorize("hasAuthority('PREMIUM') or hasAuthority('ADMIN')")
 	public ResponseEntity<String> GetRegionsordredbybuyingasc() {
 		List<String> topcities = Adserv.ordercitiesByBuyingdesc();
 		return new ResponseEntity<String>(topcities.toString(), HttpStatus.OK);

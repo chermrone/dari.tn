@@ -38,55 +38,54 @@ public class SubscriptionController {
 	}
 
 	@GetMapping("/find/{id}")
+
 	public ResponseEntity<Subscription> get(@PathVariable("id") Long id) {
 		Subscription sub = ss.GetSubscriptionById(id);
 		return new ResponseEntity<Subscription>(sub, HttpStatus.OK);
 	}
 
-	
+	@GetMapping("/ordersubbyusersub/{agemin}/{agemax}")
+	public ResponseEntity<List<Subscription>> OrderSubscriptionsByUsersByAge(@PathVariable("agemin") int agemin,
+			@PathVariable("agemax") int agemax) {
+		List<Subscription> ordredSubscriptions = ss.OrderSubscriptionsByMaxUserByAge(agemin, agemax);
+		if (!ordredSubscriptions.isEmpty()) {
+			return new ResponseEntity<List<Subscription>>(ordredSubscriptions, HttpStatus.OK);
+		}
+		return new ResponseEntity<List<Subscription>>(HttpStatus.NO_CONTENT);
+
+	}
+
 	@PostMapping("/add")
 	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
-	public ResponseEntity<Subscription>save(@RequestBody Subscription subs){
+	public ResponseEntity<Subscription> save(@RequestBody Subscription subs) {
 		List<Subscription> allsub = ss.GetAllSubscriptions();
 		for (Subscription sub : allsub) {
 			if (sub.getSubscriptionId().equals(subs.getSubscriptionId())) {
 				return new ResponseEntity<Subscription>(HttpStatus.NOT_ACCEPTABLE);
 			}
-			
+
 		}
 		Subscription subOne = ss.AddSubscription(subs);
 		return new ResponseEntity<Subscription>(subOne, HttpStatus.CREATED);
 	}
 
-	
 	@PutMapping("/update")
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Subscription> update(@RequestBody Subscription subscription) {
-		List<Subscription> allsub=ss.GetAllSubscriptions();
+		List<Subscription> allsub = ss.GetAllSubscriptions();
 		for (Subscription subscription2 : allsub) {
-			if (subscription2.getSubscriptionId()==subscription.getSubscriptionId()){
+			if (subscription2.getSubscriptionId() == subscription.getSubscriptionId()) {
 				Subscription sub = ss.UpdateSubscription(subscription);
 				return new ResponseEntity<Subscription>(sub, HttpStatus.OK);
 			}
 		}
 		return new ResponseEntity<Subscription>(HttpStatus.NOT_FOUND);
 	}
-	
+
 	@DeleteMapping("/delete/{id}")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	  void deleteEmployee(@PathVariable("id") Long id) throws Exception {
-	    ss.DeleteSubscription(id);
-	  }
-	
-	@GetMapping("/ordersubbyusersub/{agemin}/{agemax}")
-	public ResponseEntity<List<Subscription>> OrderSubscriptionsByUsersByAge(@PathVariable("agemin") int agemin,@PathVariable("agemax") int agemax ){
-		List<Subscription> ordredSubscriptions=ss.OrderSubscriptionsByMaxUserByAge(agemin, agemax);
-		if(!ordredSubscriptions.isEmpty()){
-			return new ResponseEntity<List<Subscription>>(ordredSubscriptions,HttpStatus.OK);
-		}
-		return new ResponseEntity<List<Subscription>>(HttpStatus.NO_CONTENT);
-		
+	void deleteEmployee(@PathVariable("id") Long id) throws Exception {
+		ss.DeleteSubscription(id);
 	}
-	
-	
+
 }

@@ -26,9 +26,6 @@ public class UserController {
 	@Autowired
 	private UIuser user;
 
-	@Autowired
-	private UIadService adserv;
-
 	@GetMapping("/all")
 	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
 	public ResponseEntity<List<User>> getAllUser() {
@@ -92,6 +89,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/usersubscribe/{agemin}/{agemax}/{sid}")
+	@PreAuthorize("hasAuthority('PREMIUM') or hasAuthority('ADMIN')")
 	public ResponseEntity<Long> UserSubscribeByAge(@PathVariable("agemin") int agemin,@PathVariable("agemax") int agemax,@PathVariable("sid") Long sid ){
 		Long nbr=user.UserSubscribeAge(agemin, agemax, sid);
 		if(nbr==0) return new ResponseEntity<Long>((long) 0,HttpStatus.NO_CONTENT);
