@@ -27,5 +27,7 @@ public interface UIuser {
 	
 	public Long UserSubscribeAge(int agemin,int agemax,Long sid);
 
-	void logout(Authentication auth);
+	public void logout(Authentication auth);
+
+	public void activate_Acount(Long Id);
 }

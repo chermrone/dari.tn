@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tn.dari.spring.entity.User;
-import tn.dari.spring.service.UIadService;
 import tn.dari.spring.service.UIuser;
 
 @CrossOrigin("*")
@@ -86,6 +86,15 @@ public class UserController {
 					HttpStatus.OK);
 		} else
 			return new ResponseEntity<String>("error", HttpStatus.NOT_MODIFIED);
+	}
+	
+	
+	@PostMapping("/activate_Acount/{id}")
+	@PreAuthorize("hasAuthority('ADMIN')")
+	public  ResponseEntity<?>  activate_Acount(@PathVariable("id") Long id) {
+          
+          user .activate_Acount(id);
+           return new ResponseEntity<String>("User account activated",HttpStatus.OK);
 	}
 	
 	@GetMapping("/usersubscribe/{agemin}/{agemax}/{sid}")
