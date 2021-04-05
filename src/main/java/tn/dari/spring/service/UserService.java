@@ -82,6 +82,7 @@ public class UserService implements UIuser {
 	@Override
 	public void activate_Acount(Long id) {
 		User user = ur.findById(id).get();
+		
 		user.setUserState(true);
 		ur.save(user);
 	}
