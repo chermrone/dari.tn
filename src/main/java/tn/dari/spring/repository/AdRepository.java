@@ -26,4 +26,8 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
 
 	@Query("SELECT u from Ad u JOIN  u.us uss "+ "join uss.roles r WHERE r.name=:role")
 	public List<Ad> retriveAdDependingOnRole(@Param("role") Usertype role);
+
+	@Query("SELECT count(uu.Favorite) from User uu join uu.roles rr "
+			+ "join uu.ads aa WHERE rr.name=tn.dari.spring.enumeration.Usertype.PREMIUM and  aa.adId=:id")
+	public int retriveNumberOffavoritesForPremium(@Param("id") long id);
 }

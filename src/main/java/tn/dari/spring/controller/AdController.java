@@ -111,7 +111,7 @@ public class AdController {
 	}
 	
 	
-	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
+	@PreAuthorize("hasAuthority('PREMIUM') or hasAuthority('SELLER')")
 	@GetMapping("ad/numfav/{id}")
 	public ResponseEntity<Integer> NumberOffavoriteAd(@PathVariable("id") long id)  {
 		int numberFav = Adserv.getNumberOfFavoriteAd(id);

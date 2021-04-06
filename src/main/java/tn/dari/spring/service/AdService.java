@@ -433,21 +433,7 @@ Set<Long> Favorites=ad.getUs().getFavorite();
 	
 	@Override
 	public int getNumberOfFavoriteAd(long id) {
-		Ad ad=adrepository.findById(id).get();
-		User user = ad.getUs();
-		// check if he is premium or not : 
-		if (!user.getRoles().contains(rolerepository.findByName(Usertype.PREMIUM).get()))
-		return 0;
-long favorite=ad.getAdId();
-List<User> Users=userrep.findAll();
-int nmberOfFavorites=0;
-for (User userr : Users) {
-
-if(userr.getFavorite().contains(favorite))
-		{ nmberOfFavorites++;
-		}
-}
-return nmberOfFavorites;
+		return adrepository.retriveNumberOffavoritesForPremium(id);
 	}
 	
 	
@@ -465,7 +451,7 @@ Ad ad=adrepository.findById(id).get();
 			if(ad.getNumbeOfVisites()==0)
 			{ad.setFeedback("you should enter detailled information to your ad and clear image");
 		adrepository.save(ad);}
-		if(getNumberOfFavoriteAd(id)!=0 &&  ad.getNumbeOfVisites()!=0 ){
+		if(adrepository.retriveNumberOffavoritesForPremium(id)!=0 &&  ad.getNumbeOfVisites()!=0 ){
 		//compare date of creation with sysdate if > 7 return estimated price
 			Date currentSqlDate = new Date(System.currentTimeMillis());
 			long diffInMillies = Math.abs(currentSqlDate.getTime() - ad.getCreationDate().getTime());
