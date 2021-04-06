@@ -6,6 +6,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+
+import javax.persistence.Column;
+
+import javax.persistence.ElementCollection;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -16,12 +21,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,7 +33,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import tn.dari.spring.enumeration.Gender;
-import tn.dari.spring.entity.Ad;
 
 @Entity
 @Getter
@@ -53,7 +56,7 @@ public class User implements Serializable {
 	
 	private int age;
 	
-	private String urlimguser;
+	
 	
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
@@ -64,8 +67,15 @@ public class User implements Serializable {
 	
 	private int cin;
 	
+	@JsonIgnore
+    private String resetToken;
+	
+	@JsonIgnore
+	private boolean isConnected;
+
+	
 	@ToString.Exclude
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 	
@@ -74,19 +84,24 @@ public class User implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date creationDate;
 	
+	@Temporal(TemporalType.DATE)
+	private Date banDate=null;
+	
+	private int banNbr=0;
+	
 	@JsonManagedReference
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us", fetch = FetchType.EAGER)
 	private Set<Ad> ads;
 	
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL)
-	private Set<Ad> Favorite;
+	@ElementCollection(targetClass=Long.class)
+	private Set<Long> Favorite;
 	
-	@JsonManagedReference
+	@JsonManagedReference(value="us")
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
-	private Set<Subscription> subscriptions;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us", fetch = FetchType.EAGER)
+	private Set<SubscriptionOrdred> subscriptions;
 	
 	//seiiifffff
 	
@@ -103,20 +118,20 @@ public class User implements Serializable {
 	//seiiifffff
      @JsonManagedReference(value = "us")
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us",fetch = FetchType.EAGER)
 	private Set<Appointment> appointments;
 	@JsonManagedReference(value = "landlord")
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "landlord")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "landlord", fetch = FetchType.EAGER)
 	private Set<Appointment> appointment;
 	
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us", fetch = FetchType.EAGER)
 	private Set<CreditSimulator> creditSimulators;
 
 	public User(Long idUser, String firstName, String lastName, String userName, String password, int age,
 			String urlimguser, Gender gender, int phoneNumber, String email, int cin, boolean userState,
-			Date creationDate, Set<Ad> ads, Set<Ad> favorite, Set<Subscription> subscriptions, Set<OrderUser> orders,
+			Date creationDate, Set<Ad> ads, Set<Long> favorite, Set<SubscriptionOrdred> subscriptions, Set<OrderUser> orders,
 			ShoppingCart shoppingCart, Set<Appointment> appointments, Set<CreditSimulator> creditSimulators) {
 		super();
 		this.idUser = idUser;
@@ -125,7 +140,7 @@ public class User implements Serializable {
 		this.userName = userName;
 		this.password = password;
 		this.age = age;
-		this.urlimguser = urlimguser;
+	
 		this.gender = gender;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
@@ -142,6 +157,6 @@ public class User implements Serializable {
 	
 	@JsonManagedReference
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us",fetch = FetchType.EAGER)
 	private Set<ImgUser> imguser;
 }

@@ -1,8 +1,5 @@
 package tn.dari.spring.security.service;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
 public class LoginForm {
     
     private String username;

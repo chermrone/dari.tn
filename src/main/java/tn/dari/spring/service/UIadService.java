@@ -1,37 +1,49 @@
 package tn.dari.spring.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.web.bind.annotation.PathVariable;
 
 import tn.dari.spring.entity.Ad;
+import tn.dari.spring.entity.Role;
 
 public interface UIadService {
-	Ad save(Ad ad);
+	public Ad save(Ad ad);
 
-	Ad modify(long id);
+	public String Delete(long id);
 
-	String Delete(long id);
+	public List<Ad> getAll();
 
-	List<Ad> getAll();
-
-	Ad getById(long id);
+	public Ad getById(long id);
 	
-	float getBuyedHousesByCity(String city);
+	public float getBuyedHousesByCity(String city);
 	
-	float getBuyedHousesByCityAndMaxprice(String city, double price);
+	public float getBuyedHousesByCityAndMaxprice(String city, double price);
 	
-	float getBuyedHousesByCityAndMinprice(String city, double price);
+	public float getBuyedHousesByCityAndMinprice(String city, double price);
 	
-	float getBuyedHousesByCityInPeriod(String city, int period);
+	public float getBuyedHousesByCityInPeriod(String city, int period);
 	
-	List<String> ordercitiesByBuyingdesc();
+	public List<String> ordercitiesByBuyingdesc();
 	
-	List<String> topfivecities();
+	public List<String> topfivecities();
 
-	Ad BuyedHouse(long id);
+	public Ad BuyedHouse(long id);
 
-	double EstimatedHouse(Ad ad);
+	public double EstimatedHouse(Ad ad);
 
+	public List<Ad> GetAdsOwned();
 
+	public Ad modify(Ad ad);
+
+	public Set<Long> saveFavorite(long id);
+
+	Ad GetAdOwned(long id);
+
+	public double SituationAd(long id);
+
+	int getNumberOfFavoriteAd(long id);
+
+	List<Ad> retriveAdforNonAdmin(long id);
 }
