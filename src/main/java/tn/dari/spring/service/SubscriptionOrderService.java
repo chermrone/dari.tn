@@ -33,13 +33,17 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 	SubscriptionService ss;
 
 	@Override
-	public SubscriptionOrdred AddSubscriptionorder(SubscriptionOrdred s) {
+	public SubscriptionOrdred AddSubscriptionorder(SubscriptionOrdred s,Long id) {
 		// enter the user connected to ad
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String userAuthenticated = auth.getName();
 		User user = new User();
 		user = userservice.GetUserByUserName(userAuthenticated);
 		s.setUs(user);
+		
+		// enter subscription
+		s.setSubscription(ss.GetSubscriptionById(id));
+		
 		return sr.save(s);
 	}
 
@@ -55,7 +59,7 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 	public void deleteSubscriptionOrder(Long id) {
 		SubscriptionOrdred s = GetSubscriptionorder(id);
 
-		// removing this subscription order fromuser
+		// removing this subscription order from user
 		User u = s.getUs();
 		Set<SubscriptionOrdred> allso = u.getSubscriptions();
 		allso.remove(s);

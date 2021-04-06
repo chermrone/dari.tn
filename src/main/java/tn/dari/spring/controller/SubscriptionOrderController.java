@@ -77,10 +77,10 @@ public class SubscriptionOrderController {
 		return new ResponseEntity<>(sos.AddPremiumSubscriptionorder(s, iduser), HttpStatus.OK);
 	}
 
-	@PostMapping("/add")
+	@PostMapping("/add/{id}")
 	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
-	public ResponseEntity<SubscriptionOrdred> AddSubscriptionOrder(@RequestBody SubscriptionOrdred s) {
-		return new ResponseEntity<>(sos.AddSubscriptionorder(s), HttpStatus.OK);
+	public ResponseEntity<SubscriptionOrdred> AddSubscriptionOrder(@RequestBody SubscriptionOrdred s,@PathVariable("id") Long id) {
+		return new ResponseEntity<>(sos.AddSubscriptionorder(s,id), HttpStatus.OK);
 	}
 
 	@PutMapping("/update")
@@ -94,11 +94,7 @@ public class SubscriptionOrderController {
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<SubscriptionOrdred> DeleteById(@PathVariable Long id) {
 		sos.deleteSubscriptionOrder(id);
-		SubscriptionOrdred s = sos.GetSubscriptionorder(id);
-		if (s != null) {
-			return new ResponseEntity<SubscriptionOrdred>(HttpStatus.NOT_MODIFIED);
-		}
-		return new ResponseEntity<SubscriptionOrdred>(HttpStatus.OK);
+			return new ResponseEntity<SubscriptionOrdred>(HttpStatus.OK);
 	}
 
 	@GetMapping("/export/pdf/{id}")

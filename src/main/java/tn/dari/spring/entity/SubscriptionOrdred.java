@@ -26,9 +26,9 @@ public class SubscriptionOrdred {
 	private Long subscriptionOrderId;
 	
 	@Temporal(TemporalType.DATE)
-	private Date payingDate = null;
+	private Date payingDate = new Date();
 	
-	private boolean enable=false;
+	private boolean enable=true;
 	@ManyToOne
 	@JsonBackReference(value ="subscription")
 	private Subscription subscription;

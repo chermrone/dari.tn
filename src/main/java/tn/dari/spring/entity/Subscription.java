@@ -37,7 +37,7 @@ public class Subscription implements Serializable {
 	private double price;
 	@Enumerated(EnumType.STRING)
 	private SubscriptionType subscriptiontype;
-	private boolean validity;
+	private boolean validity=true;
 	private long duration;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "subscription", fetch = FetchType.EAGER)
 	@JsonManagedReference(value ="subscription")
