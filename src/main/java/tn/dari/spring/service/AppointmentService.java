@@ -50,6 +50,7 @@ public class AppointmentService implements IAppointmentService{
 			for (Ad ad2 : adlist) {
 				if(ad2.equals(ad)){
 					app.setLandlord(user);
+					app.setJour(findDay(app.getDateAppdeb()));
 					return ar.save(app);
 				}
 			}
@@ -57,6 +58,24 @@ public class AppointmentService implements IAppointmentService{
 		}
 		
 		return null;
+	}
+	public String findDay(Date DateAppdeb){
+		String jour="";
+		if(DateAppdeb.getDay()==0)
+			jour = "Sunday";
+		else if(DateAppdeb.getDay()==1)
+			jour ="Monday";
+		else if(DateAppdeb.getDay()==2)
+			jour ="Tuesday";
+		else if(DateAppdeb.getDay()==3)
+			jour ="Wednesday";
+		else if(DateAppdeb.getDay()==4)
+			jour ="Thursday";
+		else if(DateAppdeb.getDay()==5)
+			jour ="Friday";
+		else if(DateAppdeb.getDay()==6)
+			jour ="Saturday";
+		return jour;
 	}
 	@Override
 	public Appointment UpdateApp (Appointment app){
@@ -78,34 +97,37 @@ public class AppointmentService implements IAppointmentService{
 
 	
 	
-	/*@Override
-	public double CalculPourcentage(Long idLandlord, Date dateDebut, Date dateFin) {
-		int i=0;
-		List<Appointment> app = GetAllAppointment();
-		for (Appointment appointment : app) {
-			if(appointment.getLandlord().getIdUser()== idLandlord && appointment.getDateAppdeb()==dateDebut && appointment.getDateAppFin()==dateFin)
-			
+	@Override
+	public String CalculPourcentage(Long idLandlord, String jour) {
+		float a =NbAppointmentAcceptedbyDay(jour,idLandlord);
+		System.out.println(a);
+		float r=NbAppointmentRefusedbyDay(jour, idLandlord);
+		System.out.println(r);
+		float total=NbAppointmentbyDay(jour, idLandlord);
+		System.out.println(total);
+		//int total=ar.NbAppointmentAccepted(idLandlord);
+		if(total!=0)
+		{float Pa;
+		Pa=((a/total)*100);
+		System.out.println(Pa);
+		float Pr=((r/total)*100);
+		System.out.println(Pr);
+		return "le pourcentage de l'acceptation du rendez vous dans cette jour est :"+Pa+"%  le pourcentage que le rendez vous refuser est :"+Pr+"%";
 		}
-	
-		return 0;}
-		}*/
+			return "jour vide";}
 	
 	@Override
 	public List<Appointment> retrieveListAppointmentBYLandlord(long idLandlord) {
 		return ar.retrieveListAppointmentBYLandlord(idLandlord);
 	}
-	//@Transactional
-	/*@Override
-	public List<Appointment> findByLandlord(long idlandLord); {
-		//List<Appointment> app = ar.findByLandlord(idlandLord);
-		return ar.findByLandlord(idlandLord);//app.get() ;//ar.findByLandlord(idlandLord);
-	}*/
+	
 	//cette fonction executer par landlord et le mail envoyee automatiquement
 	@Override
 	public String AcceptedAppointment(long appointmentId) {
 		Optional<Appointment> app = ar.findById(appointmentId);
 		if(app.get().isAccepted()==false){
 			app.get().setAccepted(true);
+			app.get().setRefused(false);
 			ar.save(app.get());
 			User us=userservice.GetUserById(app.get().getUs().getIdUser());
 			String subject=("concerning your appointment on"+app.get().getDateAppdeb()+" a " +app.get().getPlaceApp() );
@@ -114,5 +136,38 @@ public class AppointmentService implements IAppointmentService{
 			else{return "Accept success and not email send" +app;}}
 		return (" already accepted"+app);
 	}
-
+	@Override
+	public String NbAppointmentAccepted(long idLandlord) {
+		int a =ar.NbAppointmentAccepted(idLandlord);
+		return ("the number of appointments accepted by " +userservice.GetUserById(idLandlord).getUserName()+" = "+a);
+	}
+	//cette fonction executer par landlord et le mail envoyee automatiquement
+	@Override
+	public String refusedAppointment(long appointmentId) {
+		Optional<Appointment> app = ar.findById(appointmentId);
+		if(app.get().isRefused()==false){
+			app.get().setRefused(true);
+			app.get().setAccepted(false);
+			ar.save(app.get());
+			User us=userservice.GetUserById(app.get().getUs().getIdUser());
+			String subject=("concerning your appointment on"+app.get().getDateAppdeb()+" a " +app.get().getPlaceApp() );
+			if(es.sendMail("tuntechdari.tn@gmail.com", us.getEmail() , subject, "your appointment is refused"))
+			{return "refuse success and email send"  +app;}
+			else{return "refuse success and not email send" +app;}}
+		return (" already refused"+app);
+	}
+	
+	@Override
+	public int NbAppointmentAcceptedbyDay(String jour, long idLandlord) {
+		return ar.NbAppointmentAcceptedbyDay(jour, idLandlord);
+	}
+	@Override
+	public int NbAppointmentRefusedbyDay(String jour, long idLandlord) {
+		return ar.NbAppointmentRefusedbyDay(jour, idLandlord);
+	}
+	@Override
+	public int NbAppointmentbyDay(String jour, long idLandlord) {
+		return ar.NbAppointmentbyDay(jour, idLandlord);
+	}
+	
 }
