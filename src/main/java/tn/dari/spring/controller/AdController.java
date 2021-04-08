@@ -1,9 +1,11 @@
 package tn.dari.spring.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,10 +19,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import tn.dari.spring.entity.*;
-
+import tn.dari.spring.enumeration.Usertype;
 import tn.dari.spring.service.UIadService;
 import tn.dari.spring.service.UIuser;
 
@@ -131,11 +134,18 @@ public class AdController {
 	}
 	@GetMapping("ad/find/{id}")
 	public ResponseEntity<List<Ad>> GetAdFromUserByRole(@PathVariable long id)  {
-List <Ad> ads=Adserv.retriveAdforNonAdmin(id);
-System.out.println("number of ad +"+ads);
+List <Ad> ads=Adserv.retriveAdUsingRole(id);
 		return new ResponseEntity<List<Ad>>(ads, HttpStatus.OK);
 	}
 	
+	@PostMapping("banned/{role}")
+	public ResponseEntity<List<Ad>> GetAdBannedByRoleAndPeriod(@PathVariable Long role,
+			@RequestParam(value="fromDate")     @DateTimeFormat(pattern="dd.MM.yyyy") Date fromDate,
+			@RequestParam(value="toDate")     @DateTimeFormat(pattern="dd.MM.yyyy") Date toDate)  {
+List <Ad> ads=Adserv.retrieveAdsByBannedUser(role, toDate, fromDate);
+System.out.println("number of ad +"+ads.size());
+		return new ResponseEntity<List<Ad>>(ads, HttpStatus.OK);
+	}
 	
 			/****************Ad statistics**************************/
 	

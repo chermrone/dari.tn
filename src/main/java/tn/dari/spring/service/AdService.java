@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import tn.dari.spring.exception.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -470,9 +471,15 @@ Ad ad=adrepository.findById(id).get();
 }
 	
 	@Override
-	public  List<Ad>  retriveAdforNonAdmin(long id){
+	public  List<Ad>  retriveAdUsingRole(long id){
 		Role r=rolerepository.findById(id).get();
 				return adrepository.retriveAdDependingOnRole(r.getName()); 
+	}
+	
+	@Override
+	public List<Ad> retrieveAdsByBannedUser(Long role, java.util.Date  maxdays,java.util.Date  mindays)
+	{
+		return adrepository.retrieveUserByBannedAd(role, maxdays, mindays);
 	}
 	/********************* Statistics*********************************/
 	@Override

@@ -1,5 +1,6 @@
 package tn.dari.spring.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,4 +31,9 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
 	@Query("SELECT count(uu.Favorite) from User uu join uu.roles rr "
 			+ "join uu.ads aa WHERE rr.name=tn.dari.spring.enumeration.Usertype.PREMIUM and  aa.adId=:id")
 	public int retriveNumberOffavoritesForPremium(@Param("id") long id);
+	@Query("SELECT u from Ad u JOIN  u.us uss "+ "join uss.roles r "
+			+ "WHERE uss.userState=false  and uss.banDate between :mindate  and :maxdate  "
+			+ "and r.id=:role")
+	public List<Ad> retrieveUserByBannedAd(@Param("role") Long role,@Param("maxdate") Date maxdays,@Param("mindate") Date mindays);
+
 }
