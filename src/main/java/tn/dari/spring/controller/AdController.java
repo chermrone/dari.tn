@@ -114,7 +114,6 @@ public class AdController {
 	}
 	
 	
-	@PreAuthorize("hasAuthority('PREMIUM') or hasAuthority('SELLER')")
 	@GetMapping("ad/numfav/{id}")
 	public ResponseEntity<Integer> NumberOffavoriteAd(@PathVariable("id") long id)  {
 		int numberFav = Adserv.getNumberOfFavoriteAd(id);
@@ -122,15 +121,13 @@ public class AdController {
 		return new ResponseEntity<Integer>(numberFav, HttpStatus.OK);
 	}
 	//ad if premium if the house pass  7 days without being buyed
-	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PREMIUM') ")
 	@GetMapping("ad/situation/{id}")
-	public ResponseEntity<Double> SituationAd(@PathVariable("id") long id) {
-		double state = Adserv.SituationAd(id);
+	public ResponseEntity<String> SituationAd(@PathVariable("id") long id) {
+		String state = Adserv.SituationAd(id);
 		System.out.println("state ad +" + state);
-		if(state==403)
-			return new ResponseEntity<>( HttpStatus.FORBIDDEN);
 
-		return new ResponseEntity<Double>(state, HttpStatus.OK);
+		return new ResponseEntity<String>(state, HttpStatus.OK);
 	}
 	@GetMapping("ad/find/{id}")
 	public ResponseEntity<List<Ad>> GetAdFromUserByRole(@PathVariable long id)  {

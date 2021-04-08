@@ -43,7 +43,7 @@ public interface UIadService {
 
 	Ad GetAdOwned(long id);
 
-	public double SituationAd(long id);
+	public String SituationAd(long id);
 
 	int getNumberOfFavoriteAd(long id);
 

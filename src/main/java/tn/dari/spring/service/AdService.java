@@ -439,15 +439,11 @@ Set<Long> Favorites=ad.getUs().getFavorite();
 	
 	
 	@Override
-	public double SituationAd(long id) {
+	public String SituationAd(long id) {
 Ad ad=adrepository.findById(id).get();
 		User user = ad.getUs();
 		// check if he is premium or not : 
-		if (!user.getRoles().contains(rolerepository.findByName(Usertype.PREMIUM).get()))
-		{			System.out.println("user not premium");
-
-			return 403;}
-		else if (ad.getBuyingDate()==null)
+	 if (ad.getBuyingDate()==null)
 		{//compare if number of visite = 0 feedback
 			if(ad.getNumbeOfVisites()==0)
 			{ad.setFeedback("you should enter detailled information to your ad and clear image");
@@ -462,11 +458,11 @@ Ad ad=adrepository.findById(id).get();
 			ad.setFeedback("you should reduce the price to attract people");
 			adrepository.save(ad);
 			if (diff >= 7) {
-			return EstimatedHouse(ad);}
+			return ad.getFeedback()+" your estimated price :  "+EstimatedHouse(ad);}
 		}
 	}			
 
-		return 0;
+		 return ad.getFeedback();
 
 }
 	
