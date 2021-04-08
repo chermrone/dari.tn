@@ -29,7 +29,7 @@ public class AppointmentController {
 	
 	
 @GetMapping("/all")
-public ResponseEntity<List<Appointment>>getAllAppointment(){
+public ResponseEntity<List<Appointment>>getAllClaims(){
 		System.out.println("reception de la requete");
 		List<Appointment> al =IA.GetAllAppointment();
 		return new ResponseEntity<List<Appointment>>(al, HttpStatus.OK);
@@ -45,32 +45,19 @@ public ResponseEntity<List<Appointment>>Getbyidlandlord(@PathVariable("idLandlor
 	List<Appointment> al = IA.retrieveListAppointmentBYLandlord(idLandlord);
 	return new ResponseEntity<List<Appointment>>(al, HttpStatus.OK);
 }
-@GetMapping("/GetNbAppointmentAccepted/landlord/{idLandlord}")
-public String NbAppointmentAccepted(@PathVariable("idLandlord") long idLandlord){
-	return IA.NbAppointmentAccepted(idLandlord);
-}
-@GetMapping("/GetNbAppointmentAcceptedByDay/{idLandlord}/{jour}")
-public int NbAppointmentAccepted(@PathVariable("idLandlord") long idLandlord,@PathVariable("jour") String jour){
-	return IA.NbAppointmentAcceptedbyDay(jour, idLandlord);
-}
-@GetMapping("/GetNbAppointmentRefusedByDay/{idLandlord}/{jour}")
-public int NbAppointmentrefused(@PathVariable("idLandlord") long idLandlord,@PathVariable("jour") String jour){
-	return IA.NbAppointmentRefusedbyDay(jour, idLandlord);
-}
-@GetMapping("/GetNbAppointmentByDay/{idLandlord}/{jour}")
-public int NbAppointment(@PathVariable("idLandlord") long idLandlord,@PathVariable("jour") String jour){
-	return IA.NbAppointmentbyDay(jour, idLandlord);
-}
-@GetMapping("/CalculPourcentage/{idLandlord}/{jour}")
-public String CalculPourcentage(@PathVariable("idLandlord") long idLandlord,@PathVariable("jour") String jour){
-	return IA.CalculPourcentage(idLandlord, jour);
-}
 
 @PostMapping("/add/{idAd}")
 public ResponseEntity<Appointment>save(@RequestBody Appointment al, @PathVariable ("idAd") long idAd ){
-
+	/*List<Appointment> allappointment = IA.GetAllAppointment();//if al.online ==true {...}
+	for (Appointment ia : allappointment) {
+		if (ia.getAppointmentId().equals(al.getAppointmentId())) {
+			return new ResponseEntity<Appointment>(HttpStatus.NOT_ACCEPTABLE);
+		}
+		
+	}*/
 	Appointment appOne = IA.AddApp(al,idAd);
-	
+	//System.out.println("rdv final "+appOne);
+	//System.out.println(" rdv en parametre"+ al);
 	return new ResponseEntity<Appointment>(appOne, HttpStatus.CREATED);
 }
 @PutMapping("/update")
@@ -80,14 +67,17 @@ public ResponseEntity<Appointment>update(@RequestBody Appointment app){
 }
 @PutMapping("/update/isAcceptandSendEmail/{appointmentId}")
 public String update(@PathVariable ("appointmentId") long appointmentId){
-	return IA.AcceptedAppointment( appointmentId);	
-}
-@PutMapping("/update/isRefuseandSendEmail/{appointmentId}")
-public String update1(@PathVariable ("appointmentId") long appointmentId){
-	return IA.refusedAppointment(appointmentId)	;
+	return IA.AcceptedAppointment( appointmentId);
+	//return new ResponseEntity<Appointment>(al, HttpStatus.OK);
 }
 
+
 @DeleteMapping("/delete/{id}")
-public String delete(@PathVariable("id") Long appointmentId){
-	return IA.DeleteApp(appointmentId);}
+public String delete(@PathVariable("id") Long appointmentId){//ResponseEntity<String>
+	return IA.DeleteApp(appointmentId);
+	//System.out.println("deleted");
+	/*if(IA.GetAppById(appointmentId).getAppointmentId() ==appointmentId)
+	return new ResponseEntity<String>("Appointment deleted", HttpStatus.OK);
+	else return new ResponseEntity<String>("Appointment not deleted", HttpStatus.NOT_FOUND);
+*/}
 }
