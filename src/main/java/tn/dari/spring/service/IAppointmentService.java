@@ -3,20 +3,27 @@ package tn.dari.spring.service;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.repository.query.Param;
+
 import tn.dari.spring.entity.Appointment;
 import tn.dari.spring.entity.User;
 
 public interface IAppointmentService {
 	
-	public List<Appointment> GetAllAppointment();
-	public Appointment GetAppById (long appointmentId);
-	public Appointment AddApp (Appointment app,long idAd);
-	public Appointment UpdateApp (Appointment app);
-	public String DeleteApp (long appointmentId);
-	public List<Appointment> findByplaceApp(String placeapp);
-	public List<Appointment> findBydateAppdeb(Date dateAppdeb);
-	public String AcceptedAppointment(long appointmentId) ;
-	public List<Appointment> retrieveListAppointmentBYLandlord(long idLandlord);
-   // public double CalculPourcentage (Long idLandlord , Date dateDebut, Date dateFin);
+	List<Appointment> GetAllAppointment();
+	Appointment GetAppById (long appointmentId);
+	Appointment AddApp (Appointment app,long idAd);
+	Appointment UpdateApp (Appointment app);
+	String DeleteApp (long appointmentId);
+    List<Appointment> findByplaceApp(String placeapp);
+    List<Appointment> findBydateAppdeb(Date dateAppdeb);
+    String AcceptedAppointment(long appointmentId) ;
+    String refusedAppointment(long appointmentId);
+    List<Appointment> retrieveListAppointmentBYLandlord(long idLandlord);
+    String NbAppointmentAccepted(long idLandlord);
+    int NbAppointmentAcceptedbyDay(String jour,long idLandlord);
+    int NbAppointmentRefusedbyDay(String jour,long idLandlord);
+    int NbAppointmentbyDay(String jour, long idLandlord);
+    String CalculPourcentage (Long idLandlord , String jour);
 
 }

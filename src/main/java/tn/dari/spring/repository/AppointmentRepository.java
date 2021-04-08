@@ -21,16 +21,21 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 	 List<Appointment> findByplaceApp(String placeapp);
 	 List<Appointment> findBydateAppdeb(Date dateAppdeb);
 	
-	// @Query("SELECT u FROM User u WHERE u.role= :role")
-	// List<User> retrieveUsersByRole(@Param("role") Role role);
+	
 	
 	 @Query("SELECT A FROM Appointment  A  WHERE A.landlord.idUser = :idLandlord ")//AND (Appointment.dateAppdeb = :dateDebut) AND (Appointment.dateAppFin= :dateFin) ")
-	 public List<Appointment> retrieveListAppointmentBYLandlord(@Param("idLandlord") long idLandlord);//@Param("idlandLord")
-	 //public double CalculPourcentage (Long idLandlord , Date dateDebut, Date dateFin);
-	 /*@Query("SELECT documentRequestEntity FROM DocumentRequestEntity AS documentRequestEntity "
-     + "WHERE (documentRequestEntity.collaborator.id = :collaboratorId) AND (documentRequestEntity.type.id = :typeId) AND (documentRequestEntity.status.label <> :status) ")
-public Collection<DocumentRequestEntity> findDocumentRequestsByCollaboratorIdAndTypeId(
-        Long collaboratorId , Long typeId ,RequestStatusEnum status);*/
+	 public List<Appointment> retrieveListAppointmentBYLandlord(@Param("idLandlord") long idLandlord);
 	// @Query("update Appointment A set A.isAccepted = true where A.AppointmentId = :appointmentId")
 	// String AcceptedAppointment(@Param("appointmentId")long appointmentId) ;
+	 @Query("SELECT count(A) FROM Appointment  A  WHERE (A.jour = :jour)AND (A.isAccepted =true) AND (A.landlord.idUser = :idLandlord)")
+	 public int NbAppointmentAcceptedbyDay(@Param("jour")String jour,@Param("idLandlord") long idLandlord);
+	 
+	 @Query("SELECT count(A) FROM Appointment  A  WHERE (A.jour = :jour)AND (A.refused =true) AND (A.landlord.idUser = :idLandlord)")
+	 public int NbAppointmentRefusedbyDay(@Param("jour")String jour,@Param("idLandlord") long idLandlord);
+	 
+	 @Query("SELECT count(A) FROM Appointment  A  WHERE (A.jour = :jour) AND (A.landlord.idUser = :idLandlord)")
+	 public int NbAppointmentbyDay(@Param("jour")String jour ,@Param("idLandlord") long idLandlord);
+	 
+	 @Query("SELECT count(A) FROM Appointment  A  WHERE (A.landlord.idUser = :idLandlord)AND (A.isAccepted =true) ")
+	 public int NbAppointmentAccepted(@Param("idLandlord")long idLandlord);
 }
