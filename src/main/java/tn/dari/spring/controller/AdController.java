@@ -25,7 +25,7 @@ import tn.dari.spring.service.UIadService;
 import tn.dari.spring.service.UIuser;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins ="http://localhost:4200")
 @RequestMapping("/dari/ads")
 public class AdController {
 	@Autowired
