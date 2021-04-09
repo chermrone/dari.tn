@@ -124,12 +124,12 @@ public class FileServ implements UIFileService {
 	}
 
 	@Override
-	public Object retrievImage(String imageName) throws Exception {
+	public Object retrievImage(long id,String imageName) throws Exception {
 		try {
 			final Optional<FilesAd> retrievedImage = imageRepository.findByName(imageName);
 			FilesAd img = new FilesAd(retrievedImage.get().getName(), retrievedImage.get().getType(),
 					decompressBytes(retrievedImage.get().getPicByte()));
-			return img;
+			return decompressBytes(retrievedImage.get().getPicByte());
 		} catch (Exception e) {
 			System.out.println("it isnt an img ad");
 		}
@@ -137,7 +137,7 @@ public class FileServ implements UIFileService {
 			final Optional<ImgUser> retrievedImage = userRep.findByName(imageName);
 			ImgUser img = new ImgUser(retrievedImage.get().getName(), retrievedImage.get().getType(),
 					decompressBytes(retrievedImage.get().getPicByte()));
-			return img;
+			return decompressBytes(retrievedImage.get().getPicByte());
 		} catch (Exception e) {
 			System.out.println("it isnt a user img");
 		}
@@ -193,25 +193,13 @@ public class FileServ implements UIFileService {
 	}
 
 	@Override
-	public Object GetById(long id) {
-		Object img = null;
-		try {
-			img = (FilesAd) img;
-			img = imageRepository.findById(id)
+	public byte[] GetById(long id) {
+	
+			 FilesAd img = imageRepository.findById(id)
 					.orElseThrow(() -> new AdNotFoundException(" id= " + id + " is not found"));
-			return img;
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-
-		try {
-			img = (ImgUser) img;
-			img = userRep.findById(id).orElseThrow(() -> new AdNotFoundException(" id= " + id + " is not found"));
-			return img;
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		return img;
+			return decompressBytes(((FilesAd) img).getPicByte());
+	
+			
 	}
 
 	@Override

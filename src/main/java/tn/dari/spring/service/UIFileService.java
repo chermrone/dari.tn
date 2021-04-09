@@ -11,7 +11,7 @@ import tn.dari.spring.entity.ImgUser;
 public interface UIFileService {
 	
 	public Object saveImg(MultipartFile file,String ad,String type) throws Exception;
-	public Object retrievImage(String imageName) throws Exception;
+	public Object retrievImage(long id,String imageName) throws Exception;
 	public List<FilesAd> retrievallad();
 	
 
