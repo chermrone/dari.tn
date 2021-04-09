@@ -125,15 +125,17 @@ public class AdController {
 	@GetMapping("ad/situation/{id}")
 	public ResponseEntity<String> SituationAd(@PathVariable("id") long id) {
 		String state = Adserv.SituationAd(id);
-		System.out.println("state ad +" + state);
-
+		if(state !=null)
 		return new ResponseEntity<String>(state, HttpStatus.OK);
+		else 		return new ResponseEntity<String>(state, HttpStatus.FORBIDDEN);
+
 	}
 	@GetMapping("ad/find/{id}")
 	public ResponseEntity<List<Ad>> GetAdFromUserByRole(@PathVariable long id)  {
 List <Ad> ads=Adserv.retriveAdUsingRole(id);
 		return new ResponseEntity<List<Ad>>(ads, HttpStatus.OK);
 	}
+	@PreAuthorize("hasAuthority('ADMIN')")
 	
 	@PostMapping("banned/{role}")
 	public ResponseEntity<List<Ad>> GetAdBannedByRoleAndPeriod(@PathVariable Long role,

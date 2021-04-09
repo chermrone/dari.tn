@@ -213,7 +213,7 @@ public class AdService implements UIadService {
 
 				List<String> TopFive = topfivecities();
 				for (String city : NorthE) {
-					if (city.equals(ad.getCity().toLowerCase()) && TopFive.contains(city)) {
+					if (city.equals(ad.getCity().toLowerCase()) && TopFive.contains(city) ) {
 						SellEstimatePrice *= 3500;
 					} else if (city.equals(ad.getCity().toLowerCase()))
 						SellEstimatePrice *= 2000;
@@ -436,19 +436,36 @@ Set<Long> Favorites=ad.getUs().getFavorite();
 	public int getNumberOfFavoriteAd(long id) {
 		return adrepository.retriveNumberOffavoritesForPremium(id);
 	}
-	
-	
+
 	@Override
 	public String SituationAd(long id) {
+		//to know who is connected (need it after in if for ban must be admin)
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String userAuthenticated = auth.getName();
+		System.out.println("this user is connected"+userAuthenticated);
+		User userAd = new User();
+		userAd = userserv.GetUserByUserName(userAuthenticated);
+		
 Ad ad=adrepository.findById(id).get();
 		User user = ad.getUs();
-		// check if he is premium or not : 
+		//ad banned + admin 
+				 if(adrepository.CheckAdBanned(id)&& adrepository.CheckExistingRoleADMINforConsulterOfAd(userAd))
+				{
+					ad.setFeedback("this ad is banned");
+					adrepository.save(ad);
+					return ad.getFeedback();
+				}
+				// when the ad is bannned and the user connected  isnt admin
+				 else if (adrepository.CheckExistingRoleADMINforConsulterOfAd(userAd)==false && adrepository.CheckAdBanned(id))
+					return null ;
+		
 	 if (ad.getBuyingDate()==null)
 		{//compare if number of visite = 0 feedback
 			if(ad.getNumbeOfVisites()==0)
 			{ad.setFeedback("you should enter detailled information to your ad and clear image");
 		adrepository.save(ad);}
-		if(adrepository.retriveNumberOffavoritesForPremium(id)!=0 &&  ad.getNumbeOfVisites()!=0 ){
+		if(adrepository.retriveNumberOffavoritesForPremium(id)!=0 &&  ad.getNumbeOfVisites()!=0 && adrepository.CheckAdBanned(id)!=true ){
 		//compare date of creation with sysdate if > 7 return estimated price
 			Date currentSqlDate = new Date(System.currentTimeMillis());
 			long diffInMillies = Math.abs(currentSqlDate.getTime() - ad.getCreationDate().getTime());
@@ -460,6 +477,7 @@ Ad ad=adrepository.findById(id).get();
 			if (diff >= 7) {
 			return ad.getFeedback()+" your estimated price :  "+EstimatedHouse(ad);}
 		}
+		
 	}			
 
 		 return ad.getFeedback();
@@ -475,7 +493,7 @@ Ad ad=adrepository.findById(id).get();
 	@Override
 	public List<Ad> retrieveAdsByBannedUser(Long role, java.util.Date  maxdays,java.util.Date  mindays)
 	{
-		return adrepository.retrieveUserByBannedAd(role, maxdays, mindays);
+		return adrepository.retrieveAdByBannedUser(role, maxdays, mindays);
 	}
 	/********************* Statistics*********************************/
 	@Override
