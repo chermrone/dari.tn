@@ -128,6 +128,11 @@ public class User implements Serializable {
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us", fetch = FetchType.EAGER)
 	private Set<CreditSimulator> creditSimulators;
+	
+	private int nbrOfCnx=0;
+	private long timeConnected=0;
+	private Date timeOfLogin;
+	private Date timeOfLogout;
 
 	public User(Long idUser, String firstName, String lastName, String userName, String password, int age,
 			String urlimguser, Gender gender, int phoneNumber, String email, int cin, boolean userState,

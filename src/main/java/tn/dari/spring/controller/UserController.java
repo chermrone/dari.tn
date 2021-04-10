@@ -105,4 +105,12 @@ public class UserController {
 		return new ResponseEntity<Long>(nbr, HttpStatus.OK);
 		
 	}
+	
+	@PostMapping("/calculTimeConnection/{id}")
+	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
+	public ResponseEntity<?> CalculTimeConnection(@PathVariable("id") Long id ){
+		user.CalculTimeConnection(user.GetUserById(id));
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
 }

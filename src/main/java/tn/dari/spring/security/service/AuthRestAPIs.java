@@ -1,5 +1,6 @@
 package tn.dari.spring.security.service;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,6 +28,7 @@ import tn.dari.spring.enumeration.Usertype;
 import tn.dari.spring.repository.UserRepository;
 import tn.dari.spring.repository.RoleRepository;
 import tn.dari.spring.service.UIuser;
+import tn.dari.spring.service.UserService;
 
 
 
@@ -40,6 +42,9 @@ public class AuthRestAPIs {
 
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	UserService us;
 	
 	@Autowired
 	UIuser userservice;
@@ -68,8 +73,10 @@ public class AuthRestAPIs {
 		String jwt = jwtProvider.generateJwtToken(authentication);
 		System.out.println("jwt mrigal" + " "+ jwt);
 		UserPrinciple userDetails1 = (UserPrinciple) authentication.getPrincipal();
-		 User user=userRepository.findById(userDetails1.getId()).get();
-		  user.setConnected(true); userRepository.save(user);
+		 User user=userRepository.findById(userDetails1.getId()).get(); 
+		  user.setNbrOfCnx(user.getNbrOfCnx()+1);
+		  user.setTimeOfLogin(new Date());
+		  userRepository.save(user);
 		 
 		return ResponseEntity.ok(new JwtResponse(jwt, userDetails1.getUsername(), userDetails1.getAuthorities()));
 	}
@@ -132,7 +139,7 @@ public class AuthRestAPIs {
 	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
 	@ResponseBody	
 		public ResponseEntity<?> logout(Authentication auth) {
-			  userservice.logout(auth);
+			  us.logout(auth);
 			return  ResponseEntity.ok("loggedOut");
 		}
 	

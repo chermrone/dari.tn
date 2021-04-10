@@ -32,6 +32,7 @@ public class SubscriptionOrdred {
 	@ManyToOne
 	@JsonBackReference(value ="subscription")
 	private Subscription subscription;
+	private int nbrOfWin=0;
 	
 	@ManyToOne 
 	@JsonBackReference(value="us")

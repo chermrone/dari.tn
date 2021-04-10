@@ -43,6 +43,10 @@ public class UserPrinciple implements UserDetails {
 				+ password + "auth=" + authorities);
 	}
 
+	public UserPrinciple() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public static UserPrinciple build(User user) {
 		System.out.println("d5al lel userprinciple build");
 		List<GrantedAuthority> authorities = user.getRoles().stream()

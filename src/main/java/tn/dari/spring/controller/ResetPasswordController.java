@@ -60,7 +60,7 @@ public class ResetPasswordController {
 		mailMessage.setSubject("Reset  Password dari");
 		mailMessage.setText(
 				"To reset your password, use this code \n" + user.getResetToken());
-		System.out.println("mail cree"+mailMessage);
+		System.out.println("mail created"+mailMessage);
 		// Send mail
 		mailSender.send(mailMessage);
 		Date d = new Date(System.currentTimeMillis());

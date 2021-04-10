@@ -46,6 +46,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		try {
 			User user = userServ.GetUserByUserName(username);
 			if (user.isUserState()) {
+				user.setConnected(true);
 				if (user.getRoles().contains(rr.findByName(Usertype.PREMIUM).get())) {
 					Set<SubscriptionOrdred> allsubord = user.getSubscriptions();
 					SubscriptionOrdred subordpremium = null;
@@ -63,28 +64,30 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 									Date sysdate = new Date();
 									Date datepay = subordpremium.getPayingDate();
 									long diffInMillies = Math.abs(sysdate.getTime() - datepay.getTime());
-									long diff = TimeUnit.MILLISECONDS.toDays(diffInMillies);						
+									long diff = TimeUnit.MILLISECONDS.toDays(diffInMillies);
 									if (diff <= duration) {
 										Set<Role> r = user.getRoles();
 										r.remove(rr.findByName(Usertype.PREMIUM).get());
 										user.setRoles(r);
 										subordpremium.setEnable(false);
 										userServ.UpdateUser(user);
+										sos.UpdateSubscriptionorder(subordpremium);
 										return UserPrinciple.build(user);
 									}
 								}
 							}
 						}
 					}
-					
+
 				}
 				return UserPrinciple.build(user);
-			} else if(user.getBanNbr()<=3 && TimeUnit.MILLISECONDS.toDays( Math.abs(new Date().getTime() - user.getBanDate().getTime()))>=3){
+			} else if (user.getBanNbr() <= 3 && TimeUnit.MILLISECONDS
+					.toDays(Math.abs(new Date().getTime() - user.getBanDate().getTime())) >= 3) {
+				user.setConnected(true);
 				userServ.Activate_Acount(user.getIdUser());
 				userServ.UpdateUser(user);
 				return UserPrinciple.build(user);
 			}
-			else return null;
 		} catch (Exception UsernameNotFoundException) {
 			new UsernameNotFoundException("User Not Found with -> username or email : " + username);
 		}

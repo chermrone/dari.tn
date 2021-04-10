@@ -30,4 +30,8 @@ public interface UIuser {
 	public void logout(Authentication auth);
 
 	public void Activate_Acount(Long Id);
+	
+	public void CalculTimeConnection(User u);
+	
+	public List<User> OrderUsersByTimeOfConnection();
 }
