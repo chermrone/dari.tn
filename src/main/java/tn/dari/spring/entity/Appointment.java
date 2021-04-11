@@ -47,6 +47,7 @@ public class Appointment implements Serializable {
 	private String jour;
 	private boolean isAccepted=false;
 	private boolean refused=false;
+	private long idAd;
 	@JsonBackReference(value = "us")
 	 @ToString.Exclude
 	@ManyToOne

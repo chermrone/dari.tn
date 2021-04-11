@@ -1,14 +1,27 @@
 package tn.dari.spring.service;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sun.el.parser.ParseException;
 
 import tn.dari.spring.entity.Ad;
 import tn.dari.spring.entity.Appointment;
@@ -29,6 +42,8 @@ public class AppointmentService implements IAppointmentService{
 	UserService userservice;
 	@Autowired
 	EmailService es;
+	@Autowired
+	SMSservice sms;
 	
 	@Override
 	public List<Appointment> GetAllAppointment(){
@@ -51,6 +66,7 @@ public class AppointmentService implements IAppointmentService{
 				if(ad2.equals(ad)){
 					app.setLandlord(user);
 					app.setJour(findDay(app.getDateAppdeb()));
+					app.setIdAd(idAd);
 					return ar.save(app);
 				}
 			}
@@ -78,7 +94,9 @@ public class AppointmentService implements IAppointmentService{
 		return jour;
 	}
 	@Override
-	public Appointment UpdateApp (Appointment app){
+	public Appointment UpdateApp (Appointment app,long idad){
+		app.setJour(findDay(app.getDateAppdeb()));
+		app.setIdAd(idad);
 		return ar.save(app);
 	}
 	@Override
@@ -169,5 +187,87 @@ public class AppointmentService implements IAppointmentService{
 	public int NbAppointmentbyDay(String jour, long idLandlord) {
 		return ar.NbAppointmentbyDay(jour, idLandlord);
 	}
+	@Override
+	public String Appointmentreminde() {
+		List<Appointment> apps = ar.findAll();
+		if(apps!=null){
+		for (Appointment appointment : apps) {
+			System.out.println( getLocalDate());
+			System.out.println(appointment.getDateAppdeb());
+			System.out.println(appointment.getDateAppdeb().getDay());
+			System.out.println(appointment.getJour());
+			System.out.println(convertToDateViaInstant(getLocalDate()).getDate());
+			System.out.println(appointment.getDateAppdeb().getDate()-convertToDateViaInstant(getLocalDate()).getDate());
+			System.out.println(appointment.getDateAppdeb().getMonth()==convertToDateViaInstant(getLocalDate()).getMonth());
+			System.out.println(appointment.isAccepted());
+			User us=userservice.GetUserById(appointment.getUs().getIdUser());
+			String to = "+216"+us.getPhoneNumber();
+			String msg ="don't forget your appointment on "+appointment.getJour() +appointment.getDateAppdeb() +" in "+appointment.getPlaceApp()+" with " +appointment.getLandlord().getFirstName();
+			if((( appointment.getDateAppdeb().getDate()-convertToDateViaInstant(getLocalDate()).getDate())==1) && (appointment.isAccepted()==true) && (sms.send( to , msg) ==true) && (appointment.getDateAppdeb().getYear()==convertToDateViaInstant(getLocalDate()).getYear()) && (appointment.getDateAppdeb().getMonth()==convertToDateViaInstant(getLocalDate()).getMonth())){
+				//& appointment.getDateAppdeb().getYear()==convertToDateViaInstant(getLocalDate()).getYear() & appointment.getDateAppdeb().getMonth()==convertToDateViaInstant(getLocalDate()).getMonth()
+					return getTimeStamp() + ": SMS has been sent!: to"+to;}else
+					
+			return getTimeStamp() + ": SMS not sent!: to";}}return "pas de rdv";}
+			
+	 private String getTimeStamp() {
+	       return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
+	    }
+ 
+private LocalDateTime getLocalDate(){
+	return LocalDateTime.now();
+}
+	private Date convertToDateViaInstant(LocalDateTime dateToConvert) {
+	    return java.util.Date
+	    	      .from(dateToConvert.atZone(ZoneId.systemDefault())
+	    	      .toInstant());
+	    	}
+	@Override
+	public Date creationDateofAd(long idad) {
+		Ad ad =ads.getById(idad);
+		return ad.getCreationDate();}
+	public String TitleAd(long idad) {
+		Ad ad =ads.getById(idad);
+		return ad.getTitleAd();}
 	
+	        private Date after2Month;
+			private Date getafter2Month(){
+				return after2Month;
+			}
+			@Override
+			public String someTips(){
+				List<Ad> apps = ads.getAll();
+				if(apps!=null){
+				for (Ad ad : apps) 
+				{
+					Date creationDateofAd =creationDateofAd(ad.getAdId());
+					  Calendar cal = Calendar.getInstance();
+					     //Définir la date
+					     cal.setTime(creationDateofAd);
+					  //Nombre de jours à ajouter
+					  cal.add(Calendar.DAY_OF_MONTH, 60); //DAY_OF_MONTH 
+					  //Date après avoir ajouté les jours à la date indiquée
+					  Date after2Month = cal.getTime();  
+					  System.out.println("Date après l'addition: "+after2Month);
+					//Date after2Month = creationDateofAd;
+				   // after2Month.setMonth((creationDateofAd.getMonth())+2);
+				    System.out.println(after2Month);
+				    System.out.println(creationDateofAd);
+				    if( convertToDateViaInstant(getLocalDate()).getMonth()-creationDateofAd.getMonth()==2 & convertToDateViaInstant(getLocalDate()).getYear()== creationDateofAd.getYear()){
+					long nbAppoitment =ar.NBAppointment(creationDateofAd,after2Month,ad.getAdId());
+					 if(nbAppoitment ==0){
+						User us=userservice.GetUserById(ad.getUs().getIdUser());
+						String subject=("your ad with title:"+TitleAd(ad.getAdId())+ "add a:"+creationDateofAd(ad.getAdId()) );
+						String msg ="there have been no appointments for your ad for two months please if you can reduce the price of this ad or check the characteristics of your ad";
+						if(es.sendMail("tuntechdari.tn@gmail.com", us.getEmail() , subject, msg)){
+							return " email send"  ;}
+						 return "  email not send" ;}
+					 return " NBAppointment different 0" ;}return "period inferieur a 2 mois";}
+							
+						}return "pas de rdv";}
+		
+		
+		
+		
+	
+
 }

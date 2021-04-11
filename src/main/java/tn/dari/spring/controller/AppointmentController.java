@@ -1,5 +1,6 @@
 package tn.dari.spring.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import tn.dari.spring.entity.Ad;
 import tn.dari.spring.entity.Appointment;
 import tn.dari.spring.entity.User;
 import tn.dari.spring.service.IAppointmentService;
@@ -65,7 +67,13 @@ public int NbAppointment(@PathVariable("idLandlord") long idLandlord,@PathVariab
 public String CalculPourcentage(@PathVariable("idLandlord") long idLandlord,@PathVariable("jour") String jour){
 	return IA.CalculPourcentage(idLandlord, jour);
 }
-
+@GetMapping("/creationDateofAd/{idad}")
+public Date creationDateofAd(@PathVariable("idad")long idad) {
+	return  IA.creationDateofAd(idad);}
+@GetMapping("/someTips")
+public String someTips(){
+	return IA.someTips();
+}
 @PostMapping("/add/{idAd}")
 public ResponseEntity<Appointment>save(@RequestBody Appointment al, @PathVariable ("idAd") long idAd ){
 
@@ -73,9 +81,14 @@ public ResponseEntity<Appointment>save(@RequestBody Appointment al, @PathVariabl
 	
 	return new ResponseEntity<Appointment>(appOne, HttpStatus.CREATED);
 }
-@PutMapping("/update")
-public ResponseEntity<Appointment>update(@RequestBody Appointment app){
-	Appointment al=IA.UpdateApp(app);
+@PostMapping("/SendSMS")
+public String SendSMS(){
+	return IA.Appointmentreminde();
+}
+
+@PutMapping("/update/{idAd}")
+public ResponseEntity<Appointment>update(@RequestBody Appointment app, @PathVariable ("idAd") long idAd){
+	Appointment al=IA.UpdateApp(app,idAd);
 	return new ResponseEntity<Appointment>(al, HttpStatus.OK);
 }
 @PutMapping("/update/isAcceptandSendEmail/{appointmentId}")
