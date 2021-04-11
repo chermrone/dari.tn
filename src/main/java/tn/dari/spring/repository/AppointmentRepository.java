@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import tn.dari.spring.entity.Ad;
 import tn.dari.spring.entity.Appointment;
 import tn.dari.spring.entity.User;
 
@@ -38,4 +39,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 	 
 	 @Query("SELECT count(A) FROM Appointment  A  WHERE (A.landlord.idUser = :idLandlord)AND (A.isAccepted =true) ")
 	 public int NbAppointmentAccepted(@Param("idLandlord")long idLandlord);
+	 @Query("SELECT count(A) FROM Appointment  A   WHERE (A.dateAppdeb BETWEEN :date1 AND :date2) AND (A.idAd = :idad)")
+	 public long NBAppointment (@Param("date1")Date date1,@Param("date2")Date date2,@Param("idad")long idad);
+	 
 }
