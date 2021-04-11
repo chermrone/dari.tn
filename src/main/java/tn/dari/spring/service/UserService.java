@@ -112,16 +112,16 @@ public class UserService implements UIuser {
 	}
 
 	@Override
+	public Long UserSubscribeAge(int agemin, int agemax, Long sid) {
+		return ur.UserSubscribeByAge(agemin, agemax, sid);
+	}
+	
+	@Override
 	public void logout(Authentication auth) {
 		User u = ur.findByUserName(auth.getName());
 		u.setTimeOfLogout(new Date());
 		UpdateUser(u);
 
-	}
-
-	@Override
-	public Long UserSubscribeAge(int agemin, int agemax, Long sid) {
-		return ur.UserSubscribeByAge(agemin, agemax, sid);
 	}
 
 	@Override
