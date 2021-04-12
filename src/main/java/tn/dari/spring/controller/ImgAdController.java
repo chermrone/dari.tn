@@ -61,9 +61,9 @@ public class ImgAdController {
 		
 		@PreAuthorize("hasAuthority('ADMIN')")
 
-		@GetMapping(path = { "/getname/{imageName}" })
-		public FilesAd getImageByName(@PathVariable("imageName") String imageName) throws Exception {
-			FilesAd img=(FilesAd) imgService.retrievImage(imageName);
+		@GetMapping(path = { "/getname/{idAd}/{imageName}" })
+		public byte[] getImageByName(@PathVariable("idAd") long idAd,@PathVariable("imageName") String imageName) throws Exception {
+			byte[] img= (byte[]) imgService.retrievImage(idAd,imageName);
 
 			return img;
 		}
@@ -72,8 +72,8 @@ public class ImgAdController {
 		
 
 		@GetMapping(path = { "/getid/{id}" })
-		public FilesAd getImageById(@PathVariable("id") long id) throws IOException {
-			FilesAd img=(FilesAd)imgService.GetById(id);
+		public byte[] getImageById(@PathVariable("id") long id) throws IOException {
+			byte[] img=(byte[])imgService.GetById(id);
 
 			return img;
 		}
