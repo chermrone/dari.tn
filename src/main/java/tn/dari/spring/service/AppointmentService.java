@@ -8,7 +8,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -25,9 +27,11 @@ import com.sun.el.parser.ParseException;
 
 import tn.dari.spring.entity.Ad;
 import tn.dari.spring.entity.Appointment;
+import tn.dari.spring.entity.Delivery;
 import tn.dari.spring.entity.User;
 import tn.dari.spring.exception.AdNotFoundException;
 import tn.dari.spring.exception.AppointmentNotFoundException;
+import tn.dari.spring.exception.ResourceNotFoundException;
 import tn.dari.spring.repository.AppointmentRepository;
 
 
@@ -99,12 +103,27 @@ public class AppointmentService implements IAppointmentService{
 		app.setIdAd(idad);
 		return ar.save(app);
 	}
-	@Override
+	/*@Override
 	public String DeleteApp (long appointmentId){
 		ar.deleteById(appointmentId);
-		return "deleted successfully";
 		
-	}
+		System.out.println("deleted                                 111111111111111111"+appointmentId);
+		//if (ar.deleteById(appointmentId)){
+		//return "deleted successfully";}
+		return"deleted successfully";}*/
+	
+	
+		@Override
+		public Map<String, Boolean> deleteApp(long appointmentId)throws AppointmentNotFoundException{
+			Appointment delivery = ar.findById(appointmentId)
+					.orElseThrow(() -> new AppointmentNotFoundException("appointment Not Founf For this ID :: " + appointmentId));
+			ar.deleteById(appointmentId);
+			Map<String, Boolean> response = new HashMap<>();
+			response.put("deleted successfully : ", Boolean.TRUE);
+			return response;
+		}
+		
+	
 	@Override
 	public List<Appointment> findByplaceApp(String placeapp) {
 		return ar.findByplaceApp(placeapp);
@@ -264,7 +283,8 @@ private LocalDateTime getLocalDate(){
 					 return " NBAppointment different 0" ;}return "period inferieur a 2 mois";}
 							
 						}return "pas de rdv";}
-		
+			
+			
 		
 		
 		

@@ -118,11 +118,11 @@ public class User implements Serializable {
 	//seiiifffff
      @JsonManagedReference(value = "us")
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us",fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")//,fetch = FetchType.EAGER)
 	private Set<Appointment> appointments;
 	@JsonManagedReference(value = "landlord")
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "landlord", fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "landlord")//, fetch = FetchType.EAGER)
 	private Set<Appointment> appointment;
 	
 	@ToString.Exclude

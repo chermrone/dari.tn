@@ -2,6 +2,7 @@ package tn.dari.spring.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import tn.dari.spring.entity.Ad;
 import tn.dari.spring.entity.Appointment;
 import tn.dari.spring.entity.User;
+import tn.dari.spring.exception.AppointmentNotFoundException;
+import tn.dari.spring.exception.ResourceNotFoundException;
 import tn.dari.spring.service.IAppointmentService;
 
 @CrossOrigin("*")
@@ -101,6 +104,10 @@ public String update1(@PathVariable ("appointmentId") long appointmentId){
 }
 
 @DeleteMapping("/delete/{id}")
-public String delete(@PathVariable("id") Long appointmentId){
-	return IA.DeleteApp(appointmentId);}
-}
+public Map<String, Boolean> deleteApp(@PathVariable("id") Long appointmentId) throws AppointmentNotFoundException{
+	return IA.deleteApp(appointmentId);}
+}/*
+@DeleteMapping("/delete/{id}")
+public Map<String, Boolean> deleteApp(@PathVariable(value = "id") Long ID) throws ResourceNotFoundException{
+	return deliveryService.deleteDelivery(ID);
+}*/

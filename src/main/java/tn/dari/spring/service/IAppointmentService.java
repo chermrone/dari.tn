@@ -2,12 +2,14 @@ package tn.dari.spring.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.repository.query.Param;
 
 import tn.dari.spring.entity.Ad;
 import tn.dari.spring.entity.Appointment;
 import tn.dari.spring.entity.User;
+import tn.dari.spring.exception.AppointmentNotFoundException;
 
 public interface IAppointmentService {
 	
@@ -15,7 +17,8 @@ public interface IAppointmentService {
 	Appointment GetAppById (long appointmentId);
 	Appointment AddApp (Appointment app,long idAd);
 	Appointment UpdateApp (Appointment app,long idad);
-	String DeleteApp (long appointmentId);
+	//String DeleteApp (long appointmentId);
+	public Map<String, Boolean> deleteApp(long appointmentId)throws AppointmentNotFoundException;
     List<Appointment> findByplaceApp(String placeapp);
     List<Appointment> findBydateAppdeb(Date dateAppdeb);
     String AcceptedAppointment(long appointmentId) ;
