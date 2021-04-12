@@ -30,24 +30,32 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
 	@Query("SELECT count(a) FROM Ad a WHERE a.city= :city and a.sell=true and  DATEDIFF(a.BuyingDate,a.creationDate)< :period")
 	public float retrieveSellsAdsInPeriod(@Param("city") String city, @Param("period") int period);
 
+	
+	////////////////////////////////////////////////////retrieve ad depending on role//////////////////////////////////////////////////////////
+
 	@Query("SELECT u from Ad u JOIN  u.us uss "+ "join uss.roles r WHERE r.name=:role")
 	public List<Ad> retriveAdDependingOnRole(@Param("role") Usertype role);
 
-//	@Query("SELECT count(u.Favorite) from User u join u.roles rr "
-//			+ "join u.ads aa WHERE rr.name=tn.dari.spring.enumeration.Usertype.PREMIUM and  aa.adId=:id")
+	
+	////////////////////////////////////////////////count favorites for an ad//////////////////////////////////////////////////////////
 
 	@Query(nativeQuery = true, value ="Select count(*) From user,ad,user_favorite "
 			+ "Where user.id_user=user_favorite.user_id_user "
 			+ "And ad.ad_id=user_favorite.favorite And favorite=:id")
 	public int retriveNumberOffavoritesForPremium(@Param("id") long id);
+	//////////////////////////////////////retrieve Ad By Banned User(by Role) in specific date//////////////////////////////////////////////////////////
+
 	@Query("SELECT u from Ad u JOIN  u.us uss "+ "join uss.roles r "
 			+ "WHERE uss.userState=false  and uss.banDate between :mindate  and :maxdate  "
 			+ "and r.id=:role")
 	public List<Ad> retrieveAdByBannedUser(@Param("role") Long role,@Param("maxdate") Date maxdays,@Param("mindate") Date mindays);
-	
+	//////////////////////////////////////////////////check the ad is banned //////////////////////////////////////////////////////////
+
 
 	@Query("select count(u) > 0 from Ad  u join u.us uss where uss.userState=false and  u.adId = :id")
 public boolean CheckAdBanned(@Param("id")long id);
+	////////////////////////////////////////////check the user connected is admin or not//////////////////////////////////////////////////////////
+
 	@Query("SELECT count(u)>0 from User u "+ 
 "join u.roles r WHERE u=:user and r.name=tn.dari.spring.enumeration.Usertype.ADMIN")
 	public boolean CheckExistingRoleADMINforConsulterOfAd(@Param("user") User user);
