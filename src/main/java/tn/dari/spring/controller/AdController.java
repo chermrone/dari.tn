@@ -145,7 +145,11 @@ List <Ad> ads=Adserv.retrieveAdsByBannedUser(role, toDate, fromDate);
 System.out.println("number of ad +"+ads.size());
 		return new ResponseEntity<List<Ad>>(ads, HttpStatus.OK);
 	}
-	
+	@PostMapping("ad/estimateDuration")
+	public ResponseEntity<Integer> EstimatedPeriodSellHouse(@RequestBody Ad ad)  {
+int estimatePeriod=Adserv.EstimatedPeriodSellHouse(ad);
+		return new ResponseEntity<>(estimatePeriod, HttpStatus.OK);
+			}
 			/****************Ad statistics**************************/
 	
 	@GetMapping("/buyedAdByRegion/{city}")

@@ -3,6 +3,7 @@ package tn.dari.spring.entity;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,15 +29,19 @@ import tn.dari.spring.repository.Citiesrepository;
 @NoArgsConstructor
 @ToString
 
-public class Cities {
+public class City {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long CityId;
+	@Column(unique=true)
 String name;
 String direction;
-
-   
-public Cities(String name, String direction) {
+double pricemetre;
+boolean famous;
+double priceBuild;
+  double priceRent;
+  int EstimationDuration;
+public City(String name, String direction) {
 	super();
 	this.name = name;
 	this.direction = direction;

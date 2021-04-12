@@ -86,6 +86,7 @@ public class Ad implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<Review> rev;
 private int numbeOfVisites ;
+private double estimationPeriod;
 //will add comment recordinf to number of visites and faavorites
 private String feedback;
 }

@@ -50,4 +50,10 @@ public interface UIadService {
 	List<Ad> retriveAdUsingRole(long id);
 
 	List<Ad> retrieveAdsByBannedUser(Long role, java.util.Date fromDate, java.util.Date toDate);
+
+	void UpdateEstimatedPeriodSellHouse();
+	void UpdateTopFiveInTableCity();
+	public int EstimatedPeriodSellHouse(Ad ad);
+
+
 }
