@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import tn.dari.spring.entity.ImgUser;
-import tn.dari.spring.exception.AdNotFoundException;
 import tn.dari.spring.repository.UserImgRepository;
 
 @Service
@@ -36,14 +35,11 @@ public class ImgUserServ implements UIImgUser {
 
 
 	@Override
-	public ImgUser retrievImage(long id,String imageName) throws Exception {
-		return (ImgUser) fileserv.retrievImage(id, imageName);
+	public ImgUser retrievImage(String imageName) throws Exception {
+		return (ImgUser) fileserv.retrievImage(imageName);
 	}
 	@Override
-	public byte[] GetById(long id) {
-		
-		ImgUser img = userRep.findById(id).orElseThrow(() -> new AdNotFoundException(" id= " + id + " is not found"));
-		return FileServ.decompressBytes(img.getPicByte());
-
+	public ImgUser GetById(long id) {
+		return (ImgUser) fileserv.GetById(id);
 	}
 }

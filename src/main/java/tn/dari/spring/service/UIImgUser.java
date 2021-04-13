@@ -12,7 +12,7 @@ public interface UIImgUser {
 	public String DeleteImgUser(Long id);
 
 	public ImgUser saveImg(MultipartFile file,String user,String type) throws Exception;
-	public ImgUser retrievImage(long id,String imageName) throws Exception;
-	public byte[] GetById(long id);
+	public ImgUser retrievImage(String imageName) throws Exception;
+	public ImgUser GetById(long id);
 
 }

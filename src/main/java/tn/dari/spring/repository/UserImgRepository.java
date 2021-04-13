@@ -10,6 +10,6 @@ import tn.dari.spring.entity.ImgUser;
 
 @Repository
 public interface UserImgRepository  extends JpaRepository<ImgUser, Long>  {
-	public Optional<ImgUser> findByName(String name);
+	Optional<ImgUser> findByName(String name);
 
 }

@@ -9,6 +9,6 @@ import tn.dari.spring.entity.Role;
 import tn.dari.spring.enumeration.Usertype;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
-	public Optional<Role> findByName(Usertype roleName);
+	Optional<Role> findByName(Usertype roleName);
 
 }

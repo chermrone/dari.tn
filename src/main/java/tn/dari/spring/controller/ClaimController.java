@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +28,6 @@ public class ClaimController {
 	UIclaim claim;
 
 	@GetMapping("/all")
-	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<List<Claim>> getAllClaims() {
 		System.out.println("reception de la requete");
 		List<Claim> cl = claim.GetAllClaims();
@@ -37,28 +35,37 @@ public class ClaimController {
 	}
 
 	@GetMapping("/find/{id}")
-	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
 	public ResponseEntity<Claim> Getbyid(@PathVariable("id") Long clmid) {
 		Claim cl = claim.GetClaimById(clmid);
 		return new ResponseEntity<Claim>(cl, HttpStatus.OK);
 	}
 
 	@PostMapping("/add")
-	@PreAuthorize("hasAuthority('BUYER')")
 	public ResponseEntity<Claim> save(@RequestBody Claim cl) {
+		List<Claim> allclaim = claim.GetAllClaims();
+		for (Claim claim : allclaim) {
+			if (claim.getClmId().equals(cl.getClmId())) {
+				return new ResponseEntity<Claim>(HttpStatus.NOT_ACCEPTABLE);
+			}
+
+		}
+		int nb_of_claims = allclaim.size();
 		Claim claone = claim.addClaim(cl);
+		if (nb_of_claims == 9) {
+			User us = cl.getAd().getUs();
+			us.setUserState(false);
+		}
+
 		return new ResponseEntity<Claim>(claone, HttpStatus.CREATED);
 	}
 
 	@PutMapping("/update")
-	@PreAuthorize("hasAuthority('BUYER')")
 	public ResponseEntity<Claim> update(@RequestBody Claim c) {
 		Claim cl = claim.updateClaim(c);
 		return new ResponseEntity<Claim>(cl, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/delete/{id}")
-	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN')")
 	void deleteEmployee(@PathVariable("id") Long clmid) {
 		claim.DeleteClaim(clmid);
 	}

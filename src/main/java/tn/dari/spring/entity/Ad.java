@@ -62,6 +62,7 @@ public class Ad implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Typead typead;
 	private int numberOfBathrooms;
+	
 	@Temporal(TemporalType.DATE)
 	private Date checkInDate = null;
 	@Temporal(TemporalType.DATE)
@@ -85,8 +86,5 @@ public class Ad implements Serializable {
 	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<Review> rev;
-private int numbeOfVisites ;
-private double estimationPeriod;
-//will add comment recordinf to number of visites and faavorites
-private String feedback;
+
 }

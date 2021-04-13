@@ -10,5 +10,5 @@ import tn.dari.spring.entity.FilesAd;
 
 @Repository
 public interface FilesAdRepository extends JpaRepository<FilesAd, Long> {
-	public Optional<FilesAd> findByName(String name);
+	Optional<FilesAd> findByName(String name);
 }

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +35,6 @@ public class ImgUserController {
 
 		@PostMapping(value="/upload", consumes = { MediaType.APPLICATION_JSON_VALUE,
 				 MediaType.MULTIPART_FORM_DATA_VALUE })
-		@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
 		public ResponseEntity<List<String>>uplaodImage(@RequestParam("imageFile") MultipartFile[] files,@RequestPart() String user) throws Exception {
 		
 			List<String> fileNames = new ArrayList<>();
@@ -60,9 +58,9 @@ public class ImgUserController {
 		
 		
 
-		@GetMapping(path = { "/getname/{idUser}/{imageName}" })
-		public ImgUser getImageByName(@PathVariable("idUser") long idUser,@PathVariable("imageName") String imageName) throws Exception {
-			ImgUser img=(ImgUser) imgService.retrievImage(idUser,imageName);
+		@GetMapping(path = { "/getname/{imageName}" })
+		public ImgUser getImageByName(@PathVariable("imageName") String imageName) throws Exception {
+			ImgUser img=(ImgUser) imgService.retrievImage(imageName);
 
 			return img;
 		}
@@ -71,8 +69,9 @@ public class ImgUserController {
 		
 
 		@GetMapping(path = { "/getid/{id}" })
-		public byte[] getImageById(@PathVariable("id") long id) throws IOException {
-			byte[] img=(byte[])imgService.GetById(id);
+		public ImgUser getImageById(@PathVariable("id") long id) throws IOException {
+			ImgUser img=(ImgUser)imgService.GetById(id);
+
 			return img;
 		}
 		@GetMapping(path = { "/all" })
