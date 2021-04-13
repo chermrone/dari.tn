@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +35,7 @@ public class ImgAdController {
 
 	  @Autowired
 	  private UIFileService imgService;
-
+		@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
 		@PostMapping(value="/upload/{type}", consumes = { MediaType.APPLICATION_JSON_VALUE,
 				 MediaType.MULTIPART_FORM_DATA_VALUE })
 		public ResponseEntity<List<String>>uplaodImage(@RequestParam("imageFile") MultipartFile[] files,@RequestPart() String ad,@PathVariable String type) throws Exception {
@@ -59,10 +59,11 @@ public class ImgAdController {
 		}
 		
 		
+		@PreAuthorize("hasAuthority('ADMIN')")
 
-		@GetMapping(path = { "/getname/{imageName}" })
-		public FilesAd getImageByName(@PathVariable("imageName") String imageName) throws Exception {
-			FilesAd img=(FilesAd) imgService.retrievImage(imageName);
+		@GetMapping(path = { "/getname/{idAd}/{imageName}" })
+		public byte[] getImageByName(@PathVariable("idAd") long idAd,@PathVariable("imageName") String imageName) throws Exception {
+			byte[] img= (byte[]) imgService.retrievImage(idAd,imageName);
 
 			return img;
 		}
@@ -71,15 +72,19 @@ public class ImgAdController {
 		
 
 		@GetMapping(path = { "/getid/{id}" })
-		public FilesAd getImageById(@PathVariable("id") long id) throws IOException {
-			FilesAd img=(FilesAd)imgService.GetById(id);
+		public byte[] getImageById(@PathVariable("id") long id) throws IOException {
+			byte[] img=(byte[])imgService.GetById(id);
 
 			return img;
 		}
+		@PreAuthorize("hasAuthority('ADMIN')")
+
 		@GetMapping(path = { "/all" })
 		public List<FilesAd> getAll() throws IOException {
 			return imgService.retrievallad();
 		}
+		@PreAuthorize(" hasAuthority('SELLER')")
+
 		@DeleteMapping("/delete/img/{id}")
 		public ResponseEntity<String> delete(@PathVariable("id") Long id) throws Exception  {
 			imgService.DeleteAd(id);

@@ -35,10 +35,9 @@ public class DeliveryMan {
 	private Long DeliveryManID;
 	private String firstName;
 	private String email;
-	private String gouvernerat;
 	
 	
 	@JsonManagedReference(value = "delivery")
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, mappedBy = "deliveryMan")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "deliveryMan")
 	private Set<Delivery> deliveries;
 }

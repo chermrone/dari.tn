@@ -44,7 +44,7 @@ public class EmailService {
 		
 		@Override
 		protected PasswordAuthentication getPasswordAuthentication(){
-			return new PasswordAuthentication("ahmed.ahmed10455@gmail.com", "*********");
+			return new PasswordAuthentication("tuntechdari.tn@gmail.com", "TunTech2021");
 		}
 	});
 			
@@ -60,7 +60,7 @@ MimeMessage m =new MimeMessage(session);
 	 m.setText(msg);
 	 
 	 Transport.send(m);
-	 System.out.println("sent success");
+	 System.out.println("send success");
 	 f=true;
  }catch(Exception e){
 	 e.printStackTrace();

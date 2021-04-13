@@ -5,7 +5,6 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +17,6 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -45,10 +43,16 @@ public class OrderUser implements Serializable {
 	private Date dateShiped;
 	private boolean statusOrd = false;
 	private int quantity;
-	private String stripeOrder;
+	
 	@JsonManagedReference(value = "orderUser")
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "orderUser")
-	private Delivery delivery;
+	private Delivery deliv;
+	
+	
+	@JsonBackReference
+	@ManyToOne
+	private User us;
+	
 	@OneToOne
 	private ShoppingCart shoppingCart;
 

@@ -7,11 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import tn.dari.spring.entity.EmailRequest;
 import tn.dari.spring.service.EmailService;
 
-@Controller
+@RestController
 public class EmailController {
 	@Autowired
 	private EmailService emailService;
@@ -23,10 +24,10 @@ public class EmailController {
 		boolean result=this.emailService.sendMail(request.getFrom(),request.getTo(),request.getSubject(),request.getMsg());
 		if(result)
 		{
-		return ResponseEntity.ok("Done email sent");
+		return ResponseEntity.ok("Done email send");
 		}else
 		{
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("email not sent");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("email not send");
 		}
 		
 	}

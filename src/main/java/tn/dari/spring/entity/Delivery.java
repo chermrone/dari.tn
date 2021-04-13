@@ -11,10 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -41,10 +37,6 @@ public class Delivery implements Serializable {
 	private String place;
 	private boolean status;
 	private double cost;
-	
-	@Temporal(TemporalType.DATE)
-	@CreationTimestamp
-	private Date date;
 	
 	@JsonBackReference(value = "orderUser")
 	@OneToOne

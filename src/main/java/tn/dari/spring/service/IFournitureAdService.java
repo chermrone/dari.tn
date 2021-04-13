@@ -19,6 +19,5 @@ public interface IFournitureAdService {
 	
 	public List<FournitureAd> getMyAd(String username);
 	public List<FournitureAd> getOtherAd(String username);
-	public List<String> FindTopFiveSellers();
 
 }
