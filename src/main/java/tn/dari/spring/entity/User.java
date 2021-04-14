@@ -108,7 +108,7 @@ public class User implements Serializable {
 	@JsonManagedReference
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")
-	private Set<OrderUser> orders;
+	private Set<ShoppingCart> shoppingCart;
 	
 	//@JsonManagedReference
 	@ToString.Exclude
@@ -136,8 +136,8 @@ public class User implements Serializable {
 
 	public User(Long idUser, String firstName, String lastName, String userName, String password, int age,
 			String urlimguser, Gender gender, int phoneNumber, String email, int cin, boolean userState,
-			Date creationDate, Set<Ad> ads, Set<Long> favorite, Set<SubscriptionOrdred> subscriptions, Set<OrderUser> orders,
-			ShoppingCart shoppingCart, Set<Appointment> appointments, Set<CreditSimulator> creditSimulators) {
+			Date creationDate, Set<Ad> ads, Set<Long> favorite, Set<SubscriptionOrdred> subscriptions,
+			Set<ShoppingCart> shoppingCart, Set<Appointment> appointments, Set<CreditSimulator> creditSimulators) {
 		super();
 		this.idUser = idUser;
 		this.firstName = firstName;
@@ -155,7 +155,7 @@ public class User implements Serializable {
 		this.ads = ads;
 		Favorite = favorite;
 		this.subscriptions = subscriptions;
-		this.orders = orders;
+		this.shoppingCart = shoppingCart;
 		this.appointments = appointments;
 		this.creditSimulators = creditSimulators;
 	}
