@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,7 +31,10 @@ public class DeliveryController {
 	
 	@Autowired
 	DeliveryService deliveryService;
+	private static final Logger log = LoggerFactory.getLogger(DeliveryController.class);
 	
+	
+
 	@GetMapping("/all")
 	public List<Delivery> getAllDelivery() {
 		return deliveryService.getAllDelivery();
@@ -43,7 +48,15 @@ public class DeliveryController {
 
 	@PostMapping("/add")
 	public Delivery postFournitureAd(@Valid @RequestBody Delivery delivery) {
-		return deliveryService.postDelivery(delivery);
+
+		Delivery deliveryResult = null;
+		if(delivery.getOrderUser().isStatusOrd()){
+			deliveryResult = deliveryService.postDelivery(delivery);
+		}else{
+			log.error("Order was not payed", this);
+			return null;
+		}
+		return deliveryResult;
 
 	}
 

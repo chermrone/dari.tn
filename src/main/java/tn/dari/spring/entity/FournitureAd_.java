@@ -21,6 +21,7 @@ public abstract class FournitureAd_ {
     public static volatile SingularAttribute<FournitureAd, String> description;
     public static volatile SingularAttribute<FournitureAd, String> address;
     public static volatile SingularAttribute<FournitureAd, String> created;
+    public static volatile SingularAttribute<FournitureAd, Boolean> available;
     
 
     public static final String FAID = "faID";
@@ -30,4 +31,5 @@ public abstract class FournitureAd_ {
     public static final String DESCRIPTION = "description";
     public static final String ADDRESS = "address";
     public static final String CREATED = "created";
+    public static final String AVAILABLE = "available";
 }

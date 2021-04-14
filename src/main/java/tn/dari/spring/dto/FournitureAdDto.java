@@ -20,4 +20,5 @@ public class FournitureAdDto {
 	private String description;
 	private String address;
 	private String created;
+	private Boolean available;
 }

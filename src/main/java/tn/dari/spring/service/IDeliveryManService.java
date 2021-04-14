@@ -1,5 +1,6 @@
 package tn.dari.spring.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -16,5 +17,9 @@ public interface IDeliveryManService {
 	public DeliveryMan putDeliveryMan(Long ID, DeliveryMan deliveryMan) throws ResourceNotFoundException;
 
 	public Map<String, Boolean> deleteDeliveryMan(Long ID) throws ResourceNotFoundException;
+	
+	public List<DeliveryMan> getAllDeliveryManByGouvernerat(String gouvernerat);
+	
+	public List<DeliveryMan> getDeliveryAvailibity();
 
 }

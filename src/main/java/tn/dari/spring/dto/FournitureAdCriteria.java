@@ -11,6 +11,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import io.github.jhipster.service.Criteria;
+import io.github.jhipster.service.filter.BooleanFilter;
 import io.github.jhipster.service.filter.Filter;
 import io.github.jhipster.service.filter.FloatFilter;
 import io.github.jhipster.service.filter.InstantFilter;
@@ -34,7 +35,7 @@ public class FournitureAdCriteria implements Serializable, Criteria {
 	private StringFilter userName;
 	private StringFilter nameFa;
 	private FloatFilter price;
-	//boolean dipo;
+	private BooleanFilter available;
 	private StringFilter description;
 	private StringFilter address;
 	private StringFilter created;
@@ -52,6 +53,7 @@ public class FournitureAdCriteria implements Serializable, Criteria {
         this.description = other.description == null ? null : other.description.copy();
         this.address = other.address == null ? null : other.address.copy();
         this.created = other.created == null ? null : other.created.copy();
+        this.available = other.available == null ? null : other.available.copy();
     }
 
     @Override
@@ -69,7 +71,8 @@ public class FournitureAdCriteria implements Serializable, Criteria {
         		price,
         		description,
         		address,
-        		created
+        		created,
+        		available
         );
     }
 
@@ -89,15 +92,18 @@ public class FournitureAdCriteria implements Serializable, Criteria {
             Objects.equals(price, that.price) &&
             Objects.equals(description, that.description) &&
             Objects.equals(address, that.address) &&
+            Objects.equals(available, that.available) &&
             Objects.equals(created, that.created);
         }
-	
+
 	@Override
 	public String toString() {
 		return "FournitureAdCriteria [faID=" + faID + ", userName=" + userName + ", nameFa=" + nameFa + ", price="
-				+ price + ", description=" + description + ", address=" + address + ", created=" + created + "]";
+				+ price + ", available=" + available + ", description=" + description + ", address=" + address
+				+ ", created=" + created + "]";
 	}
-    
+	
+	
     
 
 }
