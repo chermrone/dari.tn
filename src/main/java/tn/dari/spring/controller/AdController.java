@@ -150,6 +150,13 @@ System.out.println("number of ad +"+ads.size());
 int estimatePeriod=Adserv.EstimatedPeriodSellHouse(ad);
 		return new ResponseEntity<>(estimatePeriod, HttpStatus.OK);
 			}
+	@GetMapping("ad/lastad")
+	public ResponseEntity<Ad> getLastAd() {
+		Ad ad = Adserv.GetAdLast();
+		return new ResponseEntity<Ad>(ad, HttpStatus.OK);
+	}
+
+	
 			/****************Ad statistics**************************/
 	
 	@GetMapping("/buyedAdByRegion/{city}")

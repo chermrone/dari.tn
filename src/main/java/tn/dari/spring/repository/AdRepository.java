@@ -181,4 +181,5 @@ public int RetrievEstimatedPeriodNonIdealCitiesWinterSeason(@Param("city") Strin
 public int RetrievEstimatedPeriodNonIdealCitiesOverPrice(@Param("city") String city,@Param("price_entered") double price_entered,@Param("price_estimated") double price_estimated,@Param("user")User user);
 
 
+Ad findTopByOrderByAdIdDesc();
 }

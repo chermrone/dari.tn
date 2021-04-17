@@ -253,6 +253,11 @@ public class AdService implements UIadService {
 	}
 
 	@Override
+	public Ad GetAdLast(){
+		return adrepository.findTopByOrderByAdIdDesc();
+	}
+	
+	@Override
 	public List<Ad> GetAdsOwned() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String userAuthenticated = auth.getName();
@@ -367,10 +372,6 @@ public class AdService implements UIadService {
 		System.out.println("this user is connected" + userAuthenticated);
 		User userAd = new User();
 		userAd = userserv.GetUserByUserName(userAuthenticated);
-		// Calendar cal = Calendar.getInstance();
-		// int month = cal.get(Calendar.MONTH)+1;System.out.println("current
-		// month!!!!!"+month);
-		// List<Integer> mounthWinter=Arrays.asList(9,10,11,12,1,2);
 		int period = 0;
 		if (ad.getPrice() < EstimatedHouse(ad)) {
 			try {

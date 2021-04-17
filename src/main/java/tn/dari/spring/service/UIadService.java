@@ -55,5 +55,7 @@ public interface UIadService {
 	void UpdateTopFiveInTableCity();
 	public int EstimatedPeriodSellHouse(Ad ad);
 
+	Ad GetAdLast();
+
 
 }
