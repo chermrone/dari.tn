@@ -62,7 +62,8 @@ public class AdService implements UIadService {
 		ad.setUs(userAd);
 		User user = ad.getUs();
 		// check if he is premium or not :max 10 post ad if he is not
-		if (!user.getRoles().contains(rolerepository.findByName(Usertype.PREMIUM).get())) {
+		if (!user.getRoles().contains(rolerepository.findByName(Usertype.PREMIUM).get())
+				|| !user.getRoles().contains(rolerepository.findByName(Usertype.ADMIN).get())) {
 			System.out.println("user isn't premium");
 			// search for ad of the after if > 10 out
 			Set<Ad> adofUser = user.getAds();

@@ -110,7 +110,7 @@ public class AdController {
 	@PostMapping("EstimatedPrice")
 	public ResponseEntity<String> EstimatedPrice(@RequestBody Ad ad) {
 		System.out.println(ad.getBuilda());
-		return new ResponseEntity<>("Estimated house: " + Adserv.EstimatedHouse(ad), HttpStatus.FOUND);
+		return new ResponseEntity<>("Estimated house: " + Adserv.EstimatedHouse(ad), HttpStatus.OK);
 	}
 	
 	
