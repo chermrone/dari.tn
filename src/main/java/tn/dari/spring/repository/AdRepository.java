@@ -63,10 +63,10 @@ public boolean CheckAdBanned(@Param("id")long id);
 	////////////////////////////////////////////////////Estimation price//////////////////////////////////////////////////////////
 
 	/////####Ground
-	@Query(nativeQuery = true, value ="Select ROUND(:area*city.pricemetre, 2) From user,city,user_roles "
+	@Query(nativeQuery = true, value ="Select :area*city.pricemetre From user,city,user_roles "
 			+ "Where user.id_user=:#{#user.idUser} and user.user_state=true "
-			+ "and user_roles.user_id=:#{#user.idUser} and user_roles.role_id=5"
-			+ " And city.name=Lower(:city) and Lower(:typeBatiment)='ground' ")
+			+ "and user_roles.user_id=:#{#user.idUser} "
+			+ " And city.name=Lower(:city) and Lower(:typeBatiment)='ground' and user_roles.role_id=5  ")
 	public double RetrievEstimatedPriceGround(@Param("area")double area,@Param("typeBatiment")String typeBatiment,@Param("city") String city,@Param("user")User user);
 	
 	

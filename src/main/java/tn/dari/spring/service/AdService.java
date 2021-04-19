@@ -182,13 +182,17 @@ public class AdService implements UIadService {
 		/// Case it is a selling house
 		/////////////////
 		//////////// :::::Case it is a ground::::::::://////////
-
-		if (ad.getTypead().equals(Typead.SELL)) {
-			if (ad.getType().equals(TypeBatiment.ground))
+	if (ad.getType().equals(TypeBatiment.ground))
+		{System.out.println("hello entred ground"+ ad.getArea());
 				estimateprice = adrepository.RetrievEstimatedPriceGround(ad.getArea(), ad.getType().name(),
 						ad.getCity(), userAd);
+				System.out.println(estimateprice);
+
+		}
 			if (estimateprice != 0)
 				return estimateprice;
+		if (ad.getTypead().equals(Typead.SELL)) {
+		
 
 			//////////// :::::case it is a apartment::::::::://////////
 			/* #####In top 5 cities#### */
