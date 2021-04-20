@@ -89,9 +89,9 @@ public class AdService implements UIadService {
 	}
 
 	@Override
-	public String Delete(long id) {
-		adrepository.deleteById(id);
-		return "deleted successfully";
+	public void Delete(long id) {			System.out.println("delete"+ id);
+
+		adrepository.deleteAd(id);;System.out.println("delete");
 	}
 
 	@Override

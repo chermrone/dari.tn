@@ -182,4 +182,11 @@ public int RetrievEstimatedPeriodNonIdealCitiesOverPrice(@Param("city") String c
 
 
 Ad findTopByOrderByAdIdDesc();
+
+@Transactional
+@Modifying
+@Query("delete from Ad a  where a.adId =:id")
+public void deleteAd(@Param("id") long id);
+
+
 }
