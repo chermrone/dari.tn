@@ -17,7 +17,7 @@ public class JwtProvider {
     private String jwtSecret="secret";
 
 
-    private int jwtExpiration= 3600000; // 1h;
+    private int jwtExpiration= 360000000; // 1h;
 
     public String generateJwtToken(Authentication authentication) {
 
