@@ -13,7 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -40,7 +40,8 @@ public class Subscription implements Serializable {
 	private boolean validity=true;
 	private long duration;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "subscription", fetch = FetchType.EAGER)
-	@JsonManagedReference(value ="subscription")
+	@JsonBackReference//(value ="subscription")
+	@ToString.Exclude
 	private Set<SubscriptionOrdred> subord;
 	public Subscription(Long subscriptionId, String descriptionOffer, double price) {
 		super();

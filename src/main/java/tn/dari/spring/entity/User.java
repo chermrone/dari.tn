@@ -25,6 +25,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
@@ -98,7 +99,7 @@ public class User implements Serializable {
 	@ElementCollection(targetClass=Long.class)
 	private Set<Long> Favorite;
 	
-	@JsonManagedReference(value="us")
+	@JsonBackReference//(value = "us1")
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us", fetch = FetchType.EAGER)
 	private Set<SubscriptionOrdred> subscriptions;

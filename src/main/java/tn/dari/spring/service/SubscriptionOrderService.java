@@ -34,16 +34,19 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 
 	@Override
 	public SubscriptionOrdred AddSubscriptionorder(SubscriptionOrdred s,Long id) {
+		System.out.println("d5al lel service add");
 		// enter the user connected to ad
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String userAuthenticated = auth.getName();
 		User user = new User();
 		user = userservice.GetUserByUserName(userAuthenticated);
+		System.out.println(user.toString());
 		s.setUs(user);
 		
 		// enter subscription
 		s.setSubscription(ss.GetSubscriptionById(id));
-		
+		System.out.println(ss.GetSubscriptionById(id).toString());
+		System.out.println(s.toString());
 		return sr.save(s);
 	}
 
@@ -77,7 +80,6 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 
 	@Override
 	public List<SubscriptionOrdred> GetAll() {
-
 		return sr.findAll();
 	}
 
