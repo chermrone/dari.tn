@@ -207,5 +207,10 @@ public class FileServ implements UIFileService {
 		imageRepository.deleteById(id);
 
 	}
+	@Override
+	public List<byte[]> GetByAdId(Long id) {
+		return imageRepository.findByAdId(id);
+	}
+	
 
 }

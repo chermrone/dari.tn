@@ -95,6 +95,7 @@ public class User implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us", fetch = FetchType.EAGER)
 	private Set<Ad> ads;
 	
+	
 	@ToString.Exclude
 	@ElementCollection(targetClass=Long.class)
 	private Set<Long> Favorite;

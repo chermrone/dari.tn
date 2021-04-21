@@ -24,17 +24,19 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import tn.dari.spring.entity.FilesAd;
+import tn.dari.spring.service.FileServ;
 import tn.dari.spring.service.UIFileService;
 
 import org.springframework.http.MediaType;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins ="http://localhost:4200")
 @RequestMapping("/dari/imgads")
 public class ImgAdController {
 
 	  @Autowired
 	  private UIFileService imgService;
+	  
 		@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
 		@PostMapping(value="/upload/{type}", consumes = { MediaType.APPLICATION_JSON_VALUE,
 				 MediaType.MULTIPART_FORM_DATA_VALUE })
@@ -89,6 +91,15 @@ public class ImgAdController {
 		public ResponseEntity<String> delete(@PathVariable("id") Long id) throws Exception  {
 			imgService.DeleteAd(id);
 			return new ResponseEntity<String>("success",HttpStatus.OK);
+		}
+		@GetMapping("/getforad/{id}"  )
+		public List<byte[]> getImageByIdAd(@PathVariable("id") long id) {
+			
+			List<byte[]> imgs= imgService.GetByAdId(id);
+			for (byte[] img : imgs) {
+				img=FileServ.decompressBytes(img); 
+			}
+			return imgs;
 		}
 
 

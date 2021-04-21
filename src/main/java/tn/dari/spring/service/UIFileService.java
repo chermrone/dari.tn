@@ -18,5 +18,6 @@ public interface UIFileService {
 	public Object GetById(long id);
 	
 	public void DeleteAd(Long id);
+	List<byte[]> GetByAdId(Long id);
 
 }

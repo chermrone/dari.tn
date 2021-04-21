@@ -13,7 +13,7 @@ import tn.dari.spring.enumeration.Usertype;
 public interface UIadService {
 	public Ad save(Ad ad);
 
-	public String Delete(long id);
+	public void Delete(long id);
 
 	public List<Ad> getAll();
 
@@ -54,6 +54,8 @@ public interface UIadService {
 	void UpdateEstimatedPeriodSellHouse();
 	void UpdateTopFiveInTableCity();
 	public int EstimatedPeriodSellHouse(Ad ad);
+
+	Ad GetAdLast();
 
 
 }

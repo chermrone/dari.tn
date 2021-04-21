@@ -62,7 +62,8 @@ public class AdService implements UIadService {
 		ad.setUs(userAd);
 		User user = ad.getUs();
 		// check if he is premium or not :max 10 post ad if he is not
-		if (!user.getRoles().contains(rolerepository.findByName(Usertype.PREMIUM).get())) {
+		if (!user.getRoles().contains(rolerepository.findByName(Usertype.PREMIUM).get())
+				|| !user.getRoles().contains(rolerepository.findByName(Usertype.ADMIN).get())) {
 			System.out.println("user isn't premium");
 			// search for ad of the after if > 10 out
 			Set<Ad> adofUser = user.getAds();
@@ -88,9 +89,9 @@ public class AdService implements UIadService {
 	}
 
 	@Override
-	public String Delete(long id) {
-		adrepository.deleteById(id);
-		return "deleted successfully";
+	public void Delete(long id) {			System.out.println("delete"+ id);
+
+		adrepository.deleteAd(id);;System.out.println("delete");
 	}
 
 	@Override
@@ -181,13 +182,17 @@ public class AdService implements UIadService {
 		/// Case it is a selling house
 		/////////////////
 		//////////// :::::Case it is a ground::::::::://////////
-
-		if (ad.getTypead().equals(Typead.SELL)) {
-			if (ad.getType().equals(TypeBatiment.ground))
+	if (ad.getType().equals(TypeBatiment.ground))
+		{System.out.println("hello entred ground"+ ad.getArea());
 				estimateprice = adrepository.RetrievEstimatedPriceGround(ad.getArea(), ad.getType().name(),
 						ad.getCity(), userAd);
+				System.out.println(estimateprice);
+
+		}
 			if (estimateprice != 0)
 				return estimateprice;
+		if (ad.getTypead().equals(Typead.SELL)) {
+		
 
 			//////////// :::::case it is a apartment::::::::://////////
 			/* #####In top 5 cities#### */
@@ -252,6 +257,11 @@ public class AdService implements UIadService {
 		return 0;
 	}
 
+	@Override
+	public Ad GetAdLast(){
+		return adrepository.findTopByOrderByAdIdDesc();
+	}
+	
 	@Override
 	public List<Ad> GetAdsOwned() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -367,10 +377,6 @@ public class AdService implements UIadService {
 		System.out.println("this user is connected" + userAuthenticated);
 		User userAd = new User();
 		userAd = userserv.GetUserByUserName(userAuthenticated);
-		// Calendar cal = Calendar.getInstance();
-		// int month = cal.get(Calendar.MONTH)+1;System.out.println("current
-		// month!!!!!"+month);
-		// List<Integer> mounthWinter=Arrays.asList(9,10,11,12,1,2);
 		int period = 0;
 		if (ad.getPrice() < EstimatedHouse(ad)) {
 			try {

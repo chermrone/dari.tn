@@ -95,8 +95,10 @@ public class AdController {
 
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
 	@DeleteMapping("/delete/{id}")
-	public void deleteEmployee(@PathVariable("id") Long id) {
+	public void deleteAd(@PathVariable("id") Long id) {
+		System.out.println("deleeeete");
 		Adserv.Delete(id);
+		System.out.println("deleeeete");
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
@@ -110,7 +112,7 @@ public class AdController {
 	@PostMapping("EstimatedPrice")
 	public ResponseEntity<String> EstimatedPrice(@RequestBody Ad ad) {
 		System.out.println(ad.getBuilda());
-		return new ResponseEntity<>("Estimated house: " + Adserv.EstimatedHouse(ad), HttpStatus.FOUND);
+		return new ResponseEntity<>("Estimated house: " + Adserv.EstimatedHouse(ad), HttpStatus.OK);
 	}
 	
 	
@@ -150,6 +152,13 @@ System.out.println("number of ad +"+ads.size());
 int estimatePeriod=Adserv.EstimatedPeriodSellHouse(ad);
 		return new ResponseEntity<>(estimatePeriod, HttpStatus.OK);
 			}
+	@GetMapping("ad/lastad")
+	public ResponseEntity<Ad> getLastAd() {
+		Ad ad = Adserv.GetAdLast();System.out.println("last ad"+ad);
+		return new ResponseEntity<Ad>(ad, HttpStatus.OK);
+	}
+
+	
 			/****************Ad statistics**************************/
 	
 	@GetMapping("/buyedAdByRegion/{city}")

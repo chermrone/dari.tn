@@ -81,6 +81,12 @@ public class FournitureAdService implements IFournitureAdService {
 		
 		return fournitureAdRepository.FindTopFiveSellers().subList(0, 5);
 	}
+
+	@Override
+	public List<FournitureAd> getAvailableAd() {
+		
+		return fournitureAdRepository.findByAvailable(true);
+	}
 	
 
 }
