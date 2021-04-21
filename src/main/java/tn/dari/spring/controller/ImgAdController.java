@@ -79,11 +79,13 @@ public class ImgAdController {
 
 			return img;
 		}
-		@PreAuthorize("hasAuthority('ADMIN')")
+	
 
 		@GetMapping(path = { "/all" })
 		public List<FilesAd> getAll() throws IOException {
-			return imgService.retrievallad();
+			List<FilesAd> file= imgService.retrievallad();List<byte[]> f =new ArrayList<>();
+			
+			return file;
 		}
 		@PreAuthorize(" hasAuthority('SELLER')")
 
@@ -96,9 +98,6 @@ public class ImgAdController {
 		public List<byte[]> getImageByIdAd(@PathVariable("id") long id) {
 			
 			List<byte[]> imgs= imgService.GetByAdId(id);
-			for (byte[] img : imgs) {
-				img=FileServ.decompressBytes(img); 
-			}
 			return imgs;
 		}
 

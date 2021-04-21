@@ -189,4 +189,29 @@ Ad findTopByOrderByAdIdDesc();
 public void deleteAd(@Param("id") long id);
 
 
+@Transactional
+@Modifying
+@Query("delete from FilesAd f  where f.ad=:ad")
+public void deleteImgAd(@Param("ad") Ad ad);
+
+
+@Transactional
+@Modifying
+@Query("delete from Claim f  where f.ad=:ad")
+public void deleteClaim(@Param("ad") Ad ad);
+
+
+@Transactional
+@Modifying
+@Query("delete from Wishlist f  where f.ad=:ad")
+public void deleteWishlist(@Param("ad") Ad ad);
+ 
+
+@Transactional
+@Modifying
+@Query("delete from Review f  where f.ad=:ad")
+public void deleteReview(@Param("ad") Ad ad);
+
+
+
 }

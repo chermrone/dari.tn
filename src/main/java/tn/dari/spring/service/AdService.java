@@ -89,9 +89,30 @@ public class AdService implements UIadService {
 	}
 
 	@Override
-	public void Delete(long id) {			System.out.println("delete"+ id);
+	public void Delete(long id) {
+		System.out.println("delete" + id);
+		Ad ad = adrepository.findById(id).get();
+		try {
+			adrepository.deleteImgAd(ad);
+		} catch (Exception e) {
+		}
+		;
+		
+		
+		try {
+			adrepository.deleteClaim(ad);
+		} catch (Exception e) {
+		}
+		try {
+			adrepository.deleteReview(ad);
+		} catch (Exception e) {
+		}
+		try {
+			adrepository.deleteWishlist(ad);
+		} catch (Exception e) {
+		}			adrepository.deleteAd(id);
 
-		adrepository.deleteAd(id);;System.out.println("delete");
+		System.out.println("delete");
 	}
 
 	@Override
