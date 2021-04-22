@@ -6,6 +6,7 @@ import tn.dari.spring.entity.SubscriptionOrdred;
 
 public interface UISubscriptionOrderService {
 	public SubscriptionOrdred AddSubscriptionorder(SubscriptionOrdred s,String st);
+	public SubscriptionOrdred AddSubscriptionorder(SubscriptionOrdred s,String st, Long iduser);
 	public SubscriptionOrdred AddPremiumSubscriptionorder(SubscriptionOrdred s,Long id);
 	public SubscriptionOrdred UpdateSubscriptionorder(SubscriptionOrdred s);
 	public void deleteSubscriptionOrder(Long id);

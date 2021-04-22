@@ -34,7 +34,6 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 
 	@Override
 	public SubscriptionOrdred AddSubscriptionorder(SubscriptionOrdred s,String st) {
-		System.out.println("d5al lel service add");
 		// enter the user connected to ad
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String userAuthenticated = auth.getName();
@@ -93,7 +92,6 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 
 	@Override
 	public SubscriptionOrdred GetSubscriptionorder(Long id) {
-		// TODO Auto-generated method stub
 		return sr.findById(id).orElseThrow(() -> new RuntimeException("Fail! -> Cause: Subscription order not found."));
 	}
 
@@ -114,7 +112,6 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 
 	@Override
 	public List<SubscriptionOrdred> GetByEnable(boolean enable) {
-		// TODO Auto-generated method stub
 		return sr.findByEnable(enable);
 	}
 
@@ -122,6 +119,30 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 	public List<SubscriptionOrdred> GetByUser(Long id) {
 
 		return sr.findByUs(userservice.GetUserById(id));
+	}
+
+	@Override
+	public SubscriptionOrdred AddSubscriptionorder(SubscriptionOrdred s, String st, Long iduser) {
+		//get user
+		User us = userservice.GetUserById(iduser);
+		s.setUs(us);
+		SubscriptionType subt = null;
+		switch (st) {
+		case "assurance":
+			subt = SubscriptionType.assurance;
+			break;
+		case "premium":
+			subt = SubscriptionType.premium;
+			break;
+		case "surveillance_de_maison":
+			subt = SubscriptionType.surveillance_de_maison;
+			break;
+		}
+		Subscription subscription = ss.GetSubscriptionBySubscriptionType(subt);
+		// enter subscription
+		s.setSubscription(subscription);
+		
+		return sr.save(s);
 	}
 
 }

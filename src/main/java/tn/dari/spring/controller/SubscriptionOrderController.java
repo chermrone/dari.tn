@@ -81,8 +81,13 @@ public class SubscriptionOrderController {
 	@PostMapping("/add/{st}")
 	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
 	public ResponseEntity<SubscriptionOrdred> AddSubscriptionOrder(@RequestBody SubscriptionOrdred s,@PathVariable("st") String st) {
-		System.out.println("d5al lel controller add");
 		return new ResponseEntity<>(sos.AddSubscriptionorder(s,st), HttpStatus.OK);
+	}
+	
+	@PostMapping("/addtouser/{st}/{iduser}")
+	@PreAuthorize("hasAuthority('ADMIN')")
+	public ResponseEntity<SubscriptionOrdred> AddSubscriptionOrdertouser(@RequestBody SubscriptionOrdred s,@PathVariable("st") String st,@PathVariable("iduser") Long iduser) {
+		return new ResponseEntity<>(sos.AddSubscriptionorder(s,st,iduser), HttpStatus.OK);
 	}
 
 	@PutMapping("/update")
@@ -114,6 +119,5 @@ public class SubscriptionOrderController {
 		Set<SubscriptionOrdred> orders = userservice.GetUserById(id).getSubscriptions();
 		PDFExporter exporter = new PDFExporter(orders);
 		exporter.export(response);
-
 	}
 }
