@@ -21,7 +21,7 @@ import tn.dari.spring.entity.Claim;
 import tn.dari.spring.entity.User;
 import tn.dari.spring.service.UIclaim;
 
-@CrossOrigin("*")
+@CrossOrigin(origins ="http://localhost:4200")
 @RestController
 @RequestMapping("/dari/Claims")
 public class ClaimController {
@@ -51,7 +51,7 @@ public class ClaimController {
 	}
 
 	@PutMapping("/update")
-	@PreAuthorize("hasAuthority('BUYER')")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Claim> update(@RequestBody Claim c) {
 		Claim cl = claim.updateClaim(c);
 		return new ResponseEntity<Claim>(cl, HttpStatus.OK);

@@ -25,6 +25,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
@@ -89,7 +90,7 @@ public class User implements Serializable {
 	
 	private int banNbr=0;
 	
-	@JsonManagedReference
+	@JsonBackReference
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us", fetch = FetchType.EAGER)
 	private Set<Ad> ads;

@@ -70,7 +70,7 @@ public class Ad implements Serializable {
 	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<FilesAd> imgads;
-	@JsonManagedReference
+	@JsonBackReference
 	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<Claim> claims;
@@ -78,7 +78,7 @@ public class Ad implements Serializable {
 	 @ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ad")
 	private Set<Wishlist> wishlists;
-	@JsonBackReference
+	//@JsonBackReference
 	@ManyToOne
 	private User us;
 	@JsonManagedReference
