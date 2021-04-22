@@ -132,7 +132,7 @@ public class UserService implements UIuser {
 	}
 
 	@Override
-	@Scheduled(cron = "0 28 23 * * *") // execute every mounth
+	@Scheduled(cron = "0 53 12 * * *") // execute every mounth
 	public List<User> OrderUsersByTimeOfConnection() {
 		List<User> allus = GetAllUsers();
 		// Order Users By Time of connection

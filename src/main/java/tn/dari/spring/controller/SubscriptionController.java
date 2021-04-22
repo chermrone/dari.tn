@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tn.dari.spring.entity.Subscription;
+import tn.dari.spring.entity.SubscriptionOrdred;
 import tn.dari.spring.entity.User;
+import tn.dari.spring.enumeration.SubscriptionType;
 import tn.dari.spring.service.UISubscriptionService;
 import tn.dari.spring.service.UIuser;
 
-@CrossOrigin("*")
+@CrossOrigin(origins ="http://localhost:4200")
 @RestController
 @RequestMapping("/dari/subscriptions")
 public class SubscriptionController {
@@ -86,6 +88,24 @@ public class SubscriptionController {
 	@PreAuthorize("hasAuthority('ADMIN')")
 	void deleteEmployee(@PathVariable("id") Long id) throws Exception {
 		ss.DeleteSubscription(id);
+	}
+	
+	@GetMapping("findBytype/{st}")
+	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
+	public ResponseEntity<Subscription> GetbySubscriptionType(@PathVariable("st") String st){
+		SubscriptionType subt = null;
+		switch (st) {
+		case "assurance":
+			subt = SubscriptionType.assurance;
+			break;
+		case "premium":
+			subt = SubscriptionType.premium;
+			break;
+		case "surveillance_de_maison":
+			subt = SubscriptionType.surveillance_de_maison;
+			break;
+		}
+		return new ResponseEntity<Subscription>(ss.GetSubscriptionBySubscriptionType(subt), HttpStatus.OK);
 	}
 
 }

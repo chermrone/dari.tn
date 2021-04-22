@@ -100,8 +100,7 @@ public class User implements Serializable {
 	@ElementCollection(targetClass=Long.class)
 	private Set<Long> Favorite;
 	
-	
-	@JsonManagedReference(value="us")
+	@JsonBackReference//(value = "us1")
 	@ToString.Exclude
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us", fetch = FetchType.EAGER)
 	private Set<SubscriptionOrdred> subscriptions;

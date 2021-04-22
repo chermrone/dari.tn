@@ -95,8 +95,10 @@ public class AdController {
 
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
 	@DeleteMapping("/delete/{id}")
-	public void deleteEmployee(@PathVariable("id") Long id) {
+	public void deleteAd(@PathVariable("id") Long id) {
+		System.out.println("deleeeete");
 		Adserv.Delete(id);
+		System.out.println("deleeeete");
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
@@ -152,7 +154,7 @@ int estimatePeriod=Adserv.EstimatedPeriodSellHouse(ad);
 			}
 	@GetMapping("ad/lastad")
 	public ResponseEntity<Ad> getLastAd() {
-		Ad ad = Adserv.GetAdLast();
+		Ad ad = Adserv.GetAdLast();System.out.println("last ad"+ad);
 		return new ResponseEntity<Ad>(ad, HttpStatus.OK);
 	}
 

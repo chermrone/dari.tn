@@ -3,7 +3,6 @@ package tn.dari.spring.controller;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +33,7 @@ import tn.dari.spring.service.UserService;
 
 @RestController
 @RequestMapping("/dari/subscriptionorder")
+@CrossOrigin(origins ="http://localhost:4200")
 public class SubscriptionOrderController {
 	@Autowired
 	SubscriptionOrderService sos;
@@ -50,7 +51,7 @@ public class SubscriptionOrderController {
 		if (allsos.isEmpty()) {
 			return new ResponseEntity<List<SubscriptionOrdred>>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<List<SubscriptionOrdred>>(allsos, HttpStatus.FOUND);
+		return new ResponseEntity<List<SubscriptionOrdred>>(allsos, HttpStatus.OK);
 	}
 
 	@GetMapping("/find/{id}")
@@ -65,7 +66,7 @@ public class SubscriptionOrderController {
 	public ResponseEntity<List<SubscriptionOrdred>> GetByUser(@PathVariable Long iduser) {
 		List<SubscriptionOrdred> usersubsord = sos.GetByUser(iduser);
 		if (usersubsord != null) {
-			return new ResponseEntity<List<SubscriptionOrdred>>(usersubsord, HttpStatus.FOUND);
+			return new ResponseEntity<List<SubscriptionOrdred>>(usersubsord, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
@@ -77,10 +78,11 @@ public class SubscriptionOrderController {
 		return new ResponseEntity<>(sos.AddPremiumSubscriptionorder(s, iduser), HttpStatus.OK);
 	}
 
-	@PostMapping("/add/{id}")
+	@PostMapping("/add/{st}")
 	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
-	public ResponseEntity<SubscriptionOrdred> AddSubscriptionOrder(@RequestBody SubscriptionOrdred s,@PathVariable("id") Long id) {
-		return new ResponseEntity<>(sos.AddSubscriptionorder(s,id), HttpStatus.OK);
+	public ResponseEntity<SubscriptionOrdred> AddSubscriptionOrder(@RequestBody SubscriptionOrdred s,@PathVariable("st") String st) {
+		System.out.println("d5al lel controller add");
+		return new ResponseEntity<>(sos.AddSubscriptionorder(s,st), HttpStatus.OK);
 	}
 
 	@PutMapping("/update")

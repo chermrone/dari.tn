@@ -14,6 +14,7 @@ public interface FournitureAdRepository extends JpaRepository<FournitureAd, Long
 	
 	List<FournitureAd> findByUserName(String username);
 	List<FournitureAd> findByUserNameNotLike(String username);
+	List<FournitureAd> findByAvailable(Boolean avaialable);
 	
 	@Query("SELECT F.userName FROM FournitureAd F where F.available = FALSE Group by F.userName Order By Count(F.userName)")
 	List<String> FindTopFiveSellers();

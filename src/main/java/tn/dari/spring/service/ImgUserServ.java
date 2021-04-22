@@ -43,7 +43,7 @@ public class ImgUserServ implements UIImgUser {
 	public byte[] GetById(long id) {
 		
 		ImgUser img = userRep.findById(id).orElseThrow(() -> new AdNotFoundException(" id= " + id + " is not found"));
-		return FileServ.decompressBytes(img.getPicByte());
+		return img.getPicByte();
 
 	}
 }

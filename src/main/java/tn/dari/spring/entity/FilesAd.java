@@ -1,7 +1,8 @@
 package tn.dari.spring.entity;
 
 import java.io.Serializable;
-
+import java.util.List;
+import java.util.stream.Collector;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,6 +50,7 @@ public class FilesAd implements Serializable {
 @Lob
 @Column(name = "picByte")
 	private byte[] picByte;
+
  @JsonBackReference
 @ManyToOne private Ad ad;
 
@@ -68,6 +70,10 @@ public class FilesAd implements Serializable {
 		this.picByte = picByte;
 		this.ad = ad;
 	}
+
+
+
+
 
 
 	
