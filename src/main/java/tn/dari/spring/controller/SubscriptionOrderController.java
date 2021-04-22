@@ -78,11 +78,11 @@ public class SubscriptionOrderController {
 		return new ResponseEntity<>(sos.AddPremiumSubscriptionorder(s, iduser), HttpStatus.OK);
 	}
 
-	@PostMapping("/add/{id}")
+	@PostMapping("/add/{st}")
 	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
-	public ResponseEntity<SubscriptionOrdred> AddSubscriptionOrder(@RequestBody SubscriptionOrdred s,@PathVariable("id") Long id) {
+	public ResponseEntity<SubscriptionOrdred> AddSubscriptionOrder(@RequestBody SubscriptionOrdred s,@PathVariable("st") String st) {
 		System.out.println("d5al lel controller add");
-		return new ResponseEntity<>(sos.AddSubscriptionorder(s,id), HttpStatus.OK);
+		return new ResponseEntity<>(sos.AddSubscriptionorder(s,st), HttpStatus.OK);
 	}
 
 	@PutMapping("/update")
