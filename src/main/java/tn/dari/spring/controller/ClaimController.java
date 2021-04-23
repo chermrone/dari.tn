@@ -44,7 +44,7 @@ public class ClaimController {
 	}
 
 	@PostMapping("/add")
-	@PreAuthorize("hasAuthority('BUYER')")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Claim> save(@RequestBody Claim cl) {
 		Claim claone = claim.addClaim(cl);
 		return new ResponseEntity<Claim>(claone, HttpStatus.CREATED);

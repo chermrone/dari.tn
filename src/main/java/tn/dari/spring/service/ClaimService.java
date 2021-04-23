@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tn.dari.spring.entity.Claim;
+import tn.dari.spring.entity.User;
 import tn.dari.spring.exception.ClaimNotFound;
 import tn.dari.spring.exception.UserNotFoundException;
 import tn.dari.spring.repository.ClaimRepository;
@@ -13,6 +14,8 @@ import tn.dari.spring.repository.ClaimRepository;
 public class ClaimService implements UIclaim {
 @Autowired
 ClaimRepository cl;
+@Autowired
+UserService us;
 	@Override
 
 	public List<Claim> GetAllClaims() {
@@ -30,7 +33,9 @@ ClaimRepository cl;
 	@Override
 	
 	public Claim addClaim(Claim c) {
-		
+		User user = c.getAd().getUs();
+		System.out.println(user);
+		us.BanUser1(user.getIdUser());
 		return cl.save(c);
 	}
 
