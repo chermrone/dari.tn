@@ -70,6 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/forgot").permitAll()
 		.antMatchers("/reset").permitAll()
 		.antMatchers("/paypal/complete/payment").permitAll()
+		.antMatchers("/api/payment").permitAll()
 		.anyRequest().authenticated()
 		.and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
 		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
