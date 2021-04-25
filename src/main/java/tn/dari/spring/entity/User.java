@@ -91,7 +91,7 @@ public class User implements Serializable {
 	
 	@JsonManagedReference
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us", fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")//, fetch = FetchType.EAGER)
 	private Set<Ad> ads;
 	
 	@ToString.Exclude
@@ -100,7 +100,7 @@ public class User implements Serializable {
 	
 	@JsonManagedReference(value="us")
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us", fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")//, fetch = FetchType.EAGER)
 	private Set<SubscriptionOrdred> subscriptions;
 	
 	//seiiifffff
