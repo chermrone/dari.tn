@@ -2,6 +2,7 @@ package tn.dari.spring.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import tn.dari.spring.entity.FournitureAd;
@@ -13,6 +14,10 @@ public interface FournitureAdRepository extends JpaRepository<FournitureAd, Long
 	
 	List<FournitureAd> findByUserName(String username);
 	List<FournitureAd> findByUserNameNotLike(String username);
+	List<FournitureAd> findByAvailable(Boolean avaialable);
+	
+	@Query("SELECT F.userName FROM FournitureAd F where F.available = FALSE Group by F.userName Order By Count(F.userName)")
+	List<String> FindTopFiveSellers();
 	
 
 

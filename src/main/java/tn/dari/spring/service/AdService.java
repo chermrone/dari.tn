@@ -1,7 +1,10 @@
 package tn.dari.spring.service;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -9,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import tn.dari.spring.exception.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import tn.dari.spring.entity.Ad;
+import tn.dari.spring.entity.City;
 import tn.dari.spring.entity.Role;
 import tn.dari.spring.entity.User;
 import tn.dari.spring.enumeration.TypeBatiment;
@@ -24,6 +29,7 @@ import tn.dari.spring.enumeration.Typead;
 import tn.dari.spring.enumeration.Usertype;
 import tn.dari.spring.exception.SubscriptionNotFoundException;
 import tn.dari.spring.repository.AdRepository;
+import tn.dari.spring.repository.Citiesrepository;
 import tn.dari.spring.repository.RoleRepository;
 import tn.dari.spring.repository.UserRepository;
 
@@ -41,6 +47,8 @@ public class AdService implements UIadService {
 	UIuser userserv;
 	@Autowired
 	EmailService email;
+	@Autowired
+	Citiesrepository citiesrep;
 
 	@Override
 	public Ad save(Ad ad) {
@@ -54,7 +62,8 @@ public class AdService implements UIadService {
 		ad.setUs(userAd);
 		User user = ad.getUs();
 		// check if he is premium or not :max 10 post ad if he is not
-		if (!user.getRoles().contains(rolerepository.findByName(Usertype.PREMIUM).get())) {
+		if (!user.getRoles().contains(rolerepository.findByName(Usertype.PREMIUM).get())
+				|| !user.getRoles().contains(rolerepository.findByName(Usertype.ADMIN).get())) {
 			System.out.println("user isn't premium");
 			// search for ad of the after if > 10 out
 			Set<Ad> adofUser = user.getAds();
@@ -66,10 +75,11 @@ public class AdService implements UIadService {
 		Set<Role> strRoles = user.getRoles();
 		Role Seller = rolerepository.findByName(Usertype.SELLER).get();
 		System.out.println(rolerepository.findByName(Usertype.SELLER).get());
-		if(!strRoles.contains(Seller)){
-		strRoles.add(Seller);
-		user.setRoles(strRoles);
-		userrep.save(user);}
+		if (!strRoles.contains(Seller)) {
+			strRoles.add(Seller);
+			user.setRoles(strRoles);
+			userrep.save(user);
+		}
 
 		// send mail
 		String subject = "Confirmation add announcement";
@@ -79,9 +89,30 @@ public class AdService implements UIadService {
 	}
 
 	@Override
-	public String Delete(long id) {
-		adrepository.deleteById(id);
-		return "deleted successfully";
+	public void Delete(long id) {
+		System.out.println("delete" + id);
+		Ad ad = adrepository.findById(id).get();
+		try {
+			adrepository.deleteImgAd(ad);
+		} catch (Exception e) {
+		}
+		;
+		
+		
+		try {
+			adrepository.deleteClaim(ad);
+		} catch (Exception e) {
+		}
+		try {
+			adrepository.deleteReview(ad);
+		} catch (Exception e) {
+		}
+		try {
+			adrepository.deleteWishlist(ad);
+		} catch (Exception e) {
+		}			adrepository.deleteAd(id);
+
+		System.out.println("delete");
 	}
 
 	@Override
@@ -108,11 +139,13 @@ public class AdService implements UIadService {
 
 	@Override
 	public Ad getById(long id) {
-		Ad ad=adrepository.findById(id).get();
-		 int Visites=ad.getNumbeOfVisites();System.out.println(Visites);
-		 Visites++;System.out.println(Visites);
-		 ad.setNumbeOfVisites(Visites);
-		 adrepository.save(ad);
+		Ad ad = adrepository.findById(id).get();
+		int Visites = ad.getNumbeOfVisites();
+		System.out.println(Visites);
+		Visites++;
+		System.out.println(Visites);
+		ad.setNumbeOfVisites(Visites);
+		adrepository.save(ad);
 		return adrepository.findById(id)
 				.orElseThrow(() -> new AdNotFoundException("Ad by id= " + id + " was not found"));
 	}
@@ -146,246 +179,110 @@ public class AdService implements UIadService {
 		return adrepository.save(ad);
 	}
 
+	@Scheduled(cron = "0 31 19 * * *")
+	@Override
+	public void UpdateTopFiveInTableCity() {
+		List<String> TopFive = topfivecities();
+		adrepository.UpdateCitiesFamous(TopFive);
+	}
+
 	@Override
 	public double EstimatedHouse(Ad ad) {
 		double RentEstimatePrice = ad.getNumbreOfRooms();
 		System.out.println(RentEstimatePrice);
-		double SellEstimatePrice = ad.getArea();
-		String[] NorthE = { "bizerte", "tunis", "ariana", "manouba", "ben arous", "nabeul" };
-		String[] NorthW = { "beja", "jandouba", "kef", "siliana", "zaghouan" };
-		String[] MiddleE = { "mistir", "sousse", "mahdia" };
-		String[] MiddleW = { "karawen", "sidi bouzid", "gasrin" };
-
-		String[] SouthE = { "sfax", "gabes", "mednine", "jandouba" };
-		String[] SouthW = { "tozeur", "gafsa", "gbelli", "tataouine" };
-
+		// connected user
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String userAuthenticated = auth.getName();
+		System.out.println("this user is connected" + userAuthenticated);
+		User userAd = new User();
+		userAd = userserv.GetUserByUserName(userAuthenticated);
+		List<String> TopFive = topfivecities();
+		System.out.println(" top five cities  !! " + TopFive);
+		adrepository.UpdateCitiesFamous(TopFive);
+		double estimateprice = 0;
 		/// Case it is a selling house
-		///////////////// Case it is a terrain
+		/////////////////
+		//////////// :::::Case it is a ground::::::::://////////
+	if (ad.getType().equals(TypeBatiment.ground))
+		{System.out.println("hello entred ground"+ ad.getArea());
+				estimateprice = adrepository.RetrievEstimatedPriceGround(ad.getArea(), ad.getType().name(),
+						ad.getCity(), userAd);
+				System.out.println(estimateprice);
+
+		}
+			if (estimateprice != 0)
+				return estimateprice;
 		if (ad.getTypead().equals(Typead.SELL)) {
-			if (ad.getType().equals(TypeBatiment.ground)) {
-				System.out.println("ground");
-				for (String city : NorthE) {
-					if (city.equals(ad.getCity().toLowerCase())) {
-						SellEstimatePrice *= 1000;
-					}
+		
 
-				}
-
-				for (String city : NorthW) {
-					if (city.equals(ad.getCity().toLowerCase())) {
-						SellEstimatePrice *= 300;
-					}
-				}
-
-				for (String city : MiddleE) {
-					if (city.equals(ad.getCity().toLowerCase())) {
-						SellEstimatePrice *= 1000;
-					}
-				}
-
-				for (String city : MiddleW) {
-					if (city.equals(ad.getCity().toLowerCase())) {
-						SellEstimatePrice *= 200;
-					}
-				}
-				for (String city : SouthE) {
-					if (city.equals(ad.getCity().toLowerCase())) {
-						SellEstimatePrice *= 500;
-					}
-				}
-
-				for (String city : SouthW) {
-					if (city.equals(ad.getCity().toLowerCase())) {
-						SellEstimatePrice *= 100;
-					}
-
-				}
-
-			}
-
-			//////////// :::::case it is a apartment
+			//////////// :::::case it is a apartment::::::::://////////
+			/* #####In top 5 cities#### */
 
 			if (ad.getType().equals(TypeBatiment.apartment)) {
-				System.out.println("apartment");
-				SellEstimatePrice = ad.getBuilda();
-				System.out.println(SellEstimatePrice);
+				System.out.println("it is apartment");
+				if (ad.getType().equals(TypeBatiment.apartment) && TopFive.contains(ad.getCity()))
+					estimateprice = adrepository.RetrievEstimatedPriceFamousRegionAppartment(ad.getBuilda(),
+							ad.getType().name(), ad.getCity(), userAd);
+				if (estimateprice != 0)
+					return estimateprice;
 
-				List<String> TopFive = topfivecities();
-				for (String city : NorthE) {
-					if (city.equals(ad.getCity().toLowerCase()) && TopFive.contains(city)) {
-						SellEstimatePrice *= 3500;
-					} else if (city.equals(ad.getCity().toLowerCase()))
-						SellEstimatePrice *= 2000;
+				/* ##### normal cities#### */
 
-				}
-
-				for (String city : NorthW) {
-					if (city.equals(ad.getCity().toLowerCase())) {
-						SellEstimatePrice *= 2000;
-					}
-				}
-
-				for (String city : MiddleE) {
-					if (city.equals(ad.getCity().toLowerCase()) && TopFive.contains(city)) {
-						SellEstimatePrice *= 3000;
-					} else if (city.equals(ad.getCity().toLowerCase()))
-						SellEstimatePrice *= 2000;
-				}
-
-				for (String city : MiddleW) {
-					if (city.equals(ad.getCity().toLowerCase())) {
-						SellEstimatePrice *= 1500;
-					}
-				}
-				for (String city : SouthE) {
-					if (city.equals(ad.getCity().toLowerCase())) {
-						SellEstimatePrice *= 1200;
-					}
-				}
-
-				for (String city : SouthW) {
-					if (city.equals(ad.getCity().toLowerCase())) {
-						SellEstimatePrice *= 1000;
-					}
-
-				}
-				SellEstimatePrice += SellEstimatePrice * 0.10 * ad.getNumbreOfRooms();
-
+				estimateprice = adrepository.RetrievEstimatedPriceNONFamousRegionAppartment(ad.getBuilda(),
+						ad.getType().name(), ad.getCity(), userAd);
+				if (estimateprice != 0)
+					return estimateprice;
 			}
-			//////////////////// : case house
+
+			//////////// :::::case it is a house::::::::://////////
+
 			if (ad.getType().equals(TypeBatiment.house)) {
-				System.out.println("house");
-				System.out.println(ad.getArea() - ad.getBuilda());
-				List<String> TopFive = topfivecities();
-				SellEstimatePrice = 0;
-				for (String city : NorthE) {
-					if (city.equals(ad.getCity().toLowerCase()) && TopFive.contains(city)) {
-						SellEstimatePrice = 3500 * (ad.getBuilda()) + 1000 * (ad.getArea() - ad.getBuilda());
-						System.out.println(ad.getBuilda());
-						System.out.println(ad.getArea() - ad.getBuilda());
-					} else if (city.equals(ad.getCity().toLowerCase()))
-						SellEstimatePrice = 2000 * ad.getBuilda() + 1000 * (ad.getArea() - ad.getBuilda());
-				}
 
-				for (String city : NorthW) {
-					if (city.equals(ad.getCity().toLowerCase())) {
-						SellEstimatePrice = 2000 * ad.getBuilda() + 300 * (ad.getArea() - ad.getBuilda());
-					}
-				}
+				if (TopFive.contains(ad.getCity()))
+					estimateprice = adrepository.RetrievEstimatedPriceFamousRegionHouse(ad.getBuilda(), ad.getArea(),
+							ad.getType().name(), ad.getCity(), userAd);
+				else
 
-				for (String city : MiddleE) {
-					if (city.equals(ad.getCity().toLowerCase()) && TopFive.contains(city)) {
-						SellEstimatePrice = 3000 * ad.getBuilda() + 1000 * (ad.getArea() - ad.getBuilda());
-					} else if (city.equals(ad.getCity().toLowerCase()))
-						SellEstimatePrice = 2000 * ad.getBuilda() + 1000 * (ad.getArea() - ad.getBuilda());
-				}
+					estimateprice = adrepository.RetrievEstimatedPriceNonFamousRegionHouse(ad.getBuilda(), ad.getArea(),
+							ad.getType().name(), ad.getCity(), userAd);
 
-				for (String city : MiddleW) {
-					if (city.equals(ad.getCity().toLowerCase())) {
-						SellEstimatePrice = 1500 * ad.getBuilda() + 200 * (ad.getArea() - ad.getBuilda());
-					}
-				}
-				for (String city : SouthE) {
-					if (city.equals(ad.getCity().toLowerCase())) {
-						SellEstimatePrice = 1200 * ad.getBuilda() + 500 * (ad.getArea() - ad.getBuilda());
-					}
-				}
-
-				for (String city : SouthW) {
-					if (city.equals(ad.getCity().toLowerCase())) {
-						SellEstimatePrice = 1000 * ad.getBuilda() + 100 * (ad.getArea() - ad.getBuilda());
-					}
-
-				}
-
-				SellEstimatePrice += SellEstimatePrice * 0.10 * ad.getNumbreOfRooms();
-
+				estimateprice += estimateprice * 0.10 * ad.getNumbreOfRooms();
+				return estimateprice;
 			}
-			return SellEstimatePrice;
-		} //////////////// case a rent house
+		}
+
+		//////////////// case a rent house
 		if (ad.getTypead().equals(Typead.RENT)) {
-			System.out.println(RentEstimatePrice);
-			List<String> TopFive = topfivecities();
-			if ((int) RentEstimatePrice == 0)
-				RentEstimatePrice = 1;
+			int rooms = ad.getNumbreOfRooms();
+			if (rooms == 0)
+				rooms = 1;
 			else
-				RentEstimatePrice++;
-			for (String city : NorthE) {
-				if (city.equals(ad.getCity().toLowerCase()) && TopFive.contains(city)) {
-					if (RentEstimatePrice == 1)
-						RentEstimatePrice *= 400;
-					else
-						RentEstimatePrice *= 290;
-				} else if (city.equals(ad.getCity().toLowerCase())) {
-					if (RentEstimatePrice == 1)
-						RentEstimatePrice *= 350;
-					else
-						RentEstimatePrice *= 230;
-				}
+				rooms++;
+			if (!TopFive.contains(ad.getCity())) {
+				if (rooms == 1)
+					estimateprice += adrepository.RetrievEstimatedRentPriceNonFamousRegionOnlyRoom(rooms, ad.getCity(),
+							userAd);
+				if (rooms != 1)
+					estimateprice += adrepository.RetrievEstimatedRentPriceNonFamousRegionMultiRoom(rooms, ad.getCity(),
+							userAd);
+			} else {
+				if (rooms == 1)
+					estimateprice += adrepository.RetrievEstimatedRentPriceFamousRegionOnlyRoom(rooms, ad.getCity(),
+							userAd);
+				if (rooms != 1)
+					estimateprice += adrepository.RetrievEstimatedRentPriceFamousRegionMultiRoom(rooms, ad.getCity(),
+							userAd);
 			}
-
-			for (String city : NorthW) {
-				if (city.equals(ad.getCity().toLowerCase())) {
-
-					if (RentEstimatePrice == 1)
-						RentEstimatePrice *= 250;
-					else
-						RentEstimatePrice *= 150;
-				}
-			}
-
-			for (String city : MiddleE) {
-				if (city.equals(ad.getCity().toLowerCase()) && TopFive.contains(city)) {
-
-					if (RentEstimatePrice == 1)
-						RentEstimatePrice *= 380;
-					else
-						RentEstimatePrice *= 270;
-
-				} else if (city.equals(ad.getCity().toLowerCase())) {
-					if (RentEstimatePrice == 1)
-						RentEstimatePrice *= 300;
-					else
-						RentEstimatePrice *= 200;
-				}
-
-			}
-
-			for (String city : MiddleW) {
-				if (city.equals(ad.getCity().toLowerCase())) {
-					if (RentEstimatePrice == 1)
-						RentEstimatePrice *= 250;
-					else
-						RentEstimatePrice *= 130;
-
-				}
-			}
-			for (String city : SouthE) {
-				if (city.equals(ad.getCity().toLowerCase())) {
-					if (RentEstimatePrice == 1)
-						RentEstimatePrice *= 150;
-					else
-						RentEstimatePrice *= 100;
-
-				}
-			}
-
-			for (String city : SouthW) {
-				if (city.equals(ad.getCity().toLowerCase())) {
-					if (RentEstimatePrice == 1)
-						RentEstimatePrice *= 150;
-					else
-						RentEstimatePrice *= 50;
-
-				}
-
-			}
-			return RentEstimatePrice;
-
+			return estimateprice;
 		}
 		return 0;
 	}
 
+	@Override
+	public Ad GetAdLast(){
+		return adrepository.findTopByOrderByAdIdDesc();
+	}
+	
 	@Override
 	public List<Ad> GetAdsOwned() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -410,90 +307,155 @@ public class AdService implements UIadService {
 		userAd = userserv.GetUserByUserName(userAuthenticated);
 		System.out.println(userAd);
 		Set<Ad> ads = userAd.getAds();
-for (Ad ad : ads) {
-	if(ad.getAdId().equals(id))
-		return ad;
-}
+		for (Ad ad : ads) {
+			if (ad.getAdId().equals(id))
+				return ad;
+		}
 		return null;
 	}
 
-	
 	@Override
 	public Set<Long> saveFavorite(long id) {
-		Ad ad=adrepository.findById(id).get();
-long favorite=ad.getAdId();
-Set<Long> Favorites=ad.getUs().getFavorite();
+		Ad ad = adrepository.findById(id).get();
+		long favorite = ad.getAdId();
+		Set<Long> Favorites = ad.getUs().getFavorite();
 		Favorites.add(favorite);
-		User user=ad.getUs();
+		User user = ad.getUs();
 		user.setFavorite(Favorites);
 		userrep.save(user);
 		return ad.getUs().getFavorite();
 	}
 
-	
 	@Override
 	public int getNumberOfFavoriteAd(long id) {
-		Ad ad=adrepository.findById(id).get();
-		User user = ad.getUs();
-		// check if he is premium or not : 
-		if (!user.getRoles().contains(rolerepository.findByName(Usertype.PREMIUM).get()))
-		return 0;
-long favorite=ad.getAdId();
-List<User> Users=userrep.findAll();
-int nmberOfFavorites=0;
-for (User userr : Users) {
-
-if(userr.getFavorite().contains(favorite))
-		{ nmberOfFavorites++;
-		}
-}
-return nmberOfFavorites;
+		return adrepository.retriveNumberOffavoritesForPremium(id);
 	}
-	
-	
-	@Override
-	public double SituationAd(long id) {
-Ad ad=adrepository.findById(id).get();
-		User user = ad.getUs();
-		// check if he is premium or not : 
-		if (!user.getRoles().contains(rolerepository.findByName(Usertype.PREMIUM).get()))
-		{			System.out.println("user not premium");
 
-			return 403;}
-		else if (ad.getBuyingDate()==null)
-		{//compare if number of visite = 0 feedback
-			if(ad.getNumbeOfVisites()==0)
-			{ad.setFeedback("you should enter detailled information to your ad and clear image");
-		adrepository.save(ad);}
-		if(getNumberOfFavoriteAd(id)!=0 &&  ad.getNumbeOfVisites()!=0 ){
-		//compare date of creation with sysdate if > 7 return estimated price
-			Date currentSqlDate = new Date(System.currentTimeMillis());
-			long diffInMillies = Math.abs(currentSqlDate.getTime() - ad.getCreationDate().getTime());
-			System.out.println(diffInMillies);
-			long diff = TimeUnit.MILLISECONDS.toDays(diffInMillies);		
-			System.out.println(diff);
-			ad.setFeedback("you should reduce the price to attract people");
+	@Override
+	public String SituationAd(long id) {
+		// to know who is connected (need it after in if for ban must be admin)
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String userAuthenticated = auth.getName();
+		System.out.println("this user is connected" + userAuthenticated);
+		User userAd = new User();
+		userAd = userserv.GetUserByUserName(userAuthenticated);
+
+		Ad ad = adrepository.findById(id).get();
+		// ad banned + admin
+		if (adrepository.CheckAdBanned(id) && adrepository.CheckExistingRoleADMINforConsulterOfAd(userAd)) {
+			ad.setFeedback("this ad is banned");
 			adrepository.save(ad);
-			if (diff >= 7) {
-			return EstimatedHouse(ad);}
+			return ad.getFeedback();
 		}
-	}			
+		// when the ad is bannned and the user connected isnt admin
+		else if (adrepository.CheckExistingRoleADMINforConsulterOfAd(userAd) == false && adrepository.CheckAdBanned(id))
+			return null;
 
-		return 0;
+		if (ad.getBuyingDate() == null) {// compare if number of visite = 0
+											// feedback
+			if (ad.getNumbeOfVisites() == 0) {
+				ad.setFeedback("you should enter detailled information to your ad and clear image");
+				adrepository.save(ad);
+			}
+			if (adrepository.retriveNumberOffavoritesForPremium(id) != 0 && ad.getNumbeOfVisites() != 0
+					&& adrepository.CheckAdBanned(id) != true) {
+				// compare date of creation with sysdate if > 7 return estimated
+				// price
+				Date currentSqlDate = new Date(System.currentTimeMillis());
+				long diffInMillies = Math.abs(currentSqlDate.getTime() - ad.getCreationDate().getTime());
+				System.out.println(diffInMillies);
+				long diff = TimeUnit.MILLISECONDS.toDays(diffInMillies);
+				System.out.println(diff);
+				ad.setFeedback("you should reduce the price to attract people");
+				adrepository.save(ad);
+				if (diff >= 7) {
+					return ad.getFeedback() + " your estimated price :  " + EstimatedHouse(ad);
+				}
+			}
 
-}
-	
-	@Override
-	public  List<Ad>  retriveAdforNonAdmin(long id){
-		Role r=rolerepository.findById(id).get();
-				return adrepository.retriveAdDependingOnRole(r.getName()); 
+		}
+
+		return ad.getFeedback();
+
 	}
-	/********************* Statistics*********************************/
+
+	@Scheduled(cron = "0 43 18 * * *")
 	@Override
-	@Scheduled(cron="0 46 18 * * *")//execute every day on 18:465)
+	public void UpdateEstimatedPeriodSellHouse() {
+		List<City> cities = citiesrep.findAll();
+		for (City cities2 : cities) {
+			adrepository.UpdateEstimatedPeriodSellHouse(cities2.getName());
+		}
+
+	}
+
+	@Override
+	public int EstimatedPeriodSellHouse(Ad ad) {
+		List<City> cities = citiesrep.findAll();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String userAuthenticated = auth.getName();
+		System.out.println("this user is connected" + userAuthenticated);
+		User userAd = new User();
+		userAd = userserv.GetUserByUserName(userAuthenticated);
+		int period = 0;
+		if (ad.getPrice() < EstimatedHouse(ad)) {
+			try {
+
+				period = adrepository.RetrievEstimatedPeriodIdealCities(ad.getCity(), ad.getPrice(), EstimatedHouse(ad),
+						userAd);
+				return period;
+			} catch (Exception e) {
+			}
+			try {
+				period = adrepository.RetrievEstimatedPeriodNonIdealCitiesWinterSeason(ad.getCity(), ad.getPrice(),
+						EstimatedHouse(ad), userAd);
+				return period;
+			} catch (Exception e) {
+			}
+		}
+
+		else if (ad.getPrice() > EstimatedHouse(ad)) {
+			try {
+				period = adrepository.RetrievEstimatedPeriodNonIdealCities(ad.getCity(), ad.getPrice(),
+						EstimatedHouse(ad), userAd);
+				return period;
+			} catch (Exception e) {
+			}
+			try {
+				System.out.println("helooo entred");
+
+				period = adrepository.RetrievEstimatedPeriodNonIdealCitiesOverPrice(ad.getCity(), ad.getPrice(),
+						EstimatedHouse(ad), userAd);
+				period += 30;
+				System.out.println("helooo entred +" + period);
+				return period;
+			} catch (Exception e) {
+			}
+		}
+
+		System.out.println("helooo end");
+		return period;
+
+	}
+
+	@Override
+	public List<Ad> retriveAdUsingRole(long id) {
+		Role r = rolerepository.findById(id).get();
+		return adrepository.retriveAdDependingOnRole(r.getName());
+	}
+
+	@Override
+	public List<Ad> retrieveAdsByBannedUser(Long role, java.util.Date maxdays, java.util.Date mindays) {
+		return adrepository.retrieveAdByBannedUser(role, maxdays, mindays);
+	}
+
+	/********************* Statistics *********************************/
+	@Override
+	@Scheduled(cron = "0 46 18 * * *") // execute every day on 18:465)
 	public List<String> ordercitiesByBuyingdesc() {
 		List<Ad> ads = adrepository.findAll();
-		//tri of list ads with buyed houses by city
+		// tri of list ads with buyed houses by city
 		for (int i = 1; i < ads.size(); i++) {
 			if (getBuyedHousesByCity(ads.get(i - 1).getCity()) < getBuyedHousesByCity(ads.get(i).getCity())) {
 				Ad aux = ads.get(i);
@@ -502,7 +464,7 @@ Ad ad=adrepository.findById(id).get();
 			}
 		}
 		List<String> topcities = new ArrayList<>();
-		//adding (DISTINCT) city in the list of topcities 
+		// adding (DISTINCT) city in the list of topcities
 		topcities.add(ads.get(0).getCity());
 		for (int j = 1; j < ads.size(); j++) {
 			if (!ads.get(j).getCity().equals(ads.get(j - 1).getCity())) {
@@ -515,7 +477,7 @@ Ad ad=adrepository.findById(id).get();
 	@Override
 	public List<String> topfivecities() {
 		List<Ad> ads = adrepository.findAll();
-		//ordering list ads by buyed houses by city
+		// ordering list ads by buyed houses by city
 		for (int i = 1; i < ads.size(); i++) {
 			if (getBuyedHousesByCity(ads.get(i - 1).getCity()) < getBuyedHousesByCity(ads.get(i).getCity())) {
 				Ad aux = ads.get(i);
@@ -524,18 +486,19 @@ Ad ad=adrepository.findById(id).get();
 			}
 		}
 		List<String> topcities = new ArrayList<>();
-		//adding (DISTINCT) city in the list of topcities 
+		// adding (DISTINCT) city in the list of topcities
 		topcities.add(ads.get(0).getCity());
 		int k = 0;
 		for (int j = 1; j < ads.size(); j++) {
 			if (!ads.get(j).getCity().equals(ads.get(j - 1).getCity())) {
 				topcities.add(ads.get(j).getCity());
 				k++;
-				if (k == 4) {//this condition(k==4) to stop for if we have 5 cities in our list
+				if (k == 4) {// this condition(k==4) to stop for if we have 5
+								// cities in our list
 					return topcities;
 				}
 			}
 		}
 		return topcities;
 	}
-	}
+}

@@ -33,26 +33,36 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 	SubscriptionService ss;
 
 	@Override
-	public SubscriptionOrdred AddSubscriptionorder(SubscriptionOrdred s,Long id) {
+	public SubscriptionOrdred AddSubscriptionorder(SubscriptionOrdred s,String st) {
 		// enter the user connected to ad
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String userAuthenticated = auth.getName();
 		User user = new User();
 		user = userservice.GetUserByUserName(userAuthenticated);
+		System.out.println(user.toString());
 		s.setUs(user);
 		
-		// enter subscription
-		s.setSubscription(ss.GetSubscriptionById(id));
+		SubscriptionType subt = null;
+		switch (st) {
+		case "assurance":
+			subt = SubscriptionType.assurance;
+			break;
+		case "premium":
+			subt = SubscriptionType.premium;
+			break;
+		case "surveillance_de_maison":
+			subt = SubscriptionType.surveillance_de_maison;
+			break;
+		}
 		
+		// enter subscription
+		s.setSubscription(ss.GetSubscriptionBySubscriptionType(subt));
 		return sr.save(s);
 	}
 
 	@Override
 	public SubscriptionOrdred UpdateSubscriptionorder(SubscriptionOrdred s) {
-		if (sr.findById(s.getSubscriptionOrderId()) != null) {
-			return sr.save(s);
-		}
-		return null;
+		return sr.save(s);
 	}
 
 	@Override
@@ -77,13 +87,11 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 
 	@Override
 	public List<SubscriptionOrdred> GetAll() {
-
 		return sr.findAll();
 	}
 
 	@Override
 	public SubscriptionOrdred GetSubscriptionorder(Long id) {
-		// TODO Auto-generated method stub
 		return sr.findById(id).orElseThrow(() -> new RuntimeException("Fail! -> Cause: Subscription order not found."));
 	}
 
@@ -104,7 +112,6 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 
 	@Override
 	public List<SubscriptionOrdred> GetByEnable(boolean enable) {
-		// TODO Auto-generated method stub
 		return sr.findByEnable(enable);
 	}
 
@@ -112,6 +119,30 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 	public List<SubscriptionOrdred> GetByUser(Long id) {
 
 		return sr.findByUs(userservice.GetUserById(id));
+	}
+
+	@Override
+	public SubscriptionOrdred AddSubscriptionorder(SubscriptionOrdred s, String st, Long iduser) {
+		//get user
+		User us = userservice.GetUserById(iduser);
+		s.setUs(us);
+		SubscriptionType subt = null;
+		switch (st) {
+		case "assurance":
+			subt = SubscriptionType.assurance;
+			break;
+		case "premium":
+			subt = SubscriptionType.premium;
+			break;
+		case "surveillance_de_maison":
+			subt = SubscriptionType.surveillance_de_maison;
+			break;
+		}
+		Subscription subscription = ss.GetSubscriptionBySubscriptionType(subt);
+		// enter subscription
+		s.setSubscription(subscription);
+		
+		return sr.save(s);
 	}
 
 }

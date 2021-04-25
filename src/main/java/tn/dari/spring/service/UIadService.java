@@ -1,5 +1,6 @@
 package tn.dari.spring.service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -7,11 +8,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import tn.dari.spring.entity.Ad;
 import tn.dari.spring.entity.Role;
+import tn.dari.spring.enumeration.Usertype;
 
 public interface UIadService {
 	public Ad save(Ad ad);
 
-	public String Delete(long id);
+	public void Delete(long id);
 
 	public List<Ad> getAll();
 
@@ -41,9 +43,19 @@ public interface UIadService {
 
 	Ad GetAdOwned(long id);
 
-	public double SituationAd(long id);
+	public String SituationAd(long id);
 
 	int getNumberOfFavoriteAd(long id);
 
-	List<Ad> retriveAdforNonAdmin(long id);
+	List<Ad> retriveAdUsingRole(long id);
+
+	List<Ad> retrieveAdsByBannedUser(Long role, java.util.Date fromDate, java.util.Date toDate);
+
+	void UpdateEstimatedPeriodSellHouse();
+	void UpdateTopFiveInTableCity();
+	public int EstimatedPeriodSellHouse(Ad ad);
+
+	Ad GetAdLast();
+
+
 }

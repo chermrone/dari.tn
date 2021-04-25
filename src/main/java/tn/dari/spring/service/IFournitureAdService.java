@@ -16,8 +16,9 @@ public interface IFournitureAdService {
 
 	public Map<String, Boolean> deleteAd(Long faID) throws ResourceNotFoundException;
 	
-	
+	public List<FournitureAd> getAvailableAd();
 	public List<FournitureAd> getMyAd(String username);
 	public List<FournitureAd> getOtherAd(String username);
+	public List<String> FindTopFiveSellers();
 
 }

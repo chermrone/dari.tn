@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tn.dari.spring.entity.User;
 import tn.dari.spring.service.UIuser;
 
-@CrossOrigin("*")
+@CrossOrigin(origins ="http://localhost:4200")
 @RestController
 @RequestMapping("/dari/Users")
 public class UserController {

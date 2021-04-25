@@ -116,6 +116,9 @@ public class FournitureAdQueryService extends QueryService<FournitureAd> {
 			if (criteria.getUserName() != null) {
 				specification = specification.and(buildStringSpecification(criteria.getUserName(), FournitureAd_.userName));
 			}
+			if (criteria.getAvailable() != null) {
+				specification = specification.and(buildSpecification(criteria.getAvailable(), FournitureAd_.available));
+			}
 		}
 		return specification;
 	}

@@ -75,4 +75,18 @@ public class FournitureAdService implements IFournitureAdService {
 		return fournitureAdRepository.findByUserNameNotLike(username);
 	}
 
+	@Override
+	public List<String> FindTopFiveSellers() {
+		
+		
+		return fournitureAdRepository.FindTopFiveSellers().subList(0, 5);
+	}
+
+	@Override
+	public List<FournitureAd> getAvailableAd() {
+		
+		return fournitureAdRepository.findByAvailable(true);
+	}
+	
+
 }

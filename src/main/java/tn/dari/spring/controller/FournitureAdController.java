@@ -77,12 +77,23 @@ public class FournitureAdController {
 	public Long getCountCriteriaFournitureAd( FournitureAdCriteria fournitureAdCriteria) {
 		return fournitureAdQueryService.countByCriteria(fournitureAdCriteria);
 	}
+	
+	
+	@GetMapping("/TopSellers")
+	public ResponseEntity<List<String>> FindTopFiveSellers()
+			throws ResourceNotFoundException {
+		
+		return ResponseEntity.ok().body(fournitureAdService.FindTopFiveSellers());
+	}
 
 	@PostMapping("/add")
 	public ResponseEntity<FournitureAdDto> postFournitureAd(@Valid @RequestBody FournitureAdDto fournitureAdDto) {
 
 		// convert DTO to entity
 		FournitureAd fournitureAdRequest = modelMapper.map(fournitureAdDto, FournitureAd.class);
+		if(fournitureAdRequest.getAvailable() == null||fournitureAdRequest.getAvailable() == false){
+			fournitureAdRequest.setAvailable(true);
+		}
 
 		FournitureAd fournitureAd = fournitureAdService.postAd(fournitureAdRequest);
 

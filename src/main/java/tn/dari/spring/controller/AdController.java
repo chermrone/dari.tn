@@ -1,9 +1,11 @@
 package tn.dari.spring.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,10 +19,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import tn.dari.spring.entity.*;
-
+import tn.dari.spring.enumeration.Usertype;
 import tn.dari.spring.service.UIadService;
 import tn.dari.spring.service.UIuser;
 
@@ -92,8 +95,10 @@ public class AdController {
 
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
 	@DeleteMapping("/delete/{id}")
-	public void deleteEmployee(@PathVariable("id") Long id) {
+	public void deleteAd(@PathVariable("id") Long id) {
+		System.out.println("deleeeete");
 		Adserv.Delete(id);
+		System.out.println("deleeeete");
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
@@ -107,11 +112,10 @@ public class AdController {
 	@PostMapping("EstimatedPrice")
 	public ResponseEntity<String> EstimatedPrice(@RequestBody Ad ad) {
 		System.out.println(ad.getBuilda());
-		return new ResponseEntity<>("Estimated house: " + Adserv.EstimatedHouse(ad), HttpStatus.FOUND);
+		return new ResponseEntity<>("Estimated house: " + Adserv.EstimatedHouse(ad), HttpStatus.OK);
 	}
 	
 	
-	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
 	@GetMapping("ad/numfav/{id}")
 	public ResponseEntity<Integer> NumberOffavoriteAd(@PathVariable("id") long id)  {
 		int numberFav = Adserv.getNumberOfFavoriteAd(id);
@@ -119,23 +123,41 @@ public class AdController {
 		return new ResponseEntity<Integer>(numberFav, HttpStatus.OK);
 	}
 	//ad if premium if the house pass  7 days without being buyed
-	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PREMIUM') ")
 	@GetMapping("ad/situation/{id}")
-	public ResponseEntity<Double> SituationAd(@PathVariable("id") long id) {
-		double state = Adserv.SituationAd(id);
-		System.out.println("state ad +" + state);
-		if(state==403)
-			return new ResponseEntity<>( HttpStatus.FORBIDDEN);
+	public ResponseEntity<String> SituationAd(@PathVariable("id") long id) {
+		String state = Adserv.SituationAd(id);
+		if(state !=null)
+		return new ResponseEntity<String>(state, HttpStatus.OK);
+		else 		return new ResponseEntity<String>(state, HttpStatus.FORBIDDEN);
 
-		return new ResponseEntity<Double>(state, HttpStatus.OK);
 	}
 	@GetMapping("ad/find/{id}")
 	public ResponseEntity<List<Ad>> GetAdFromUserByRole(@PathVariable long id)  {
-List <Ad> ads=Adserv.retriveAdforNonAdmin(id);
-System.out.println("number of ad +"+ads);
+List <Ad> ads=Adserv.retriveAdUsingRole(id);
 		return new ResponseEntity<List<Ad>>(ads, HttpStatus.OK);
 	}
+	@PreAuthorize("hasAuthority('ADMIN')")
 	
+	@PostMapping("banned/{role}")
+	public ResponseEntity<List<Ad>> GetAdBannedByRoleAndPeriod(@PathVariable Long role,
+			@RequestParam(value="fromDate")     @DateTimeFormat(pattern="dd.MM.yyyy") Date fromDate,
+			@RequestParam(value="toDate")     @DateTimeFormat(pattern="dd.MM.yyyy") Date toDate)  {
+List <Ad> ads=Adserv.retrieveAdsByBannedUser(role, toDate, fromDate);
+System.out.println("number of ad +"+ads.size());
+		return new ResponseEntity<List<Ad>>(ads, HttpStatus.OK);
+	}
+	@PostMapping("ad/estimateDuration")
+	public ResponseEntity<Integer> EstimatedPeriodSellHouse(@RequestBody Ad ad)  {
+int estimatePeriod=Adserv.EstimatedPeriodSellHouse(ad);
+		return new ResponseEntity<>(estimatePeriod, HttpStatus.OK);
+			}
+	@GetMapping("ad/lastad")
+	public ResponseEntity<Ad> getLastAd() {
+		Ad ad = Adserv.GetAdLast();System.out.println("last ad"+ad);
+		return new ResponseEntity<Ad>(ad, HttpStatus.OK);
+	}
+
 	
 			/****************Ad statistics**************************/
 	

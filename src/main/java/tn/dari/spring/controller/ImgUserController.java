@@ -60,9 +60,9 @@ public class ImgUserController {
 		
 		
 
-		@GetMapping(path = { "/getname/{imageName}" })
-		public ImgUser getImageByName(@PathVariable("imageName") String imageName) throws Exception {
-			ImgUser img=(ImgUser) imgService.retrievImage(imageName);
+		@GetMapping(path = { "/getname/{idUser}/{imageName}" })
+		public ImgUser getImageByName(@PathVariable("idUser") long idUser,@PathVariable("imageName") String imageName) throws Exception {
+			ImgUser img=(ImgUser) imgService.retrievImage(idUser,imageName);
 
 			return img;
 		}
@@ -71,9 +71,8 @@ public class ImgUserController {
 		
 
 		@GetMapping(path = { "/getid/{id}" })
-		public ImgUser getImageById(@PathVariable("id") long id) throws IOException {
-			ImgUser img=(ImgUser)imgService.GetById(id);
-
+		public byte[] getImageById(@PathVariable("id") long id) throws IOException {
+			byte[] img=(byte[])imgService.GetById(id);
 			return img;
 		}
 		@GetMapping(path = { "/all" })
