@@ -163,44 +163,34 @@ int estimatePeriod=Adserv.EstimatedPeriodSellHouse(ad);
 	
 	@GetMapping("/buyedAdByRegion/{city}")
 	@PreAuthorize("hasAuthority('PREMIUM') or hasAuthority('ADMIN')")
-	public ResponseEntity<String> GetbBuyedHousesByCity(@PathVariable("city") String city) {
-		if (Adserv.getBuyedHousesByCity(city) > 0) {
-			return new ResponseEntity<>("number of houses: " + Adserv.getBuyedHousesByCity(city), HttpStatus.FOUND);
-		}
-		return new ResponseEntity<>("No houses found", HttpStatus.NOT_FOUND);
+	public ResponseEntity<?> GetbBuyedHousesByCity(@PathVariable("city") String city) {
+		
+			return new ResponseEntity<>(Adserv.getBuyedHousesByCity(city), HttpStatus.OK);
 	}
 
 	@GetMapping("/buyedAdByRegionandMaxPrice/{city}/{price}")
 	@PreAuthorize("hasAuthority('PREMIUM') or hasAuthority('ADMIN')")
-	public ResponseEntity<String> GetBuyedHousesByCityAndMaxPrice(@PathVariable("city") String city,
+	public ResponseEntity<?> GetBuyedHousesByCityAndMaxPrice(@PathVariable("city") String city,
 			@PathVariable("price") double price) {
-		if (Adserv.getBuyedHousesByCityAndMaxprice(city, price) > 0) {
-			return new ResponseEntity<>("number of houses: " + Adserv.getBuyedHousesByCityAndMaxprice(city, price),
-					HttpStatus.FOUND);
-		} else
-			return new ResponseEntity<>("No houses found", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(Adserv.getBuyedHousesByCityAndMaxprice(city, price),
+					HttpStatus.OK);
+
 	}
 
 	@GetMapping("/buyedAdByRegionandMinPrice/{city}/{price}")
 	@PreAuthorize("hasAuthority('PREMIUM') or hasAuthority('ADMIN')")
-	public ResponseEntity<String> GetBuyedHousesByCityAndMinPrice(@PathVariable("city") String city,
+	public ResponseEntity<?> GetBuyedHousesByCityAndMinPrice(@PathVariable("city") String city,
 			@PathVariable("price") double price) {
-		if (Adserv.getBuyedHousesByCityAndMinprice(city, price) > 0) {
-			return new ResponseEntity<>("number of houses: " + Adserv.getBuyedHousesByCityAndMinprice(city, price),
-					HttpStatus.FOUND);
-		} else
-			return new ResponseEntity<>("No houses found", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(Adserv.getBuyedHousesByCityAndMinprice(city, price),
+					HttpStatus.OK);
+		
 	}
 
 	@GetMapping("buyedAdInPeriod/{city}/{period}")
 	@PreAuthorize("hasAuthority('PREMIUM') or hasAuthority('ADMIN')")
-	public ResponseEntity<String> GetBuyedHousesByCityInPeriodOfTime(@PathVariable("city") String city,
+	public ResponseEntity<?> GetBuyedHousesByCityInPeriodOfTime(@PathVariable("city") String city,
 			@PathVariable("period") int period) {
-		if (Adserv.getBuyedHousesByCityInPeriod(city, period) > 0) {
-			return new ResponseEntity<>("number of buyed houses in less then " + period + " days is:"
-					+ Adserv.getBuyedHousesByCityInPeriod(city, period), HttpStatus.OK);
-		} else
-			return new ResponseEntity<>("No houses found", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(Adserv.getBuyedHousesByCityInPeriod(city, period), HttpStatus.OK);
 	}
 
 	@GetMapping("topfiveregionsbuy")
@@ -213,9 +203,9 @@ int estimatePeriod=Adserv.EstimatedPeriodSellHouse(ad);
 
 	@GetMapping("GetRegionsordredbybuyingasc")
 	@PreAuthorize("hasAuthority('PREMIUM') or hasAuthority('ADMIN')")
-	public ResponseEntity<String> GetRegionsordredbybuyingasc() {
+	public ResponseEntity<List<String>> GetRegionsordredbybuyingasc() {
 		List<String> topcities = Adserv.ordercitiesByBuyingdesc();
-		return new ResponseEntity<String>(topcities.toString(), HttpStatus.OK);
+		return new ResponseEntity<List<String>>(topcities, HttpStatus.OK);
 	}
 	
 	

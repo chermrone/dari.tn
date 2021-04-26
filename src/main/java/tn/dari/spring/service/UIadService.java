@@ -1,14 +1,10 @@
 package tn.dari.spring.service;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.web.bind.annotation.PathVariable;
 
 import tn.dari.spring.entity.Ad;
-import tn.dari.spring.entity.Role;
-import tn.dari.spring.enumeration.Usertype;
 
 public interface UIadService {
 	public Ad save(Ad ad);
