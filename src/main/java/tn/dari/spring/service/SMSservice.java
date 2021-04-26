@@ -17,9 +17,9 @@ import tn.dari.spring.entity.SMS;
 public class SMSservice {
 
 	    
-	    private final String ACCOUNT_SID ="AC3e558711439f26ed5e198321ba337d05";
+	    private final String ACCOUNT_SID ="";//AC3e558711439f26ed5e198321ba337d05
 
-	    private final String AUTH_TOKEN = "19b7c44d2451c6762b61de6a1027229e";
+	    private final String AUTH_TOKEN = "";//a077eb3241cbd3046efaa5a94be781fb
 
 	    private final String FROM_NUMBER = "+14066408771";
 	    

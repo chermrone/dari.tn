@@ -275,7 +275,7 @@ private LocalDateTime getLocalDate(){
 					long nbAppoitment =ar.NBAppointment(creationDateofAd,after2Month,ad.getAdId());
 					 if(nbAppoitment ==0){
 						User us=userservice.GetUserById(ad.getUs().getIdUser());
-						String subject=("your ad with title:"+TitleAd(ad.getAdId())+ "add a:"+creationDateofAd(ad.getAdId()) );
+						String subject=("your ad with title:"+TitleAd(ad.getAdId())+ "  add a:"+creationDateofAd(ad.getAdId()) );
 						String msg ="there have been no appointments for your ad for two months please if you can reduce the price of this ad or check the characteristics of your ad";
 						if(es.sendMail("tuntechdari.tn@gmail.com", us.getEmail() , subject, msg)){
 							return " email send"  ;}
