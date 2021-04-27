@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +21,7 @@ public class LocalFile {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long fileID;
 	private String path;
+	@JsonIgnore
 	@ManyToOne
 	FournitureAd fournitureAd;
 
