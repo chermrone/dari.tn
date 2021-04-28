@@ -90,9 +90,9 @@ public class User implements Serializable {
 	
 	private int banNbr=0;
 	
-	@JsonManagedReference
+	@JsonBackReference
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us", fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")//, fetch = FetchType.EAGER)
 	private Set<Ad> ads;
 	
 	
@@ -100,9 +100,9 @@ public class User implements Serializable {
 	@ElementCollection(targetClass=Long.class)
 	private Set<Long> Favorite;
 	
-	@JsonBackReference//(value = "us1")
+	@JsonBackReference(value = "us1")
 	@ToString.Exclude
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us", fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "us")//, fetch = FetchType.EAGER)
 	private Set<SubscriptionOrdred> subscriptions;
 	
 	//seiiifffff

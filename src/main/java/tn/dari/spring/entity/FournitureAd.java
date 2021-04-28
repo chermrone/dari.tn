@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -47,7 +48,7 @@ public class FournitureAd implements Serializable {
 	@ManyToOne
 	private ShoppingCart shoppingCart;
 	
-	@OneToMany(mappedBy = "fournitureAd")
+	@OneToMany(mappedBy = "fournitureAd",fetch=FetchType.EAGER)
 	Set<LocalFile> localFile;
 	
 	//public Boolean getAvailable(){return this.available;}

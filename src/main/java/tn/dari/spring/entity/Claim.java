@@ -15,6 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,7 +40,7 @@ public class Claim implements Serializable {
 	private String ObjectOfClm;
 	@Enumerated(EnumType.STRING)
 	private ClaimType typeClm;
-	@JsonBackReference
+	//@JsonBackReference
 	@ManyToOne
 	private Ad ad;
 }

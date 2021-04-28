@@ -93,6 +93,17 @@ public class UserService implements UIuser {
 	@Override
 	public void BanUser(Long id) {
 		User us = ur.findById(id).get();
+		
+			us.setUserState(false);
+			us.setBanDate(new Date());
+			us.setBanNbr(us.getBanNbr() + 1);
+			us.setConnected(false);
+			UpdateUser(us);
+		
+	}
+
+	public void BanUser1(Long id) {
+		User us = ur.findById(id).get();
 		List<Claim> clmuser = new ArrayList<>();
 		us.getAds().forEach(ad -> clmuser.addAll(ad.getClaims()));
 		if (clmuser.size() >= 10) {
@@ -103,7 +114,6 @@ public class UserService implements UIuser {
 			UpdateUser(us);
 		}
 	}
-
 	@Override
 	public void Activate_Acount(Long id) {
 		User user = ur.findById(id).get();
