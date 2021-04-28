@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import tn.dari.spring.entity.Ad;
 import tn.dari.spring.entity.User;
 import tn.dari.spring.service.UIuser;
 
@@ -25,6 +26,7 @@ import tn.dari.spring.service.UIuser;
 public class UserController {
 	@Autowired
 	private UIuser user;
+	
 
 	@GetMapping("/all")
 	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
@@ -86,6 +88,11 @@ public class UserController {
 					HttpStatus.OK);
 		} else
 			return new ResponseEntity<String>("error", HttpStatus.NOT_MODIFIED);
+	}
+	@GetMapping("user/lastad")
+	public ResponseEntity<User> getLastAd() {
+		User us = user.GetUserLast();System.out.println("last user"+user);
+		return new ResponseEntity<User>(us, HttpStatus.OK);
 	}
 	
 	
