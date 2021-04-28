@@ -35,7 +35,6 @@ public interface UIadService {
 
 	public Ad modify(Ad ad);
 
-	public Set<Long> saveFavorite(long id);
 
 	Ad GetAdOwned(long id);
 
@@ -57,9 +56,13 @@ public interface UIadService {
 
 	public List<Ad> GetAdsSell();
 
-	public void savFav(long id);
+	//public void savFav(long id);
 
 	public List<Ad> ReetreivefavOwned();
+
+	void savFav(long id, String us);
+
+	public void Deletefav(Long id);
 
 
 

@@ -14,7 +14,7 @@ public class NotificationController {
     @SendTo("/topic/messages")
     public ChatMessage chat(ChatMessage message) throws Exception {System.out.println("entred "+message);
         Thread.sleep(1000); // simulated delay
-        return new ChatMessage(message.getText(), message.getUsername(), message.getAvatar());
+        return new ChatMessage(message.getText(), message.getUsername());
     }
 	  // mapped to handle chat messages to the /sendmsg destination
 	//The @MessageMapping annotation ensures that,

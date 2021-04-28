@@ -90,7 +90,12 @@ public class AdController {
 	}
 	
 		
-	
+	@DeleteMapping("/delete/fav/{id}")
+	public void deletefavAd(@PathVariable("id") Long id) {
+		System.out.println("deleeeete");
+		Adserv.Deletefav(id);
+		System.out.println("deleeeete");
+	}
 
 	@PostMapping("/add/ad")
 	public ResponseEntity<Ad> saveAd(@RequestBody Ad ad) throws JsonProcessingException {
@@ -102,10 +107,10 @@ public class AdController {
 			return new ResponseEntity<Ad>(HttpStatus.TOO_MANY_REQUESTS);
 		return new ResponseEntity<Ad>(AdOne, HttpStatus.CREATED);
 	}
-	@PostMapping("/ass/favorite/{id}")
-	public void saveFavorite(@PathVariable("id")long id) {
+	@PostMapping("/ass/favorite/{id}/{username}")
+	public void saveFavorite(@PathVariable("id")long id,@PathVariable("username")String username) {
 		//Set<Long> favorites = Adserv.saveFavorite(id);
-		Adserv.savFav(id);
+		Adserv.savFav(id,username);
 			}
 	
 	

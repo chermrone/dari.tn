@@ -55,6 +55,19 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
 			+ "Where user.id_user=user_favorite.user_id_user "
 			+ "And ad.ad_id=user_favorite.favorite And user.id_user=:id")
 	public List<Long> retrievefavOwned(@Param("id") long id);
+	
+	
+	////////////////////////////////////////////////delete a favorite for a user//////////////////////////////////////////////////////////
+
+
+@Transactional
+@Modifying
+@Query(nativeQuery = true, value="delete from user_favorite where user_favorite.favorite=:id")
+public void deletefavid(@Param("id") long id);
+
+
+
+
 
 	//////////////////////////////////////retrieve Ad By Banned User(by Role) in specific date//////////////////////////////////////////////////////////
 
@@ -224,8 +237,6 @@ public void deleteWishlist(@Param("ad") Ad ad);
 @Modifying
 @Query("delete from Review f  where f.ad=:ad")
 public void deleteReview(@Param("ad") Ad ad);
-
-
 
 
 
