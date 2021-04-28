@@ -82,9 +82,9 @@ public class AdService implements UIadService {
 		}
 
 		// send mail
-		String subject = "Confirmation add announcement";
+	/*	String subject = "Confirmation add announcement";
 		if (email.sendMail("tuntechdari.tn@gmail.com", user.getEmail(), subject, "your ad has been successfully added"))
-			System.out.println("email has successfully  sent");
+	*/		System.out.println("email has successfully  sent");
 		return adrepository.save(ad);
 	}
 
@@ -314,18 +314,14 @@ public class AdService implements UIadService {
 		return null;
 	}
 
-	@Override
-	public Set<Long> saveFavorite(long id) {
-		Ad ad = adrepository.findById(id).get();
-		long favorite = ad.getAdId();
-		Set<Long> Favorites = ad.getUs().getFavorite();
-		Favorites.add(favorite);
-		User user = ad.getUs();
-		user.setFavorite(Favorites);
-		userrep.save(user);
-		return ad.getUs().getFavorite();
+@Override
+public void savFav(long id,String us)
+{User userAd = userserv.GetUserByUserName(us);
+	Set<Long> Favorites = userAd.getFavorite(); System.out.println(Favorites);
+	Favorites.add(id);
+	userAd.setFavorite(Favorites);System.out.println( userAd.getFavorite());
+	userrep.save(userAd);
 	}
-
 	@Override
 	public int getNumberOfFavoriteAd(long id) {
 		return adrepository.retriveNumberOffavoritesForPremium(id);
@@ -500,5 +496,37 @@ public class AdService implements UIadService {
 			}
 		}
 		return topcities;
+	}
+
+	@Override
+	public List<Ad> GetAdsRent() {
+	return adrepository.retriveAdRent();
+	}
+
+	@Override
+	public List<Ad> GetAdsSell() {
+		return adrepository.retriveAdSell();
+
+	}
+
+	@Override
+	public List<Ad> ReetreivefavOwned() {Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	String userAuthenticated = auth.getName();
+	System.out.println(userAuthenticated);
+	User userAd = new User();List<Ad>adfin = new ArrayList<>();
+	userAd = userserv.GetUserByUserName(userAuthenticated);
+	List<Long> numAd= adrepository.retrievefavOwned(userAd.getIdUser());
+	List<Ad> ads = adrepository.findAll();
+	for (Ad ad : ads) {for (long idadFav : numAd) {//System.out.println("eeeeee"+idadFav);
+		if(ad.getAdId().equals(idadFav))
+			{adfin.add(ad);System.out.println("fin");}
+	}
+	} 
+	return adfin;
+	}
+
+	@Override
+	public void Deletefav(Long id) {
+adrepository.deletefavid(id);		
 	}
 }
