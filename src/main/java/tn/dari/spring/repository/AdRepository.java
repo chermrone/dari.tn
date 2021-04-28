@@ -35,14 +35,27 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
 
 	@Query("SELECT u from Ad u JOIN  u.us uss "+ "join uss.roles r WHERE r.name=:role")
 	public List<Ad> retriveAdDependingOnRole(@Param("role") Usertype role);
+	////////////////////////////////////////////////////retrieve ad depending on SELL/RENT//////////////////////////////////////////////////////////
+	@Query("SELECT u from Ad u WHERE u.typead=tn.dari.spring.enumeration.Typead.SELL")
+	public List<Ad> retriveAdSell();
+	@Query("SELECT u from Ad u WHERE u.typead=tn.dari.spring.enumeration.Typead.RENT")
+	public List<Ad> retriveAdRent();
 
-	
 	////////////////////////////////////////////////count favorites for an ad//////////////////////////////////////////////////////////
 
 	@Query(nativeQuery = true, value ="Select count(*) From user,ad,user_favorite "
 			+ "Where user.id_user=user_favorite.user_id_user "
 			+ "And ad.ad_id=user_favorite.favorite And favorite=:id")
 	public int retriveNumberOffavoritesForPremium(@Param("id") long id);
+	
+	////////////////////////////////////////////////Retrieve favorites for a user//////////////////////////////////////////////////////////
+
+
+	@Query(nativeQuery = true, value ="Select user_favorite.favorite From ad,user,user_favorite "
+			+ "Where user.id_user=user_favorite.user_id_user "
+			+ "And ad.ad_id=user_favorite.favorite And user.id_user=:id")
+	public List<Long> retrievefavOwned(@Param("id") long id);
+
 	//////////////////////////////////////retrieve Ad By Banned User(by Role) in specific date//////////////////////////////////////////////////////////
 
 	@Query("SELECT u from Ad u JOIN  u.us uss "+ "join uss.roles r "
@@ -211,6 +224,9 @@ public void deleteWishlist(@Param("ad") Ad ad);
 @Modifying
 @Query("delete from Review f  where f.ad=:ad")
 public void deleteReview(@Param("ad") Ad ad);
+
+
+
 
 
 

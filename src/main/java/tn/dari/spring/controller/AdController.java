@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import tn.dari.spring.entity.*;
 import tn.dari.spring.enumeration.Usertype;
 import tn.dari.spring.service.UIadService;
@@ -34,6 +38,8 @@ public class AdController {
 	@Autowired
 	UIadService Adserv;
 
+    @Autowired
+    private SimpMessagingTemplate template;
 	@GetMapping("/all")
 	public ResponseEntity<List<Ad>> getAllAds() {
 
@@ -55,6 +61,20 @@ public class AdController {
 		return new ResponseEntity<List<Ad>>(Adserv.GetAdsOwned(), HttpStatus.OK);
 	}
 	
+	@GetMapping("/ad/rent")
+
+	public ResponseEntity<List<Ad>> getAdRent() {
+
+		return new ResponseEntity<List<Ad>>(Adserv.GetAdsRent(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/ad/sell")
+
+	public ResponseEntity<List<Ad>> getAdSell() {
+
+		return new ResponseEntity<List<Ad>>(Adserv.GetAdsSell(), HttpStatus.OK);
+	}
+	
 	@GetMapping("/adowned/{id}")
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
 
@@ -63,23 +83,31 @@ public class AdController {
 		return new ResponseEntity<Ad>(Adserv.GetAdOwned(id), HttpStatus.OK);
 	}
 	
+	@GetMapping("/fav")
+	public ResponseEntity<List<Ad>> favowned() {
+
+		return new ResponseEntity<List<Ad>>(Adserv.ReetreivefavOwned(), HttpStatus.OK);
+	}
+	
+		
 	
 
 	@PostMapping("/add/ad")
-	public ResponseEntity<Ad> saveAd(@RequestBody Ad ad) {
+	public ResponseEntity<Ad> saveAd(@RequestBody Ad ad) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
 		Ad AdOne = Adserv.save(ad);
+		 // String jsonAd = mapper.writeValueAsString(AdOne); System.out.println("llllll"+jsonAd);
+		//  template.convertAndSend("/notification/topic", jsonAd); System.out.println("llllll"+jsonAd);
 		if (AdOne == null)
 			return new ResponseEntity<Ad>(HttpStatus.TOO_MANY_REQUESTS);
 		return new ResponseEntity<Ad>(AdOne, HttpStatus.CREATED);
 	}
-
-	@PostMapping("/add/favorite/{id}")
-	public ResponseEntity<Set<Long>> saveFavorite(@PathVariable("id") Long id) {
-		Set<Long> favorites = Adserv.saveFavorite(id);
-		if (favorites == null)
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		return new ResponseEntity<Set<Long>>(favorites, HttpStatus.CREATED);
-	}
+	@PostMapping("/ass/favorite/{id}")
+	public void saveFavorite(@PathVariable("id")long id) {
+		//Set<Long> favorites = Adserv.saveFavorite(id);
+		Adserv.savFav(id);
+			}
+	
 	
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
 

@@ -57,5 +57,14 @@ public interface UIadService {
 
 	Ad GetAdLast();
 
+	public List<Ad> GetAdsRent();
+
+	public List<Ad> GetAdsSell();
+
+	public void savFav(long id);
+
+	public List<Ad> ReetreivefavOwned();
+
+
 
 }
