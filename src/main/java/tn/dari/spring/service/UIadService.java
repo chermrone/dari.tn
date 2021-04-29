@@ -5,6 +5,8 @@ import java.util.Set;
 
 
 import tn.dari.spring.entity.Ad;
+import tn.dari.spring.enumeration.TypeBatiment;
+import tn.dari.spring.enumeration.Typead;
 
 public interface UIadService {
 	public Ad save(Ad ad);
@@ -63,6 +65,8 @@ public interface UIadService {
 	void savFav(long id, String us);
 
 	public void Deletefav(Long id);
+
+	public List<Ad> getAdByCaracteristic(Typead typeAd, TypeBatiment typebat, double price,int rooms, String city);
 
 
 

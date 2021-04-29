@@ -48,6 +48,16 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
 			+ "And ad.ad_id=user_favorite.favorite And favorite=:id")
 	public int retriveNumberOffavoritesForPremium(@Param("id") long id);
 	
+	
+	
+	////////////////////////////////////////////////Ads By critearia//////////////////////////////////////////////////////////
+
+
+	@Query("SELECT u from Ad u WHERE price<=:price and city=:city and numbreOfRooms<=:rooms and typead=:typeAd and type=:typebat ")
+public List<Ad> RetrieveByPriceAndCityAndNumbreOfRoomsAndTypeadAndType(double price, String city, int rooms, Typead typeAd,
+		TypeBatiment typebat);
+
+	
 	////////////////////////////////////////////////Retrieve favorites for a user//////////////////////////////////////////////////////////
 
 
@@ -237,6 +247,7 @@ public void deleteWishlist(@Param("ad") Ad ad);
 @Modifying
 @Query("delete from Review f  where f.ad=:ad")
 public void deleteReview(@Param("ad") Ad ad);
+
 
 
 

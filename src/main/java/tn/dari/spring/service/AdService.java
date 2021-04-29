@@ -529,4 +529,9 @@ public void savFav(long id,String us)
 	public void Deletefav(Long id) {
 adrepository.deletefavid(id);		
 	}
+
+	@Override
+	public List<Ad> getAdByCaracteristic(Typead typeAd, TypeBatiment typebat, double price, int rooms, String city) {
+		return adrepository.RetrieveByPriceAndCityAndNumbreOfRoomsAndTypeadAndType(price,city,rooms,typeAd,typebat);
+	}
 }

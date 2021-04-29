@@ -27,6 +27,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import tn.dari.spring.entity.*;
+import tn.dari.spring.enumeration.TypeBatiment;
+import tn.dari.spring.enumeration.Typead;
 import tn.dari.spring.enumeration.Usertype;
 import tn.dari.spring.service.UIadService;
 import tn.dari.spring.service.UIuser;
@@ -113,7 +115,23 @@ public class AdController {
 		Adserv.savFav(id,username);
 			}
 	
+	/*@GetMapping("getadbycriteria/{typeAd}/{type}/{price}/{rooms}/{city}")
+	public ResponseEntity<List<Ad>> GetAdByCaracteristic(@PathVariable("typeAd") Typead typeAd,@PathVariable("type")  TypeBatiment typebat
+			,@PathVariable("price") double price,@PathVariable("rooms") int rooms,@PathVariable("city") String city) {
+		List<Ad> Ad = Adserv.getAdByCaracteristic(typeAd,typebat,price,rooms,city);
+		return new ResponseEntity<List<Ad>>(Ad, HttpStatus.OK);
+	}*/
 	
+	@GetMapping("getadbycriteria")
+	public ResponseEntity<List<Ad>> GetAdByCaracteristic(@RequestParam(required = false,defaultValue="SELL") String typeAd,@RequestParam String typebat
+			,@RequestParam(defaultValue = "10000000000")double price,@RequestParam(required = false,defaultValue = "300000") int rooms,@RequestParam String city) {
+		Typead typeadd=Typead.valueOf(typeAd);
+		TypeBatiment typebatt=TypeBatiment.valueOf(typebat);
+		List<Ad> Ad = Adserv.getAdByCaracteristic(typeadd,typebatt,price,rooms,city);
+		return new ResponseEntity<List<Ad>>(Ad, HttpStatus.OK);
+	}
+	
+
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
 
 	@PutMapping("/update/ad")
@@ -240,7 +258,6 @@ int estimatePeriod=Adserv.EstimatedPeriodSellHouse(ad);
 		List<String> topcities = Adserv.ordercitiesByBuyingdesc();
 		return new ResponseEntity<List<String>>(topcities, HttpStatus.OK);
 	}
-	
 	
 
 }
