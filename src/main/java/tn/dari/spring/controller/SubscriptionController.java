@@ -2,8 +2,6 @@ package tn.dari.spring.controller;
 
 import java.util.List;
 
-import org.apache.logging.log4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +15,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import tn.dari.spring.entity.Subscription;
-import tn.dari.spring.entity.SubscriptionOrdred;
-import tn.dari.spring.entity.User;
 import tn.dari.spring.enumeration.SubscriptionType;
 import tn.dari.spring.service.UISubscriptionService;
-import tn.dari.spring.service.UIuser;
 
 @CrossOrigin(origins ="http://localhost:4200")
 @RestController

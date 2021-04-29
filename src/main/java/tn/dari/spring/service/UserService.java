@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import tn.dari.spring.entity.Ad;
 import tn.dari.spring.entity.Claim;
 import tn.dari.spring.entity.EmailConfig;
 import tn.dari.spring.entity.MailHistory;
@@ -101,6 +102,11 @@ public class UserService implements UIuser {
 			UpdateUser(us);
 		
 	}
+	@Override
+	public User GetUserLast(){
+		return ur.findTopByOrderByIdUserDesc();
+	}
+	
 
 	public void BanUser1(Long id) {
 		User us = ur.findById(id).get();

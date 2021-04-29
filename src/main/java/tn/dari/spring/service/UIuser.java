@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.security.core.Authentication;
 
+import tn.dari.spring.entity.Ad;
 import tn.dari.spring.entity.User;
 
 public interface UIuser {
@@ -34,4 +35,7 @@ public interface UIuser {
 	public void CalculTimeConnection(User u);
 	
 	public List<User> OrderUsersByTimeOfConnection();
+	
+	User GetUserLast();
+
 }

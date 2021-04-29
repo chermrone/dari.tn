@@ -26,7 +26,7 @@ import tn.dari.spring.service.UIFileService;
 import tn.dari.spring.service.UIImgUser;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins ="http://localhost:4200")
 @RequestMapping("/dari/imgusers")
 public class ImgUserController {
 
@@ -34,9 +34,9 @@ public class ImgUserController {
 	 @Autowired
 	  private UIImgUser imgService;
 
-		@PostMapping(value="/upload", consumes = { MediaType.APPLICATION_JSON_VALUE,
+		@PostMapping(value="/upload/{type}", consumes = { MediaType.APPLICATION_JSON_VALUE,
 				 MediaType.MULTIPART_FORM_DATA_VALUE })
-		@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
+		
 		public ResponseEntity<List<String>>uplaodImage(@RequestParam("imageFile") MultipartFile[] files,@RequestPart() String user) throws Exception {
 		
 			List<String> fileNames = new ArrayList<>();

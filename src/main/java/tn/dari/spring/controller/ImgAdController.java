@@ -1,6 +1,5 @@
 package tn.dari.spring.controller;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import tn.dari.spring.entity.FilesAd;
-import tn.dari.spring.service.FileServ;
 import tn.dari.spring.service.UIFileService;
 
 import org.springframework.http.MediaType;

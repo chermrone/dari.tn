@@ -225,7 +225,6 @@ int estimatePeriod=Adserv.EstimatedPeriodSellHouse(ad);
 			@PathVariable("price") double price) {
 			return new ResponseEntity<>(Adserv.getBuyedHousesByCityAndMaxprice(city, price),
 					HttpStatus.OK);
-
 	}
 
 	@GetMapping("/buyedAdByRegionandMinPrice/{city}/{price}")
@@ -234,7 +233,6 @@ int estimatePeriod=Adserv.EstimatedPeriodSellHouse(ad);
 			@PathVariable("price") double price) {
 			return new ResponseEntity<>(Adserv.getBuyedHousesByCityAndMinprice(city, price),
 					HttpStatus.OK);
-		
 	}
 
 	@GetMapping("buyedAdInPeriod/{city}/{period}")
@@ -244,9 +242,10 @@ int estimatePeriod=Adserv.EstimatedPeriodSellHouse(ad);
 			return new ResponseEntity<>(Adserv.getBuyedHousesByCityInPeriod(city, period), HttpStatus.OK);
 	}
 
+
 	@GetMapping("topfiveregionsbuy")
 	@PreAuthorize("hasAuthority('PREMIUM') or hasAuthority('ADMIN')")
-	public ResponseEntity<String> GetTopFiveRegionBuy() {
+	public ResponseEntity<?> GetTopFiveRegionBuy() {
 		List<String> topcities = Adserv.topfivecities();
 		return new ResponseEntity<String>(topcities.toString(), HttpStatus.OK);
 

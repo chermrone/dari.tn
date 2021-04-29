@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import tn.dari.spring.entity.Ad;
 import tn.dari.spring.entity.User;
 
 @Repository
@@ -27,4 +28,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 			+ "join so.us u where u.age< :agemax And u.age> :agemin And s.subscriptionId= :sid ")	
 	public Long UserSubscribeByAge(@Param("agemin") int agemin, @Param("agemax") int agemax, @Param("sid") Long sid );
 	
+	User findTopByOrderByIdUserDesc();
+
 }
