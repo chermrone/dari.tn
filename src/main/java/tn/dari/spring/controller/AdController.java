@@ -1,5 +1,6 @@
 package tn.dari.spring.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -40,6 +41,8 @@ public class AdController {
 	@Autowired
 	UIadService Adserv;
 
+	@Autowired
+	UIuser userserv;
     @Autowired
     private SimpMessagingTemplate template;
 	@GetMapping("/all")
@@ -109,10 +112,15 @@ public class AdController {
 			return new ResponseEntity<Ad>(HttpStatus.TOO_MANY_REQUESTS);
 		return new ResponseEntity<Ad>(AdOne, HttpStatus.CREATED);
 	}
-	@PostMapping("/ass/favorite/{id}/{username}")
-	public void saveFavorite(@PathVariable("id")long id,@PathVariable("username")String username) {
+	@GetMapping("/af/favorite/{id}")
+	public void saveFavorite(@PathVariable("id")long id) {
 		//Set<Long> favorites = Adserv.saveFavorite(id);
-		Adserv.savFav(id,username);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String userAuthenticated = auth.getName();
+		System.out.println(userAuthenticated);
+		User userAd = new User();List<Ad>adfin = new ArrayList<>();
+		userAd = userserv.GetUserByUserName(userAuthenticated);
+		Adserv.savFav(id,userAd.getUserName());
 			}
 	
 	/*@GetMapping("getadbycriteria/{typeAd}/{type}/{price}/{rooms}/{city}")
@@ -188,12 +196,10 @@ public class AdController {
 List <Ad> ads=Adserv.retriveAdUsingRole(id);
 		return new ResponseEntity<List<Ad>>(ads, HttpStatus.OK);
 	}
-	@PreAuthorize("hasAuthority('ADMIN')")
-	
-	@PostMapping("banned/{role}")
+	@GetMapping(value="banned/{role}")
 	public ResponseEntity<List<Ad>> GetAdBannedByRoleAndPeriod(@PathVariable Long role,
-			@RequestParam(value="fromDate")     @DateTimeFormat(pattern="dd.MM.yyyy") Date fromDate,
-			@RequestParam(value="toDate")     @DateTimeFormat(pattern="dd.MM.yyyy") Date toDate)  {
+			@RequestParam(value="fromDate")     @DateTimeFormat(pattern="yyyy-MM-dd") Date fromDate,
+			@RequestParam(value="toDate")     @DateTimeFormat(pattern="yyyy-MM-dd") Date toDate)  {
 List <Ad> ads=Adserv.retrieveAdsByBannedUser(role, toDate, fromDate);
 System.out.println("number of ad +"+ads.size());
 		return new ResponseEntity<List<Ad>>(ads, HttpStatus.OK);

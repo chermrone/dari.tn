@@ -67,6 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/dari/subscriptions/find/**").permitAll()
 		.antMatchers("/dari/ads/all").permitAll()
 		.antMatchers("/dari/ads/getadbycriteria/**").permitAll()
+		.antMatchers("/dari/ads/banned/**").permitAll()
 		.antMatchers("/dari/ads/ad/rent").permitAll()
 		.antMatchers("/dari/ads/ad/sell").permitAll()
 		.antMatchers("/ass/favorite/**").permitAll()
