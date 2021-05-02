@@ -18,7 +18,7 @@ public class RawDBDemoGeoIPLocationService {
 
 	private static final Logger log = LoggerFactory.getLogger(RawDBDemoGeoIPLocationService.class);
 	private DatabaseReader dbReader;
-	public String dbLocation = "C:\\Users\\Seif\\Desktop\\geolocalisation\\GeoLite2-City_20210406\\GeoLite2-City.mmdb";
+	public String dbLocation = "/dari.tn/src/main/resources/GeoLite2-City.mmdb";
 
 	/*
 	 * public RawDBDemoGeoIPLocationService() throws IOException { File database

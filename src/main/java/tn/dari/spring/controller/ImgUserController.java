@@ -34,7 +34,7 @@ public class ImgUserController {
 	 @Autowired
 	  private UIImgUser imgService;
 
-		@PostMapping(value="/upload/{type}", consumes = { MediaType.APPLICATION_JSON_VALUE,
+		@PostMapping(value="/upload", consumes = { MediaType.APPLICATION_JSON_VALUE,
 				 MediaType.MULTIPART_FORM_DATA_VALUE })
 		
 		public ResponseEntity<List<String>>uplaodImage(@RequestParam("imageFile") MultipartFile[] files,@RequestPart() String user) throws Exception {
@@ -57,6 +57,12 @@ public class ImgUserController {
 			return new ResponseEntity<List<String>>(fileNames,HttpStatus.OK);
 	else  		return new ResponseEntity<List<String>>(HttpStatus.NOT_ACCEPTABLE);
 		}
+		
+		
+		
+		
+		
+		
 		
 		
 
