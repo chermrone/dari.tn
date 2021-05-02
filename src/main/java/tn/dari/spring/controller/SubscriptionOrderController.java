@@ -70,6 +70,16 @@ public class SubscriptionOrderController {
 		} else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
+	
+	@GetMapping("/getPremiumByUser/{iduser}")
+	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
+	public ResponseEntity<List<SubscriptionOrdred>> GetPremiumByUser(@PathVariable Long iduser) {
+		List<SubscriptionOrdred> usersubsord = sos.GetPremiumByUser(iduser);
+		if (usersubsord != null) {
+			return new ResponseEntity<List<SubscriptionOrdred>>(usersubsord, HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
 
 	@PostMapping("/addpremium/{iduser}")
 	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")

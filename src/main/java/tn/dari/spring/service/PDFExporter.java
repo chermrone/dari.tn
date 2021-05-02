@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 
 import com.lowagie.text.*;
