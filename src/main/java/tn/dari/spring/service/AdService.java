@@ -206,7 +206,7 @@ public class AdService implements UIadService {
 	if (ad.getType().equals(TypeBatiment.ground))
 		{System.out.println("hello entred ground"+ ad.getArea());
 				estimateprice = adrepository.RetrievEstimatedPriceGround(ad.getArea(), ad.getType().name(),
-						ad.getCity(), userAd);
+						ad.getCity());
 				System.out.println(estimateprice);
 
 		}
@@ -229,7 +229,7 @@ public class AdService implements UIadService {
 				/* ##### normal cities#### */
 
 				estimateprice = adrepository.RetrievEstimatedPriceNONFamousRegionAppartment(ad.getBuilda(),
-						ad.getType().name(), ad.getCity(), userAd);
+						ad.getType().name(), ad.getCity());
 				if (estimateprice != 0)
 					return estimateprice;
 			}

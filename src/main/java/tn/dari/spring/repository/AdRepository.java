@@ -99,20 +99,18 @@ public boolean CheckAdBanned(@Param("id")long id);
 	////////////////////////////////////////////////////Estimation price//////////////////////////////////////////////////////////
 
 	/////####Ground
-	@Query(nativeQuery = true, value ="Select :area*city.pricemetre From user,city,user_roles "
-			+ "Where user.id_user=:#{#user.idUser} and user.user_state=true "
-			+ "and user_roles.user_id=:#{#user.idUser} "
-			+ " And city.name=Lower(:city) and Lower(:typeBatiment)='ground' and user_roles.role_id=5  ")
-	public double RetrievEstimatedPriceGround(@Param("area")double area,@Param("typeBatiment")String typeBatiment,@Param("city") String city,@Param("user")User user);
+	@Query(nativeQuery = true, value ="Select :area*city.pricemetre From city "
+			+ "Where "
+			+ " city.name=Lower(:city) and Lower(:typeBatiment)='ground'")
+	public double RetrievEstimatedPriceGround(@Param("area")double area,@Param("typeBatiment")String typeBatiment,@Param("city") String city);
 	
 	
 	/////####appartment
 	////////////////////////////::::Non Famous::::////////////////////////
 
-	@Query(nativeQuery = true, value ="Select ROUND(:builda*city.price_build , 2) From user,city"
-			+ "Where user.id_user=:#{#user.idUser} and user.user_state=true "
-			+ " And city.name=Lower(:city) and Lower(:typeBatiment)='apartment'and city.famous=false ")
-	public double RetrievEstimatedPriceNONFamousRegionAppartment(@Param("builda")double builda,@Param("typeBatiment")String typeBatiment,@Param("city") String city,@Param("user")User user);
+	@Query(nativeQuery = true, value ="Select ROUND(:builda*city.price_build , 2) from city "
+			+ "Where city.name=Lower(:city) and Lower(:typeBatiment)='apartment'and city.famous=false ")
+	public double RetrievEstimatedPriceNONFamousRegionAppartment(@Param("builda")double builda,@Param("typeBatiment")String typeBatiment,@Param("city") String city);
 	///////Update table cities :column famous if top five =1
 	@Transactional
 	@Modifying
