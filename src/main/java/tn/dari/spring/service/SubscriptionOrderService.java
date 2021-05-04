@@ -1,5 +1,6 @@
 package tn.dari.spring.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -143,6 +144,17 @@ public class SubscriptionOrderService implements UISubscriptionOrderService {
 		s.setSubscription(subscription);
 		
 		return sr.save(s);
+	}
+
+	@Override
+	public List<SubscriptionOrdred> GetPremiumByUser(Long id) {
+		List<SubscriptionOrdred> premium= new ArrayList<SubscriptionOrdred>();
+		sr.findAll().forEach(so -> {
+			if (so.getSubscription().getSubscriptiontype() == SubscriptionType.premium) {
+				premium.add(so);
+			}
+		});
+		return premium;
 	}
 
 }
