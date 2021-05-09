@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +34,6 @@ import tn.dari.spring.service.FournitureAdService;
 @RestController
 @RequestMapping("/dari/File")
 public class FileUploading {
-	
 
 	@Autowired
 	FournitureAdService fournitureAdService;
@@ -43,7 +43,7 @@ public class FileUploading {
 	private static final Logger log = LoggerFactory.getLogger(FileUploading.class);
 	@Value("${UPLOADED_FOLDER}")
 	public String UPLOADED_FOLDER;
-	//public String UPLOADED_FOLDER = "C:\\Users\\Seif\\Desktop\\file";
+	// public String UPLOADED_FOLDER = "C:\\Users\\Seif\\Desktop\\file";
 
 	@PostMapping("/upload") // new annotation since 4.3
 	public String singleFileUpload(@RequestParam("previewFile") MultipartFile previewFile,
@@ -56,14 +56,14 @@ public class FileUploading {
 		try {
 			log.info(previewFile.getOriginalFilename());
 			String extension = FilenameUtils.getExtension(previewFile.getOriginalFilename());
-			
-			String FolderName = UPLOADED_FOLDER + "\\fournitureAd\\" + faID + extension ;
-			
-			
+
+			String FolderName = UPLOADED_FOLDER + "\\fournitureAd\\" + faID + extension;
+			// String FolderName = UPLOADED_FOLDER + "//fournitureAd//" + faID + extension;
+
 			// Get the file and save it somewhere
 			byte[] bytes = previewFile.getBytes();
 			Files.createDirectories(Paths.get(FolderName));
-			
+
 			File F = new File(FolderName);
 			int num = 1;
 			if (F.list().length != 0) {
@@ -78,7 +78,8 @@ public class FileUploading {
 			}
 
 			String FileName = FolderName + "\\fournitureAd_" + num + "_preview_File." + extension;
-			
+			// String FileName = FolderName + "//fournitureAd_" + num + "_preview_File." + extension;
+
 			Path path = Paths.get(FileName);
 			Files.write(path, bytes);
 			FournitureAd c = null;
@@ -91,7 +92,7 @@ public class FileUploading {
 			l.setPath(FileName);
 			if (c != null) {
 				l.setFournitureAd(c);
-				localFileRepository.save(l); 
+				localFileRepository.save(l);
 				return "Success";
 			}
 		} catch (IOException e) {
@@ -99,12 +100,20 @@ public class FileUploading {
 		}
 		return "Done";
 	}
+
 	@DeleteMapping("/delete")
-	public LocalFile deleteByPath(@RequestBody String path){
+	@Transactional
+	public Boolean deleteByPath(@RequestBody FileDelRequest request) {
+		// invert slash for windows or linux
+		String path = UPLOADED_FOLDER.replace("assets\\file", "") + request.getPath();
+		// String path = UPLOADED_FOLDER.replace("assets/file", "") + request.getPath();
 		File F = new File(path);
 		F.delete();
-		return localFileRepository.deleteByPath(path);
-	
+		log.info("path: " + path);
+		// path = path.replace("\\", "\\");
+		int result = localFileRepository.deleteByPath(path);
+		return result == 1;
+
 	}
 
 }
