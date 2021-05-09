@@ -77,9 +77,13 @@ public class FournitureAdService implements IFournitureAdService {
 
 	@Override
 	public List<String> FindTopFiveSellers() {
-		
-		
-		return fournitureAdRepository.FindTopFiveSellers().subList(0, 5);
+		List<String> list = fournitureAdRepository.FindTopFiveSellers();
+		if(list.size() < 5){
+			return list;
+		}
+		else {
+			return list.subList(0, 5);
+		}			
 	}
 
 	@Override

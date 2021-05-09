@@ -87,19 +87,23 @@ public class FournitureAdController {
 	}
 
 	@PostMapping("/add")
-	public ResponseEntity<FournitureAdDto> postFournitureAd(@Valid @RequestBody FournitureAdDto fournitureAdDto) {
+	public ResponseEntity postFournitureAd(@Valid @RequestBody FournitureAdDto fournitureAdDto) {
 
 		// convert DTO to entity
 		FournitureAd fournitureAdRequest = modelMapper.map(fournitureAdDto, FournitureAd.class);
 		if(fournitureAdRequest.getAvailable() == null||fournitureAdRequest.getAvailable() == false){
 			fournitureAdRequest.setAvailable(true);
 		}
-
-		FournitureAd fournitureAd = fournitureAdService.postAd(fournitureAdRequest);
+		FournitureAd fournitureAd = null;
+		try{
+			fournitureAd = fournitureAdService.postAd(fournitureAdRequest);
+		}catch(Exception e){
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 
 		// convert entity to DTO
 		FournitureAdDto fournitureAdDtoResponse = modelMapper.map(fournitureAd, FournitureAdDto.class);
-
+		
 		return new ResponseEntity<FournitureAdDto>(fournitureAdDtoResponse, HttpStatus.CREATED);
 
 	}

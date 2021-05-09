@@ -80,6 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/dari/Users/user/lastad").permitAll()
 		.antMatchers("/dari/imgusers/upload/**").permitAll()
 		.antMatchers("/dari/imgusers/all").permitAll()
+		.antMatchers("/dari/FournitureAd/all").permitAll()
 		.anyRequest().authenticated()
 		.and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
 		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

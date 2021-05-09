@@ -15,6 +15,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Constraint;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,11 +40,20 @@ public class FournitureAd implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long faID;
 	private String userName;
+	@NotNull
+	@NotEmpty
 	private String nameFa;
+	@NotNull
 	private Float price;
+	@NotNull
+	@NotEmpty
 	private String description;
+	@NotNull
+	@NotEmpty
 	private String address;
 	// @Temporal(TemporalType.DATE)
+	@NotNull
+	@NotEmpty
 	private String created;
 	@Column(columnDefinition = "boolean default 1")
 	private Boolean available = true;

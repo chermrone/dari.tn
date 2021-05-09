@@ -7,5 +7,6 @@ import tn.dari.spring.entity.LocalFile;
 
 @Repository
 public interface LocalFileRepository extends JpaRepository<LocalFile, Long>{
+	LocalFile deleteByPath(String path);
 
 }
