@@ -1,9 +1,7 @@
 package tn.dari.spring.service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,10 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javassist.tools.web.BadHttpRequest;
-import tn.dari.spring.controller.CheckoutController;
 import tn.dari.spring.entity.FournitureAd;
 import tn.dari.spring.entity.ShoppingCart;
+import tn.dari.spring.entity.User;
 import tn.dari.spring.exception.ResourceNotFoundException;
 import tn.dari.spring.repository.ShoppingCartRepository;
 
@@ -30,6 +27,9 @@ public class ShoppingCartService implements IShoppingCartService {
 	ShoppingCartRepository shoppingCartRepository;
 	@Autowired
 	FournitureAdService fournitureAdService;
+
+	@Autowired
+	UserService userService;
 
 	private static final Logger log = LoggerFactory.getLogger(ShoppingCartService.class);
 
@@ -45,6 +45,19 @@ public class ShoppingCartService implements IShoppingCartService {
 		ShoppingCart shoppingCart = shoppingCartRepository.findById(faID)
 				.orElseThrow(() -> new ResourceNotFoundException("FournitureAd Not Founf For this ID :: " + faID));
 		return shoppingCart;
+	}
+
+	@Override
+	public ShoppingCart getShoppingCartByUsername(String username) throws ResourceNotFoundException {	
+		User user = userService.GetUserByUserName(username);
+		if(user != null){
+			Set<ShoppingCart> shoppingCart = shoppingCartRepository.findByUs(user)
+				.orElseThrow(() -> new ResourceNotFoundException("ShoppingCart not found for user :: " + username));
+			if(!shoppingCart.isEmpty()){
+				return shoppingCart.iterator().next();
+			}
+		}
+		throw new ResourceNotFoundException("ShoppingCart not found for user :: " + username);
 	}
 
 	@Override
@@ -91,11 +104,15 @@ public class ShoppingCartService implements IShoppingCartService {
 
 			try {
 				log.info("in try");
+				int notAvailable = 0;
 				List<FournitureAd> list = fournitureAdService.getAvailableAd();
 				for (FournitureAd x : shoppingCart.getFournitureAds()) {
 					if (list.stream().filter(o -> o.getFaID() == x.getFaID()).collect(Collectors.toList()).size() == 0) {
-						throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Fourniture Ad not available");
+						notAvailable++;
 					}
+				}
+				if(notAvailable == shoppingCart.getFournitureAds().size() && notAvailable !=0){
+					throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "All Fourniture Ads in shopping cart are not available");
 				}
 				
 				log.info("All should be good , going to save the shopping cart");

@@ -59,7 +59,7 @@ public class UserController {
 	}
 
 	@GetMapping("/findbyusername/{username}")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('BUYER') or hasAuthority('ADMIN') or hasAuthority('SELLER') or hasAuthority('LANDLORD')")
 	public ResponseEntity<User> Getbyusername(@PathVariable String username) {
 		User use = user.GetUserByUserName(username);
 		return new ResponseEntity<User>(use, HttpStatus.OK);
