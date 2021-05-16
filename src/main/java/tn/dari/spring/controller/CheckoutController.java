@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -38,10 +39,13 @@ import tn.dari.spring.entity.CardInfo;
 import tn.dari.spring.entity.Delivery;
 import tn.dari.spring.entity.FournitureAd;
 import tn.dari.spring.entity.OrderUser;
+import tn.dari.spring.entity.ShoppingCart;
+import tn.dari.spring.exception.ResourceNotFoundException;
 import tn.dari.spring.repository.FournitureAdRepository;
 import tn.dari.spring.repository.OrderUserRepository;
 import tn.dari.spring.service.DeliveryService;
 import tn.dari.spring.service.RawDBDemoGeoIPLocationService;
+import tn.dari.spring.service.ShoppingCartService;
 import tn.dari.spring.service.StripeService;
 
 @RestController
@@ -54,7 +58,7 @@ public class CheckoutController {
     @Value("${STRIPE_SECRET_KEY}")
     private String STRIPE_SECRET_KEY;
     @Autowired
-    private FournitureAdRepository fournitureAdRepository;
+    private ShoppingCartService shoppingCartService;
     @Autowired
     DeliveryService deliveryService;
     @Autowired
@@ -144,6 +148,9 @@ public class CheckoutController {
     @PostMapping("/charge/{orderId}")
     public ResponseEntity<Object> charge(@RequestBody CardInfo cardInfo,@PathVariable(name = "orderId") Long orderId , @RequestParam(value = "ipAddress", required = true) String ipAddress) {
         try {
+            log.info("ip:"+ipAddress);
+            log.info("cardInfo:"+cardInfo);
+            log.info("orderId:"+orderId);
             OrderUser orderUser = orderUserRepository.findById(orderId).get();
             Map<String, Object> card = new HashMap<>();
             card.put("number", cardInfo.getNumber());
@@ -163,22 +170,38 @@ public class CheckoutController {
             delivery.setStatus(true);
             delivery.setCost(order.getAmount()+order.getAmount()*0.1);
             GeoIP geoIP = null;
+            String city = "tunis";
 			try {
 				log.info("request.getRemoteAddr()"+ipAddress);
-				geoIP = rawDBDemoGeoIPLocationService.getLocation(ipAddress);
-		
+				geoIP = rawDBDemoGeoIPLocationService.getLocation(ipAddress);                
+                if(geoIP.getCity() !=null){
+                    city = geoIP.getCity();
+                }
 			} catch (IOException e) {				
 				e.printStackTrace();
+                city = "tunis";
+
 			} catch (GeoIp2Exception e) {				
 				e.printStackTrace();
+                city = "tunis";
 			}
-            
-            delivery.setPlace(geoIP.getCity());
+            log.info("city:"+city);
+            delivery.setPlace(city);
             delivery.setDeliveryMan(deliveryService.affectDeliveryMan(delivery, geoIP).getDeliveryMan());
                         
             orderUserRepository.save(orderUser);
             delivery.setOrderUser(orderUser);
             deliveryService.postDelivery(delivery);
+            ShoppingCart shoppingCart = orderUser.getShoppingCart();
+            shoppingCart.setFournitureAds(new HashSet<>());
+            try {
+                shoppingCartService.putShoppingCart(shoppingCart.getShoppingCartId(), shoppingCart);
+            } catch (ResourceNotFoundException e) {
+                e.printStackTrace();
+                log.error("error while updatting shopping cart");
+            }
+            /* log.info("order in charge: "+orderUser);
+            log.info("delivery in charge: "+delivery); */
             return ResponseEntity.ok().body(orderUser);
         } catch (StripeException e) {
             e.printStackTrace();
