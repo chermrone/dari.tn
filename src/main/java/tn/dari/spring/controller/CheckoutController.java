@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -45,7 +46,7 @@ import tn.dari.spring.service.StripeService;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/api")
+@RequestMapping("/dari")
 public class CheckoutController {
 
     @Value("${STRIPE_PUBLIC_KEY}")
@@ -81,7 +82,7 @@ public class CheckoutController {
      */
 
     @GetMapping("/checkout/{orderId}")
-    public OrderUser checkout(@PathVariable(name = "orderId") Long orderId) {
+    public ResponseEntity<Object> checkout(@PathVariable(name = "orderId") Long orderId) {
         OrderUser orderUser = orderUserRepository.findById(orderId).get();
         List<Object> items = new ArrayList<>();
         OrderUser updatedOrder = null;
@@ -135,13 +136,13 @@ public class CheckoutController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return updatedOrder;
+        return ResponseEntity.ok().body(updatedOrder);
     }
 
     @PostMapping("/charge/{orderId}")
-    public OrderUser charge(@RequestBody CardInfo cardInfo,@PathVariable(name = "orderId") Long orderId , @RequestParam(value = "ipAddress", required = true) String ipAddress) {
+    public ResponseEntity<Object> charge(@RequestBody CardInfo cardInfo,@PathVariable(name = "orderId") Long orderId , @RequestParam(value = "ipAddress", required = true) String ipAddress) {
         try {
             OrderUser orderUser = orderUserRepository.findById(orderId).get();
             Map<String, Object> card = new HashMap<>();
@@ -166,11 +167,9 @@ public class CheckoutController {
 				log.info("request.getRemoteAddr()"+ipAddress);
 				geoIP = rawDBDemoGeoIPLocationService.getLocation(ipAddress);
 		
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			} catch (IOException e) {				
 				e.printStackTrace();
-			} catch (GeoIp2Exception e) {
-				// TODO Auto-generated catch block
+			} catch (GeoIp2Exception e) {				
 				e.printStackTrace();
 			}
             
@@ -180,10 +179,10 @@ public class CheckoutController {
             orderUserRepository.save(orderUser);
             delivery.setOrderUser(orderUser);
             deliveryService.postDelivery(delivery);
-            return orderUser;
+            return ResponseEntity.ok().body(orderUser);
         } catch (StripeException e) {
             e.printStackTrace();
-            return null;
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
 
     }

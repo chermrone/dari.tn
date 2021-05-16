@@ -70,6 +70,7 @@ public class FournitureAdController {
 	@GetMapping("/Other/{username}")
 	public List<FournitureAdDto> getOtherFournitureAd(@PathVariable(value = "username") String username) {
 		return fournitureAdService.getOtherAd(username).stream()
+				.filter(e->e.getAvailable())
 				.map(fournitureAd -> modelMapper.map(fournitureAd, FournitureAdDto.class)).collect(Collectors.toList());
 	}
 	@GetMapping("/SearchByCriteria")

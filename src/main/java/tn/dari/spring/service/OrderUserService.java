@@ -137,6 +137,12 @@ public class OrderUserService implements IOrderUserService {
 		
 		return dailyProfit;
 	}
+
+	@Override
+	public OrderUser findByShoppingCartAndStatusOrd(ShoppingCart shoppingCart,boolean statusOrd) throws ResourceNotFoundException {
+		OrderUser order = orderUserRepository.findByShoppingCartAndStatusOrd(shoppingCart,statusOrd).orElseThrow(() -> new ResourceNotFoundException("No orders containing the specified shopping Cart"));
+		return order;
+	}
 	
 
 }
