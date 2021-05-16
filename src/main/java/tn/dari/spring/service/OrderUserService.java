@@ -105,9 +105,12 @@ public class OrderUserService implements IOrderUserService {
 		List<OrderUser> list = orderUserRepository.findAll();
 		Float totalProfit = 0f;
 		for (OrderUser o : list){
-			
+			log.info("date compare:"+(o.getDateCreated().compareTo(dateDebut)>=0&&o.getDateCreated().compareTo(dateFin)<=0&&o.isStatusOrd()));
+			log.info("list size:"+o.getShoppingCart().getFournitureAds().size());
 			if((o.getDateCreated().compareTo(dateDebut)>=0)&&(o.getDateCreated().compareTo(dateFin)<=0)&&o.isStatusOrd()){
+				log.info("inside");
 				for(FournitureAd s : o.getShoppingCart().getFournitureAds()){
+					log.info("FA:"+s);
 						totalProfit+=(s.getPrice() * PROFIT_MARGIN / 100);
 			}
 			}	

@@ -194,14 +194,15 @@ public class CheckoutController {
             deliveryService.postDelivery(delivery);
             ShoppingCart shoppingCart = orderUser.getShoppingCart();
             shoppingCart.setFournitureAds(new HashSet<>());
-            try {
+            /* try {
                 shoppingCartService.putShoppingCart(shoppingCart.getShoppingCartId(), shoppingCart);
             } catch (ResourceNotFoundException e) {
                 e.printStackTrace();
                 log.error("error while updatting shopping cart");
-            }
+            } */
             /* log.info("order in charge: "+orderUser);
             log.info("delivery in charge: "+delivery); */
+            orderUser.setShoppingCart(shoppingCart);
             return ResponseEntity.ok().body(orderUser);
         } catch (StripeException e) {
             e.printStackTrace();
