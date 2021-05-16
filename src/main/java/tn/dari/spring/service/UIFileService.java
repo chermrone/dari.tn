@@ -19,5 +19,6 @@ public interface UIFileService {
 	
 	public void DeleteAd(Long id);
 	List<byte[]> GetByAdId(Long id);
+	List<FilesAd> retrievVideos(long id);
 
 }

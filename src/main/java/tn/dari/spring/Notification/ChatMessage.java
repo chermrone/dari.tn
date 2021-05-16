@@ -3,12 +3,28 @@ package tn.dari.spring.Notification;
 public class ChatMessage {
     private String text;
     private String username;
+    private int avatar;
 
     public ChatMessage(){
 
     }
 
-    public ChatMessage(String text ,String username) {
+    public int getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(int avatar) {
+		this.avatar = avatar;
+	}
+
+	public ChatMessage(String text, String username, int avatar) {
+		super();
+		this.text = text;
+		this.username = username;
+		this.avatar = avatar;
+	}
+
+	public ChatMessage(String text ,String username) {
         this.text = text;
         this.username = username;
     }

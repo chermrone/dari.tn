@@ -21,7 +21,7 @@ import tn.dari.spring.entity.FilesAd;
 import tn.dari.spring.entity.ImgUser;
 import tn.dari.spring.entity.User;
 import tn.dari.spring.exception.AdNotFoundException;
-
+import tn.dari.spring.repository.AdRepository;
 import tn.dari.spring.repository.FilesAdRepository;
 import tn.dari.spring.repository.UserImgRepository;
 
@@ -32,6 +32,9 @@ public class FileServ implements UIFileService {
 	private FilesAdRepository imageRepository;
 	@Autowired
 	UserImgRepository userRep;
+
+	@Autowired
+	AdRepository adRep;
 
 	@Override
 	public Object saveImg(MultipartFile file, String object, String type) throws Exception {
@@ -122,7 +125,6 @@ public class FileServ implements UIFileService {
 		throw (new Exception("Vous devez entrer une image ou un video "));
 
 	}
-
 	@Override
 	public Object retrievImage(long id,String imageName) throws Exception {
 		try {
@@ -171,6 +173,12 @@ List<byte[]> img = null;
 	public List<byte[]> GetByAdId(Long id) {
 		return imageRepository.findByAdId(id);
 	}
-	
+
+
+	@Override
+	public List<FilesAd> retrievVideos(long id){
+		Ad ad=adRep.findById(id).get();
+		return imageRepository.findByAdAndType(ad,"video/mp4");
+	}
 
 }

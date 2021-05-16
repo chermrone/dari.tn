@@ -58,6 +58,9 @@ public List<Ad> RetrieveByPriceAndCityAndNumbreOfRoomsAndTypeadAndType(double pr
 		TypeBatiment typebat);
 
 	
+	@Query("SELECT u from Ad u WHERE price<=:price and city=:city and numbreOfRooms<=:rooms and type=:typebat ")
+public List<Ad> RetrieveGroundByPriceAndCityAndNumbreOfRoomsAndTypeadAndType(double price, String city, int rooms,
+		TypeBatiment typebat);
 	////////////////////////////////////////////////Retrieve favorites for a user//////////////////////////////////////////////////////////
 
 
@@ -66,7 +69,25 @@ public List<Ad> RetrieveByPriceAndCityAndNumbreOfRoomsAndTypeadAndType(double pr
 			+ "And ad.ad_id=user_favorite.favorite And user.id_user=:id")
 	public List<Long> retrievefavOwned(@Param("id") long id);
 	
-	
+////////////////////////////////////////////////////get Fav city/////////////////////////////////////////////////////////
+	/*@Query(nativeQuery = true, value ="Select user_favorite.favorite From ad,user,user_favorite "
+			+ "Where user.id_user=user_favorite.user_id_user "
+			+ "And ad.ad_id=user_favorite.favorite And user.id_user=:id")
+public String getCityFav(long id);
+*/
+	@Query(nativeQuery = true, value ="Select ad.city cont From ad,user,user_favorite "
+			+ "Where user.id_user=user_favorite.user_id_user "
+			+ "And ad.ad_id=user_favorite.favorite And user.id_user=:id group by ad.city")
+public String[] getMostFav(long id);
+	////////////////////////////////////////////////Order Ad By price//////////////////////////////////////////////////////////
+
+
+	@Query(nativeQuery = true, value="SELECT * from ad where 'RENT'=ad.typead  Order By ad.price LIMIT 5 ")
+public List<Ad> RetrieveOrderedRENT();
+
+	@Query(nativeQuery = true, value="SELECT * from ad where  "
+			+ " 'SELL'=ad.typead Order By ad.price LIMIT 5  ")
+public List<Ad> RetrieveOrderedSELL();
 	////////////////////////////////////////////////delete a favorite for a user//////////////////////////////////////////////////////////
 
 
@@ -74,6 +95,7 @@ public List<Ad> RetrieveByPriceAndCityAndNumbreOfRoomsAndTypeadAndType(double pr
 @Modifying
 @Query(nativeQuery = true, value="delete from user_favorite where user_favorite.favorite=:id")
 public void deletefavid(@Param("id") long id);
+
 
 
 
@@ -109,35 +131,35 @@ public boolean CheckAdBanned(@Param("id")long id);
 	////////////////////////////::::Non Famous::::////////////////////////
 
 	@Query(nativeQuery = true, value ="Select ROUND(:builda*city.price_build , 2) from city "
-			+ "Where city.name=Lower(:city) and Lower(:typeBatiment)='apartment'and city.famous=false ")
-	public double RetrievEstimatedPriceNONFamousRegionAppartment(@Param("builda")double builda,@Param("typeBatiment")String typeBatiment,@Param("city") String city);
+			+ "Where city.name=Lower(:city) and Lower(:typeBatiment)='apartment'")
+	public double RetrievEstimatedPriceAppartment(@Param("builda")double builda,@Param("typeBatiment")String typeBatiment,@Param("city") String city);
 	///////Update table cities :column famous if top five =1
 	@Transactional
 	@Modifying
 	@Query("Update City u set u.famous=true where u.name in (:listfamous)")
-	public void UpdateCitiesFamous(@Param("listfamous") List<String> listfamous);
-	////////////////////////////::::Famous::::////////////////////////
+	public void UpdateCitiesFamous(@Param("listfamous") String[] topFive);
+	/*////////////////////////////::::Famous::::////////////////////////
 
 	@Query(nativeQuery = true, value ="Select ROUND(:builda*city.price_build*1.75, 2) From user,city "
 			+ "Where user.id_user=:#{#user.idUser} and user.user_state=true and city.famous=true "
 			+ " And city.name=Lower(:city) and Lower(:typeBatiment)='apartment' ")
 	public double RetrievEstimatedPriceFamousRegionAppartment(@Param("builda")double builda,@Param("typeBatiment")String typeBatiment,@Param("city") String city,@Param("user")User user);
 	
-	
+	*/
 	/////####house
 	////////////////////////////::::Famous::::////////////////////////
-	@Query(nativeQuery = true, value ="Select ROUND((:builda*city.price_build)*1.75+(:area-:builda)*city.pricemetre, 2) From user,city "
+/*	@Query(nativeQuery = true, value ="Select ROUND((:builda*city.price_build)*1.75+(:area-:builda)*city.pricemetre, 2) From user,city "
 			+ "Where user.id_user=:#{#user.idUser} and user.user_state=true and city.famous=true "
 			+ " And city.name=Lower(:city) and Lower(:typeBatiment)='house' ")
 	public double RetrievEstimatedPriceFamousRegionHouse(@Param("builda")double builda,@Param("area")double area,
 			@Param("typeBatiment")String typeBatiment,@Param("city") String city,@Param("user")User user);
-	
+	*/
 	////////////////////////////::::NonFamous::::////////////////////////
 
 	@Query(nativeQuery = true, value ="Select ROUND((:builda*city.price_build)+(:area-:builda)*city.pricemetre, 2) From user,city "
-			+ "Where user.id_user=:#{#user.idUser} and user.user_state=true and city.famous=false "
+			+ "Where user.id_user=:#{#user.idUser} and user.user_state=true "
 			+ " And city.name=Lower(:city) and Lower(:typeBatiment)='house' ")
-	public double RetrievEstimatedPriceNonFamousRegionHouse(@Param("builda")double builda,@Param("area")double area,
+	public double RetrievEstimatedPriceHouse(@Param("builda")double builda,@Param("area")double area,
 			@Param("typeBatiment")String typeBatiment,@Param("city") String city,@Param("user")User user);
 	
 	/////####RENT
@@ -145,17 +167,17 @@ public boolean CheckAdBanned(@Param("id")long id);
 	////////////////////////////::::NonFamous::::////////////////////////
 
 	@Query(nativeQuery = true, value ="Select ROUND(price_rent*:nber_rooms, 2) From user,city "
-			+ "Where user.id_user=:#{#user.idUser} and user.user_state=true and city.famous=false "
+			+ "Where user.id_user=:#{#user.idUser} and user.user_state=true  "
 			+ " And city.name=Lower(:city) ")
-	public double RetrievEstimatedRentPriceNonFamousRegionOnlyRoom(@Param("nber_rooms") int nber_rooms,@Param("city") String city,@Param("user")User user);
+	public double RetrievEstimatedRentPriceOnlyRoom(@Param("nber_rooms") int nber_rooms,@Param("city") String city,@Param("user")User user);
 	
 	@Query(nativeQuery = true, value ="Select ROUND(price_rent*:nber_rooms*0.7, 2) From user,city "
-			+ "Where user.id_user=:#{#user.idUser} and user.user_state=true and city.famous=false "
+			+ "Where user.id_user=:#{#user.idUser} and user.user_state=true"
 			+ " And city.name=Lower(:city) ")
-	public double RetrievEstimatedRentPriceNonFamousRegionMultiRoom(@Param("nber_rooms") int nber_rooms,@Param("city") String city,@Param("user")User user);
+	public double RetrievEstimatedRentPriceMultiRoom(@Param("nber_rooms") int nber_rooms,@Param("city") String city,@Param("user")User user);
 	////////////////////////////::::Famous::::////////////////////////
 
-	@Query(nativeQuery = true, value ="Select ROUND(price_rent*:nber_rooms*0.8, 2) From user,city "
+	/*@Query(nativeQuery = true, value ="Select ROUND(price_rent*:nber_rooms*0.8, 2) From user,city "
 			+ "Where user.id_user=:#{#user.idUser} and user.user_state=true and city.famous=true "
 			+ " And city.name=Lower(:city) ")
 	public double RetrievEstimatedRentPriceFamousRegionOnlyRoom(@Param("nber_rooms") int nber_rooms,@Param("city") String city,@Param("user")User user);
@@ -164,6 +186,8 @@ public boolean CheckAdBanned(@Param("id")long id);
 			+ "Where user.id_user=:#{#user.idUser} and user.user_state=true and city.famous=true "
 			+ " And city.name=Lower(:city) ")
 	public double RetrievEstimatedRentPriceFamousRegionMultiRoom(@Param("nber_rooms") int nber_rooms,@Param("city") String city,@Param("user")User user);
+
+*/
 
 
 
@@ -183,7 +207,7 @@ public void UpdateEstimatedPeriodSellHouse(@Param("city") String city);
 
 @Query(nativeQuery = true, value ="Select city.estimation_duration From user,city,user_roles "
 		+ "Where user.id_user=:#{#user.idUser} and user.user_state=true and user_roles.role_id=5 "
-		+ " And city.name=Lower(:city)  and :price_entered-:price_estimated<0 and "
+		+ " And city.name=Lower(:city)  and :price_entered-:price_estimated<=0 and "
 		+ " MONTH(CURRENT_TIMESTAMP) Not in (9,10,11,12,1,2)")
 public int RetrievEstimatedPeriodIdealCities(@Param("city") String city,@Param("price_entered") double price_entered,@Param("price_estimated") double price_estimated,@Param("user")User user);
 
@@ -245,7 +269,6 @@ public void deleteWishlist(@Param("ad") Ad ad);
 @Modifying
 @Query("delete from Review f  where f.ad=:ad")
 public void deleteReview(@Param("ad") Ad ad);
-
 
 
 

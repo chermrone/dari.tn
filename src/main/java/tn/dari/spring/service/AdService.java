@@ -12,6 +12,9 @@ import java.util.concurrent.TimeUnit;
 import tn.dari.spring.exception.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -126,14 +129,15 @@ public class AdService implements UIadService {
 		User user = ad.getUs();
 		System.out.println(user);
 		String subject = "Modify announcement";
-		if (email.sendMail("tuntechdari.tn@gmail.com", user.getEmail(), subject,
+		/*if (email.sendMail("tuntechdari.tn@gmail.com", user.getEmail(), subject,
 				"your ad has been successfully modified"))
-			System.out.println("email has successfully  sent");
+			System.out.println("email has successfully  sent");*/
 		return adrepository.save(ad);
 	}
 
 	@Override
 	public List<Ad> getAll() {
+		
 		return adrepository.findAll();
 	}
 
@@ -182,10 +186,13 @@ public class AdService implements UIadService {
 	@Scheduled(cron = "0 31 19 * * *")
 	@Override
 	public void UpdateTopFiveInTableCity() {
-		List<String> TopFive = topfivecities();
+		String[] TopFive ={"sfax","tunis","sousse","bizerte","nabeul","ariana","ben arous","mistir","ariana"};
 		adrepository.UpdateCitiesFamous(TopFive);
 	}
 
+	/* (non-Javadoc)
+	 * @see tn.dari.spring.service.UIadService#EstimatedHouse(tn.dari.spring.entity.Ad)
+	 */
 	@Override
 	public double EstimatedHouse(Ad ad) {
 		double RentEstimatePrice = ad.getNumbreOfRooms();
@@ -196,9 +203,15 @@ public class AdService implements UIadService {
 		System.out.println("this user is connected" + userAuthenticated);
 		User userAd = new User();
 		userAd = userserv.GetUserByUserName(userAuthenticated);
-		List<String> TopFive = topfivecities();
-		System.out.println(" top five cities  !! " + TopFive);
-		adrepository.UpdateCitiesFamous(TopFive);
+		String[] famous ={"sfax","tunis","sousse","bizerte","nabeul","ariana","ben arous","mistir","ariana"};
+		//System.out.println("cities  " +famous.toString());
+		boolean verif=false;
+		for (String string : famous) {
+
+			if(string.equals(ad.getCity()))
+				{verif=true;System.out.println(verif+"hhhhhhhhhhhhh");}
+		}
+		adrepository.UpdateCitiesFamous(famous);
 		double estimateprice = 0;
 		/// Case it is a selling house
 		/////////////////
@@ -216,19 +229,15 @@ public class AdService implements UIadService {
 		
 
 			//////////// :::::case it is a apartment::::::::://////////
-			/* #####In top 5 cities#### */
 
 			if (ad.getType().equals(TypeBatiment.apartment)) {
 				System.out.println("it is apartment");
-				if (ad.getType().equals(TypeBatiment.apartment) && TopFive.contains(ad.getCity()))
-					estimateprice = adrepository.RetrievEstimatedPriceFamousRegionAppartment(ad.getBuilda(),
+		/*			estimateprice = adrepository.RetrievEstimatedPriceFamousRegionAppartment(ad.getBuilda(),
 							ad.getType().name(), ad.getCity(), userAd);
 				if (estimateprice != 0)
-					return estimateprice;
+					return estimateprice;*/
 
-				/* ##### normal cities#### */
-
-				estimateprice = adrepository.RetrievEstimatedPriceNONFamousRegionAppartment(ad.getBuilda(),
+				estimateprice = adrepository.RetrievEstimatedPriceAppartment(ad.getBuilda(),
 						ad.getType().name(), ad.getCity());
 				if (estimateprice != 0)
 					return estimateprice;
@@ -238,12 +247,12 @@ public class AdService implements UIadService {
 
 			if (ad.getType().equals(TypeBatiment.house)) {
 
-				if (TopFive.contains(ad.getCity()))
+			/*	if (verif)
 					estimateprice = adrepository.RetrievEstimatedPriceFamousRegionHouse(ad.getBuilda(), ad.getArea(),
 							ad.getType().name(), ad.getCity(), userAd);
 				else
-
-					estimateprice = adrepository.RetrievEstimatedPriceNonFamousRegionHouse(ad.getBuilda(), ad.getArea(),
+*/
+					estimateprice = adrepository.RetrievEstimatedPriceHouse(ad.getBuilda(), ad.getArea(),
 							ad.getType().name(), ad.getCity(), userAd);
 
 				estimateprice += estimateprice * 0.10 * ad.getNumbreOfRooms();
@@ -258,24 +267,24 @@ public class AdService implements UIadService {
 				rooms = 1;
 			else
 				rooms++;
-			if (!TopFive.contains(ad.getCity())) {
+			/*if (!verif) {*/
 				if (rooms == 1)
-					estimateprice += adrepository.RetrievEstimatedRentPriceNonFamousRegionOnlyRoom(rooms, ad.getCity(),
+					estimateprice += adrepository.RetrievEstimatedRentPriceOnlyRoom(rooms, ad.getCity(),
 							userAd);
 				if (rooms != 1)
-					estimateprice += adrepository.RetrievEstimatedRentPriceNonFamousRegionMultiRoom(rooms, ad.getCity(),
+					estimateprice += adrepository.RetrievEstimatedRentPriceMultiRoom(rooms, ad.getCity(),
 							userAd);
-			} else {
+			}/* else {
 				if (rooms == 1)
 					estimateprice += adrepository.RetrievEstimatedRentPriceFamousRegionOnlyRoom(rooms, ad.getCity(),
 							userAd);
 				if (rooms != 1)
 					estimateprice += adrepository.RetrievEstimatedRentPriceFamousRegionMultiRoom(rooms, ad.getCity(),
 							userAd);
-			}
+			}*/
 			return estimateprice;
-		}
-		return 0;
+	/*	}
+		return 0;*/
 	}
 
 	@Override
@@ -345,16 +354,18 @@ public void savFav(long id,String us)
 			return ad.getFeedback();
 		}
 		// when the ad is bannned and the user connected isnt admin
-		else if (adrepository.CheckExistingRoleADMINforConsulterOfAd(userAd) == false && adrepository.CheckAdBanned(id))
-			return null;
+		/*else if (adrepository.CheckExistingRoleADMINforConsulterOfAd(userAd) == false && adrepository.CheckAdBanned(id))
+			return null;*/
 
 		if (ad.getBuyingDate() == null) {// compare if number of visite = 0
 											// feedback
+			System.out.println("ennnnnnnnnnnnnnn");
+
 			if (ad.getNumbeOfVisites() == 0) {
 				ad.setFeedback("you should enter detailled information to your ad and clear image");
 				adrepository.save(ad);
 			}
-			if (adrepository.retriveNumberOffavoritesForPremium(id) != 0 && ad.getNumbeOfVisites() != 0
+			if (adrepository.retriveNumberOffavoritesForPremium(id) != 0 || ad.getNumbeOfVisites() != 0
 					&& adrepository.CheckAdBanned(id) != true) {
 				// compare date of creation with sysdate if > 7 return estimated
 				// price
@@ -365,13 +376,16 @@ public void savFav(long id,String us)
 				System.out.println(diff);
 				ad.setFeedback("you should reduce the price to attract people");
 				adrepository.save(ad);
+				
 				if (diff >= 7) {
 					return ad.getFeedback() + " your estimated price :  " + EstimatedHouse(ad);
 				}
 			}
 
 		}
-
+		else 
+			{ad.setFeedback("your ad is ok");
+		adrepository.save(ad);}
 		return ad.getFeedback();
 
 	}
@@ -395,7 +409,7 @@ public void savFav(long id,String us)
 		User userAd = new User();
 		userAd = userserv.GetUserByUserName(userAuthenticated);
 		int period = 0;
-		if (ad.getPrice() < EstimatedHouse(ad)) {
+		if (ad.getPrice() <= EstimatedHouse(ad)) {
 			try {
 
 				period = adrepository.RetrievEstimatedPeriodIdealCities(ad.getCity(), ad.getPrice(), EstimatedHouse(ad),
@@ -532,6 +546,21 @@ adrepository.deletefavid(id);
 
 	@Override
 	public List<Ad> getAdByCaracteristic(Typead typeAd, TypeBatiment typebat, double price, int rooms, String city) {
+		if(typeAd==null && typebat==TypeBatiment.ground)
+return adrepository.RetrieveGroundByPriceAndCityAndNumbreOfRoomsAndTypeadAndType(price,city,rooms,typebat);
 		return adrepository.RetrieveByPriceAndCityAndNumbreOfRoomsAndTypeadAndType(price,city,rooms,typeAd,typebat);
 	}
+
+	@Override
+	public String[] retrieveFavCity(long id) {
+		return adrepository.getMostFav(id);
+//return adrepository.getCityFav(id);
+	}
+	@Override
+	public List<Ad> MostCheapestAdRENT()
+	{return adrepository.RetrieveOrderedRENT();}
+
+	@Override
+	public List<Ad> MostCheapestAdSELL()
+	{return adrepository.RetrieveOrderedSELL();}
 }

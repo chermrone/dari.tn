@@ -1,9 +1,6 @@
 package tn.dari.spring.service;
 
 import java.util.List;
-import java.util.Set;
-
-
 import tn.dari.spring.entity.Ad;
 import tn.dari.spring.enumeration.TypeBatiment;
 import tn.dari.spring.enumeration.Typead;
@@ -13,7 +10,7 @@ public interface UIadService {
 
 	public void Delete(long id);
 
-	public List<Ad> getAll();
+	public List<Ad> getAll( );
 
 	public Ad getById(long id);
 	
@@ -67,6 +64,12 @@ public interface UIadService {
 	public void Deletefav(Long id);
 
 	public List<Ad> getAdByCaracteristic(Typead typeAd, TypeBatiment typebat, double price,int rooms, String city);
+
+	public String[] retrieveFavCity(long id);
+
+	List<Ad> MostCheapestAdSELL();
+
+	List<Ad> MostCheapestAdRENT();
 
 
 

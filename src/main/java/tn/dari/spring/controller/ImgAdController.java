@@ -79,6 +79,14 @@ public class ImgAdController {
 		}
 	
 
+		@GetMapping(path = { "/get/video/{id}" })
+		public List<FilesAd> getVideos(@PathVariable("id") long id) throws IOException {
+			return imgService.retrievVideos(id);
+		}
+	
+
+		
+
 		@GetMapping(path = { "/all" })
 		public List<FilesAd> getAll() throws IOException {
 			List<FilesAd> file= imgService.retrievallad();List<byte[]> f =new ArrayList<>();

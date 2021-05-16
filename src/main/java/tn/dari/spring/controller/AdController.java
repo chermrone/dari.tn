@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,8 +48,7 @@ public class AdController {
     @Autowired
     private SimpMessagingTemplate template;
 	@GetMapping("/all")
-	public ResponseEntity<List<Ad>> getAllAds() {
-
+	public ResponseEntity<List<Ad>> getAllAds() {		  
 		List<Ad> ads = Adserv.getAll();
 		return new ResponseEntity<List<Ad>>(ads, HttpStatus.OK);
 	}
@@ -131,10 +132,12 @@ public class AdController {
 	}*/
 	
 	@GetMapping("getadbycriteria")
-	public ResponseEntity<List<Ad>> GetAdByCaracteristic(@RequestParam(required = false,defaultValue="SELL") String typeAd,@RequestParam String typebat
-			,@RequestParam(defaultValue = "10000000000")double price,@RequestParam(required = false,defaultValue = "300000") int rooms,@RequestParam String city) {
+	public ResponseEntity<List<Ad>> GetAdByCaracteristic(@RequestParam(required = false,defaultValue="SELL") String typeAd,@RequestParam(required = false,defaultValue = "house") String typebat
+			,@RequestParam(defaultValue = "10000000000")double price,@RequestParam(required = false,defaultValue = "300000") int rooms,@RequestParam(required = false,defaultValue = "tunis") String city) {
 		Typead typeadd=Typead.valueOf(typeAd);
 		TypeBatiment typebatt=TypeBatiment.valueOf(typebat);
+		if(typebatt==TypeBatiment.ground)
+		{typeadd=null;System.out.println("helooooo");}System.out.println(typeadd);
 		List<Ad> Ad = Adserv.getAdByCaracteristic(typeadd,typebatt,price,rooms,city);
 		return new ResponseEntity<List<Ad>>(Ad, HttpStatus.OK);
 	}
@@ -204,6 +207,21 @@ List <Ad> ads=Adserv.retrieveAdsByBannedUser(role, toDate, fromDate);
 System.out.println("number of ad +"+ads.size());
 		return new ResponseEntity<List<Ad>>(ads, HttpStatus.OK);
 	}
+	
+	@GetMapping(value="/fav/getCity")
+	public ResponseEntity<String[]> GetFavCity()  {
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String userAuthenticated = auth.getName();
+		System.out.println(userAuthenticated);
+		User userConnected = new User();
+		userConnected = userserv.GetUserByUserName(userAuthenticated);
+String[] cityfav=Adserv.retrieveFavCity(userConnected.getIdUser());
+/*String initial = cityfav.substring(0, cityfav.indexOf(","));
+*/System.out.println("city+"+cityfav);
+		return new ResponseEntity<String[]>(cityfav, HttpStatus.OK);
+	}
+	
 	@PostMapping("ad/estimateDuration")
 	public ResponseEntity<Integer> EstimatedPeriodSellHouse(@RequestBody Ad ad)  {
 int estimatePeriod=Adserv.EstimatedPeriodSellHouse(ad);
