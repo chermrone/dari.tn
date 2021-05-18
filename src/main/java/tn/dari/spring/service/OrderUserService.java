@@ -105,9 +105,13 @@ public class OrderUserService implements IOrderUserService {
 		List<OrderUser> list = orderUserRepository.findAll();
 		Float totalProfit = 0f;
 		for (OrderUser o : list){
-			
+			log.info("this is date compare" + (o.getDateCreated().compareTo(dateDebut)>=0&&o.getDateCreated().compareTo(dateFin)<=0));
+			log.info("dateDebut"+dateDebut);
+			log.info("dateFin"+dateFin);
 			if((o.getDateCreated().compareTo(dateDebut)>=0)&&(o.getDateCreated().compareTo(dateFin)<=0)&&o.isStatusOrd()){
+				log.info("inside");
 				for(FournitureAd s : o.getShoppingCart().getFournitureAds()){
+					//log.info("FA:"+s);
 						totalProfit+=(s.getPrice() * PROFIT_MARGIN / 100);
 			}
 			}	
@@ -136,6 +140,12 @@ public class OrderUserService implements IOrderUserService {
 		}*/
 		
 		return dailyProfit;
+	}
+
+	@Override
+	public OrderUser findByShoppingCartAndStatusOrd(ShoppingCart shoppingCart,boolean statusOrd) throws ResourceNotFoundException {
+		OrderUser order = orderUserRepository.findByShoppingCartAndStatusOrd(shoppingCart,statusOrd).orElseThrow(() -> new ResourceNotFoundException("No orders containing the specified shopping Cart"));
+		return order;
 	}
 	
 

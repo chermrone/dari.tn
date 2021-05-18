@@ -58,7 +58,7 @@ public class FileUploading {
 			String extension = FilenameUtils.getExtension(previewFile.getOriginalFilename());
 
 			String FolderName = UPLOADED_FOLDER + "\\fournitureAd\\" + faID + extension;
-			// String FolderName = UPLOADED_FOLDER + "//fournitureAd//" + faID + extension;
+			//String FolderName = UPLOADED_FOLDER + "//fournitureAd//" + faID + extension;
 
 			// Get the file and save it somewhere
 			byte[] bytes = previewFile.getBytes();
@@ -105,8 +105,8 @@ public class FileUploading {
 	@Transactional
 	public Boolean deleteByPath(@RequestBody FileDelRequest request) {
 		// invert slash for windows or linux
-		String path = UPLOADED_FOLDER.replace("assets\\file", "") + request.getPath();
-		// String path = UPLOADED_FOLDER.replace("assets/file", "") + request.getPath();
+		 String path = UPLOADED_FOLDER.replace("assets\\file", "") + request.getPath();
+		//String path = UPLOADED_FOLDER.replace("assets/file", "") + request.getPath();
 		File F = new File(path);
 		F.delete();
 		log.info("path: " + path);

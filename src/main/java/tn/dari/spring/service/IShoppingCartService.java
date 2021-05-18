@@ -19,4 +19,6 @@ public interface IShoppingCartService {
 
 	public Map<String, Boolean> deleteShoppingCart(Long ID) throws ResourceNotFoundException;
 
+	public ShoppingCart getShoppingCartByUsername(String username) throws ResourceNotFoundException;
+
 }

@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,6 +29,8 @@ import tn.dari.spring.service.ShoppingCartService;
 public class ShoppingCartController {
 	@Autowired
 	ShoppingCartService shoppingCartService;
+
+	private static final Logger log = LoggerFactory.getLogger(ShoppingCartController.class);
 	
 	@GetMapping("/all")
 	public List<ShoppingCart> getAllShoppingCart() {
@@ -37,6 +41,12 @@ public class ShoppingCartController {
 	public ResponseEntity<ShoppingCart> getShoppingCart(@PathVariable(value = "id") Long faID)
 			throws ResourceNotFoundException {
 		return ResponseEntity.ok().body(shoppingCartService.getShoppingCartById(faID));
+	}
+
+	@GetMapping("/byUsername/{username}")
+	public ResponseEntity<ShoppingCart> getShoppingCart(@PathVariable(value = "username") String username)
+			throws ResourceNotFoundException {
+		return ResponseEntity.ok().body(shoppingCartService.getShoppingCartByUsername(username));
 	}
 
 	@PostMapping("/add")

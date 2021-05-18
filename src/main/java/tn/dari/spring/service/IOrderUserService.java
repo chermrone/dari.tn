@@ -8,6 +8,7 @@ import java.util.Map;
 
 import tn.dari.spring.dto.DailyProfit;
 import tn.dari.spring.entity.OrderUser;
+import tn.dari.spring.entity.ShoppingCart;
 import tn.dari.spring.exception.ResourceNotFoundException;
 
 public interface IOrderUserService {
@@ -15,6 +16,7 @@ public interface IOrderUserService {
 	public List<OrderUser> getAllOrder();
 
 	public OrderUser getOrderById(Long ID) throws ResourceNotFoundException;
+	public OrderUser findByShoppingCartAndStatusOrd(ShoppingCart shoppingCart,boolean statusOrd) throws ResourceNotFoundException;
 
 	public OrderUser postOrder(OrderUser order);
 

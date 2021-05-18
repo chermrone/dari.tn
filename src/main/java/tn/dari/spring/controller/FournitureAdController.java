@@ -46,6 +46,12 @@ public class FournitureAdController {
 				.map(fournitureAd -> modelMapper.map(fournitureAd, FournitureAdDto.class)).collect(Collectors.toList());
 	}
 
+	@GetMapping("/allAvailable")
+	public List<FournitureAdDto> getAllAvailableFournitureAd() {
+		return fournitureAdService.getAvailableAd().stream()
+				.map(fournitureAd -> modelMapper.map(fournitureAd, FournitureAdDto.class)).collect(Collectors.toList());
+	}
+
 	@GetMapping("/all/{id}")
 	public ResponseEntity<FournitureAdDto> getFournitureAdById(@PathVariable(value = "id") Long faID)
 			throws ResourceNotFoundException {
@@ -64,6 +70,7 @@ public class FournitureAdController {
 	@GetMapping("/Other/{username}")
 	public List<FournitureAdDto> getOtherFournitureAd(@PathVariable(value = "username") String username) {
 		return fournitureAdService.getOtherAd(username).stream()
+				.filter(e->e.getAvailable())
 				.map(fournitureAd -> modelMapper.map(fournitureAd, FournitureAdDto.class)).collect(Collectors.toList());
 	}
 	@GetMapping("/SearchByCriteria")

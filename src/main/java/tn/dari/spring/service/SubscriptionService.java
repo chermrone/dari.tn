@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tn.dari.spring.entity.Subscription;
-import tn.dari.spring.entity.SubscriptionOrdred;
-import tn.dari.spring.entity.User;
 import tn.dari.spring.enumeration.SubscriptionType;
 import tn.dari.spring.exception.SubscriptionNotFoundException;
 import tn.dari.spring.repository.SubscriptionRepository;

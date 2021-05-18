@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import tn.dari.spring.dto.DailyProfit;
 import tn.dari.spring.entity.OrderUser;
+import tn.dari.spring.entity.ShoppingCart;
 import tn.dari.spring.exception.ResourceNotFoundException;
 import tn.dari.spring.service.IOrderUserService;
 import tn.dari.spring.service.OrderUserService;
@@ -46,6 +47,12 @@ public class OrderUserController {
 	public ResponseEntity<OrderUser> getOrderById(@PathVariable(value = "id") Long ID)
 			throws ResourceNotFoundException {
 		return ResponseEntity.ok().body(orderUserService.getOrderById(ID));
+	}
+
+	@GetMapping("/findByShoppingCartAndStatusOrd/{statusOrd}")
+	public ResponseEntity<OrderUser> findByShoppingCartAndStatusOrd(@RequestBody ShoppingCart shoppingCart,@PathVariable(value = "statusOrd") boolean statusOrd)
+			throws ResourceNotFoundException {
+		return ResponseEntity.ok().body(orderUserService.findByShoppingCartAndStatusOrd(shoppingCart,statusOrd));
 	}
 
 	@PostMapping("/add")
@@ -71,31 +78,32 @@ public class OrderUserController {
 
 	@GetMapping("/TotalProfit")
 	public Float getTotalProfit(@RequestParam String dateDebut, @RequestParam String dateFin) {
-		
-		 Date dateDebutC = null;
+
+		Date dateDebutC = null;
 		try {
 			dateDebutC = new SimpleDateFormat("yyyy-MM-dd").parse(dateDebut);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 Date dateFinC = null;
+		Date dateFinC = null;
 		try {
 			dateFinC = new SimpleDateFormat("yyyy-MM-dd").parse(dateFin);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return orderUserService.getTotalProfit(dateDebutC, dateFinC);
 	}
-	
-	
+
 	@GetMapping("/DailyProfit")
-	public ResponseEntity<List<DailyProfit>> getDailyProfit(@RequestParam String dateDebut, @RequestParam String dateFin) {
-		
-		return ResponseEntity.ok().body(orderUserService.getDailyProfit(LocalDate.parse(dateDebut), LocalDate.parse(dateFin)));
-		
+	public ResponseEntity<List<DailyProfit>> getDailyProfit(@RequestParam String dateDebut,
+			@RequestParam String dateFin) {
+
+		return ResponseEntity.ok()
+				.body(orderUserService.getDailyProfit(LocalDate.parse(dateDebut), LocalDate.parse(dateFin)));
+
 	}
 
 }
